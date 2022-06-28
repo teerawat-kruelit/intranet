@@ -4,6 +4,8 @@ import { useNavigate, useParams } from 'react-router'
 import styled from 'styled-components';
 import Navbar from '../../components/navbar.compoenets';
 import axios from 'axios';
+import dayjs from 'dayjs'
+import moment from 'moment'
 import swal from 'sweetalert2'
 
 const FormItComponent = styled.div`
@@ -81,7 +83,6 @@ export default function FormItAdmin() {
 
     useEffect(() => {
         const init = async () => {
-            console.log(id)
             try {
                 let userData = await axios.get('http://localhost:4000/api/user/profile', { withCredentials: true });
                 if (userData.data.status) {
@@ -89,34 +90,50 @@ export default function FormItAdmin() {
                 }
 
                 let repaireData = await axios.get('http://localhost:4000/api/repair_list/it/' + id, { withCredentials: true });
+                let datetime = repaireData.data.data[0].close_date
+                repaireData.data.data[0].close_date = moment(datetime)
+                repaireData.data.data[0].close_time = moment(datetime)
                 if (repaireData.data.status) {
                     let data = repaireData.data.data[0]
+                    console.log(data)
                     form.setFieldsValue(data)
                 }
-                console.log(repaireData.data)
+
+                let expencesData = await axios.get('http://localhost:4000/api/m/expences', { withCredentials: true });
+                setExpences(expencesData.data.data)
+                let topicData = await axios.get('http://localhost:4000/api/m/topic', { withCredentials: true });
+                setTopics(topicData.data.data)
+                let statusData = await axios.get('http://localhost:4000/api/m/status', { withCredentials: true });
+                setStatus(statusData.data.data)
             } catch (error) {
                 if (error.response.status == 401) {
                     window.location.href = '/login'
                 }
             }
-
         }
-
-
         init()
     }, []);
 
     const onFinish = async (values) => {
-        let result = await axios.post('http://localhost:4000/api/repair_list/it', values, { withCredentials: true })
-        if (result.data.status) {
-            history('/repair')
-        } else {
-            swal.fire({
-                title: '',
-                text: result.data.message,
-                icon: 'error',
-                confirmButtonText: 'X'
-            })
+        values.close_date = moment(values.close_date).format('YYYY-MM-DD') + ' ' + moment(values.close_time).format('HH:mm:ss')
+        delete values.close_time
+
+        try {
+            let response = await axios.put('http://localhost:4000/api/repair_list/it/' + id, values, { withCredentials: true })
+            if (response.data.status) {
+                swal.fire({
+                    title: '',
+                    text: response.data.message,
+                    icon: 'success',
+                    confirmButtonText: 'X'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        history('/repair')
+                    }
+                })
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -184,19 +201,19 @@ export default function FormItAdmin() {
                             <Input readOnly />
                         </Form.Item>
                         <Form.Item
-                            name={'expences_id'}
-                            className={'sel-expences'}
-                            label={'หัวข้อ'}
+                            name={'topic_id'}
+                            className={'sel-topics'}
+                            label={'หมวดหมู่ปัญหา'}
                             rules={[
                                 {
                                     required: true,
-                                    message: 'กรุณาเลือกหัวข้อ',
+                                    message: 'กรุณาเลือกหมวดหมู่ปัญหา',
                                 },
                             ]}
                         >
-                            <Select className='sel-expences' placeholder="กรุณาเลือกหัวข้อ">
-                                {expences.map((expences) => {
-                                    return <Select.Option key={expences.id} value={expences.id}>{expences.name}</Select.Option>
+                            <Select className='sel-topics' placeholder="กรุณาเลือกหมวดหมู่ปัญหา">
+                                {topics.map((topics) => {
+                                    return <Select.Option key={topics.id} value={topics.id}>{topics.name}</Select.Option>
                                 })}
                             </Select>
                         </Form.Item>
@@ -238,19 +255,19 @@ export default function FormItAdmin() {
                             <Input />
                         </Form.Item>
                         <Form.Item
-                            name={'topic_id'}
-                            className={'sel-topics'}
-                            label={'หมวดหมู่ปัญหา'}
+                            name={'expence_id'}
+                            className={'sel-expences'}
+                            label={'หัวข้อ'}
                             rules={[
                                 {
                                     required: true,
-                                    message: 'กรุณาเลือกหมวดหมู่ปัญหา',
+                                    message: 'กรุณาเลือกหัวข้อ',
                                 },
                             ]}
                         >
-                            <Select className='sel-topics' placeholder="กรุณาเลือกหมวดหมู่ปัญหา">
-                                {topics.map((topics) => {
-                                    return <Select.Option key={topics.id} value={topics.id}>{topics.name}</Select.Option>
+                            <Select className='sel-expences' placeholder="กรุณาเลือกหัวข้อ">
+                                {expences.map((expences) => {
+                                    return <Select.Option key={expences.id} value={expences.id}>{expences.name}</Select.Option>
                                 })}
                             </Select>
                         </Form.Item>

@@ -18,7 +18,8 @@ module.exports.getRepairItList = async (userid, roleId, id) => {
 
     let sql = `
     SELECT rt.id, rt.ticket_no, FORMAT (rt.create_date, 'yyyy-MM-dd HH:mm:ss') as create_date, u.TUserName, u.ExtNo, rt.ip
-    , d.name as depart_name,rt.description,ua.TUserName as admin_name,rt.remark,s.name as status
+    , d.name as depart_name,rt.description,ua.TUserName as admin_name,rt.remark,s.name as status, rt.expence_id, rt.status_id, rt.comment
+    , rt.topic_id,  FORMAT (rt.close_date, 'yyyy-MM-dd HH:mm:ss') as close_date
     , b.name as branch
     FROM repair_list rt
     Left join tb_users u On u.id = rt.user_id
@@ -72,6 +73,37 @@ module.exports.getRepairBuiList = async (userid, roleId, id) => {
 
     let user = await query(sql, parameters)
     return user;
+}
+
+module.exports.updateRepairBuiList = async (userid, id, body) => {
+    let parameters = [
+        { name: "topic_id", sqltype: mssql.Int, value: body.topic_id },
+        { name: "status_id", sqltype: mssql.Int, value: body.status_id },
+        { name: "comment", sqltype: mssql.VarChar, value: body.comment },
+        { name: "remark", sqltype: mssql.VarChar, value: body.remark },
+        { name: "expence_id", sqltype: mssql.Int, value: body.expence_id },
+        { name: "close_date", sqltype: mssql.VarChar, value: body.close_date },
+        { name: "admin_id", sqltype: mssql.Int, value: userid },
+        { name: "id", sqltype: mssql.Int, value: id },
+    ]
+
+    console.log(body.close_date)
+
+    let sql = `
+        UPDATE repair_list
+        SET topic_id = @topic_id,
+            status_id = @status_id,
+            comment = @comment,
+            remark = @remark,
+            expence_id = @expence_id,
+            close_date = @close_date,
+            admin_id = @admin_id
+        OUTPUT INSERTED.id
+        WHERE Id = @Id
+    `
+
+    let update = await query(sql, parameters)
+    return update;
 }
 
 module.exports.createRepairIT = async (ticket_no, user_id, ip, branch_id, description) => {

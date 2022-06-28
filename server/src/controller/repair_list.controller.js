@@ -1,7 +1,7 @@
 const repair_listModel = require('../model/repair_list.model')
 
 
-module.exports.getRepairItList = async(req, res) => {
+module.exports.getRepairItList = async (req, res) => {
     // let userid = 9
     let { id } = req.params
     let userid = req.session.userid
@@ -18,7 +18,7 @@ module.exports.getRepairItList = async(req, res) => {
     return res.json({ status: true, data: details })
 }
 
-module.exports.getRepairBuiList = async(req, res) => {
+module.exports.getRepairBuiList = async (req, res) => {
     // let userid = 9
     let { id } = req.params
     let userid = req.session.userid
@@ -35,7 +35,26 @@ module.exports.getRepairBuiList = async(req, res) => {
 
 }
 
-module.exports.createRepairIt = async(req, res) => {
+module.exports.updateRepairItList = async (req, res) => {
+    let { id } = req.params
+    let userid = req.session.userid
+    if (!req.session.isLogin) {
+        return res.status(401).json({ status: false, message: 'unauthorize' })
+    }
+    if (req.session.role_id !== 2) {
+        return res.status(403).json({ status: false, message: 'permission denied' })
+    }
+    let body = req.body
+
+    let update = await repair_listModel.updateRepairBuiList(userid, id, body)
+    if (update == false) {
+        return res.json({ status: false, message: 'UPDATE FAILED' })
+    } else {
+        return res.json({ status: true, message: 'UPDATE SUCCESS' })
+    }
+}
+
+module.exports.createRepairIt = async (req, res) => {
     let userid = req.session.userid
     if (!req.session.isLogin) return res.status(401).json({ status: false, message: 'unauthorize' })
     let body = req.body
@@ -54,7 +73,7 @@ module.exports.createRepairIt = async(req, res) => {
     }
 }
 
-module.exports.createRepairBuilding = async(req, res) => {
+module.exports.createRepairBuilding = async (req, res) => {
     let userid = req.session.userid
     if (!req.session.isLogin) return res.status(401).json({ status: false, message: 'unauthorize' })
     let body = req.body

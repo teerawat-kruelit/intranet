@@ -12,6 +12,5 @@ router.use('/api/user', userRoutes)
 router.use('/api/m', masterRoutes)
 router.use('/api/repair_list', repair_it_list)
 router.use('/api/ticket', ticketRoutes)
-router.use('/api/ticket', ticketRoutes)
 
 module.exports = router
