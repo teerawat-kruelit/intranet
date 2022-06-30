@@ -4,7 +4,6 @@ const Validator = require('validatorjs');
 module.exports.getProfile = async(req, res) => {
 
     let userid = req.session.userid
-
     if (!req.session.isLogin) {
         return res.status(401).json({ status: false, message: 'unauthorize' })
     }

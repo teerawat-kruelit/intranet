@@ -16,13 +16,21 @@ const FromBuildingComponent = styled.div`
        margin-top: 50px;
 
        .header{
+        color: #FFF;
         text-align: center;
         background-color: #015352;
-        color: #FFF;
+        font-size: 16px;
+        font-weight:bold;
+        padding:5px;
        }
        .ticket-id{
-        text-align: center;
+        padding: 8px;
         font-weight: bold;
+        margin: 20px 15px 0px;
+        width: 185px;
+        background-color: #FD7D00;
+        color: #FFF;
+        border-radius: 10px;
        }
         
     }
@@ -36,7 +44,11 @@ const FromBuildingComponent = styled.div`
         margin: 0;
         margin-top: 15px;
         .ant-form-item-label{
-            background-color:#157347;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background-color:#015352;
             label{
                 &::before{
                     display: none;
@@ -59,7 +71,7 @@ const FromBuildingComponent = styled.div`
 
         .ant-form-item-control-input-content{
             display: flex;
-            justify-content: center;
+            justify-content: start;
         }
     }
 
@@ -78,6 +90,19 @@ const FromBuildingComponent = styled.div`
     .form-item-extno,
     .sel-branch{
         width: 50%;
+    }
+    .button-submit{
+        background-color: #015352;
+        color: #FFF;
+        border: none;
+        margin-right: 10px;
+        border-radius: 5px;
+    }
+    .button-back{
+        background-color: #015352;
+        color: #FFF;
+        border: none;
+        border-radius: 5px;
     }
 `
 
@@ -149,34 +174,34 @@ export default function FromBuilding() {
             <Navbar />
             <FromBuildingComponent>
                 <div className='Card-Building'>
-                    <div className='header h1'>
-                        แจ้งซ่อมฝ่ายอาคาร
+                    <div className='header'>
+                        แจ้งซ่อม ฝ่ายอาคาร
                     </div>
-                    <div className='ticket-id h1'>
+                    <div className='ticket-id'>
                         TICKET ID : {newTicketNo}
                     </div>
                     <Form className='form-building' form={form} onFinish={onFinish} layout="inline" size="large">
-                        <Form.Item className='form-item-tusername' name={'TUserName'} label='ชื่อ-นามสกุล'>
+                        <Form.Item className='form-item-tusername' name={'TUserName'} label='Name-Surname'>
                             <Input readOnly />
                         </Form.Item>
                         <Form.Item
                             className='form-item-position'
                             name={'Position'}
-                            label={'แผนก'}
+                            label={'Position'}
                         >
                             <Input readOnly />
                         </Form.Item>
                         <Form.Item
                             className='form-item-extno'
                             name={'ExtNo'}
-                            label={'เบอร์ติดต่อ'}
+                            label={'Phone'}
                         >
                             <Input readOnly />
                         </Form.Item>
                         <Form.Item
                             name={'branch'}
                             className={'sel-branch'}
-                            label={'หน่วยงาน'}
+                            label={'Branch'}
                             rules={[
                                 {
                                     required: true,
@@ -193,7 +218,7 @@ export default function FromBuilding() {
                         <Form.Item
                             className='form-item-description'
                             name={'description'}
-                            label={'แจ้งปัญหาการใข้งาน'}
+                            label={'Detail-Prompram'}
                             rules={[
                                 {
                                     required: true,
@@ -201,7 +226,7 @@ export default function FromBuilding() {
                                 },
                             ]}
                         >
-                            <Input.TextArea />
+                            <Input.TextArea placeholder="กรุณาแจ้งปัญหาการใช้งาน"/>
                         </Form.Item>
                         <Form.Item className='form-button'>
                             <button className="button-submit" type="submit">

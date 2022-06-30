@@ -9,6 +9,7 @@ import TableIt from "./table-it"
 import TableBuilding from "./table-building"
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { IoMdAddCircle } from "react-icons/io"
 
 const { TabPane } = Tabs;
 
@@ -28,11 +29,34 @@ const RepairSystemComponent = styled.div`
 
     .repair-table{
         /* padding: 20px; */
-        margin: 20px;
+        margin: 30px;
     }
 
     .button-group{
         display: flex;
+
+        .button-create-it,
+        .button-create-building,
+        .button-export-excel{
+            background-color: #015352;
+            color: #FFF;
+            border: none;
+            border-radius:10px;
+            font-weight: bold;
+            margin-right: 15px;
+
+            .icon-add{
+                font-size: 25px;
+                margin-right: 5px;
+            }
+        }
+        .button-create-building{
+            background-color: #015352;
+        }
+
+        .button-export-excel{
+            background-color: green;
+        }
     }
 `
 
@@ -41,13 +65,26 @@ const RepairSystemComponent = styled.div`
 export default function RepairSystem() {
 
     const [user, setUser] = useState(null);
+    const [currentTab, setCurrentTab] = useState('1');
+    const [itData, setItData] = useState([]);
+    const [buildData, setBuildData] = useState([]);
 
     useEffect(() => {
         const init = async () => {
+
             try {
                 let resp = await axios.get('http://localhost:4000/api/user/profile', { withCredentials: true })
                 if (resp?.data?.status) {
                     setUser(resp.data.data)
+                }
+
+                let itResp = await axios.get('http://localhost:4000/api/repair_list/it', { withCredentials: true })
+                if (itResp?.data?.status) {
+                    setItData(itResp.data.data)
+                }
+                let buildingtResp = await axios.get('http://localhost:4000/api/repair_list/building', { withCredentials: true })
+                if (buildingtResp?.data?.status) {
+                    setBuildData(buildingtResp.data.data)
                 }
             } catch (error) {
                 if (error.response.status == 401) {
@@ -55,53 +92,45 @@ export default function RepairSystem() {
                 }
             }
         }
+
         init()
-    }, []);
+    }, [currentTab]);
 
     return (
         <RepairSystemComponent className="repair-system">
-            <SideBar items={[
-                {
-                    key: '1',
-                    //   icon: <UserOutlined />,
-                    label: 'Home',
-                },
-                {
-                    key: '2',
-                    //   icon: <VideoCameraOutlined />,
-                    label: 'nav 2',
-                },
-                {
-                    key: '3',
-                    //   icon: <UploadOutlined />,
-                    label: 'nav 3',
-                },
-            ]} />
+            <SideBar />
             <div className='content'>
                 <Navbar />
                 <div className="repair-panel">
                     <div className="panel-group-card">
-                        <Card name="ใบงานแจ้งซ่อม" number={0} detail="รายการแจ้งซ่อมในระบบ" icon={<IoIosDocument />} color="#FFCA2C" disabled />
-                        <Card name="ใบงานแจ้งซ่อม" number={0} detail="รายการแจ้งซ่อม-ดำเนินการอยู่" icon={<IoIosDocument />} color="#d73747" />
-                        <Card name="ใบงานแจ้งซ่อม" number={0} detail="รายการแจ้งซ่อม-สำเร็จ" icon={<IoIosDocument />} color="#149759" />
-                        <Card name="ใบงานแจ้งซ่อม" number={0} detail="รายการแจ้งซ่อม-ยกเลิก" icon={<IoIosDocument />} color="#878a8d" />
+                        <Card number={currentTab == '1' ? itData : buildData} detail="รายการแจ้งซ่อม-ทั้งหมด" icon={<IoIosDocument />} color="#0B5ED7" />
+                        <Card number={currentTab == '1' ? itData : buildData} detail="รายการแจ้งซ่อม-Process" icon={<IoIosDocument />} color="#d73747" />
+                        <Card number={currentTab == '1' ? itData : buildData} detail="รายการแจ้งซ่อม-Success" icon={<IoIosDocument />} color="#149759" />
+                        <Card number={currentTab == '1' ? itData : buildData} detail="รายการแจ้งซ่อม-Pending" icon={<IoIosDocument />} color="#FFCA2C" />
                     </div>
                 </div>
+                <br />
                 <div className="repair-table">
-                    <div className="title">รายการแจ้งซ่อม</div>
-                    {user?.role === 1 ? 
+                    {user?.role === 1 ?
                         <div className="button-group">
-                            <NavLink to={'/form-it'}><button className="button-create-it">แจ้งซ่อมไอที</button></NavLink>
-                            <NavLink to={'/form-building'}><button className="button-create-building">แจ้งซ่อมอาคาร</button></NavLink>
+                            <NavLink to={'/form-it'}><button className="button-create-it"><IoMdAddCircle className="icon-add" />แจ้งซ่อม IT-Support</button></NavLink>
+                            <NavLink to={'/form-building'}><button className="button-create-building"><IoMdAddCircle className="icon-add" />แจ้งซ่อม ฝ่ายอาคาร</button></NavLink>
+                        </div> : ''
+                    }
+                    {user?.role === 2 ?
+                        <div className="button-group">
+                            <button className="button-export-excel"><IoMdAddCircle className="icon-add" />Export Excel</button>
                         </div> : ''
                     }
                     <br />
-                    <Tabs defaultActiveKey="1">
-                        <TabPane tab="Table-IT" key="1">
-                            <TableIt user={user}/>
+                    <Tabs defaultActiveKey={currentTab} onChange={(e) => {
+                        setCurrentTab(e)
+                    }}>
+                        <TabPane tab="ฝ่าย IT-Support" key="1">
+                            <TableIt user={user} data={itData} />
                         </TabPane>
-                        <TabPane tab="Table-Building" key="2">
-                            <TableBuilding  user={user}/>
+                        <TabPane tab="ฝ่าย อาคาร" key="2">
+                            <TableBuilding user={user} data={buildData} />
                         </TabPane>
                     </Tabs>
                 </div>

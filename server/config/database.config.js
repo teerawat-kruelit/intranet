@@ -6,7 +6,7 @@ const config = {
     pool: {
         max: 10,
         min: 0,
-        idleTimeoutMillis: 30000,
+        idleTimeoutMillis: 300000000,
     },
     options: {
         encrypt: true,

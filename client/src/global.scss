@@ -43,19 +43,14 @@ body {
   position: relative;
 }
 
-.h1{font-size: 20px;}
-.h2{font-size: 18px;}
-.h3{font-size: 13px;}
 
 button {
   font-family: 'Urbanist', sans-serif !important;
   display: flex;
   align-items: center;
   font-size: 16px;
+  font-weight: bold;
   color: #FFF;
-  border: 1px solid #5142fc;
-  border-radius: 24px;
-  padding: 10px 25px;
   background: transparent;
   display: flex;
   cursor: pointer;
@@ -71,27 +66,13 @@ button {
     margin-right: 5px;
   }
 
-  &.button-submit{
-    color: #FFF;
-    background-color: rgb(52, 172, 52);
-    border: none;
-    min-width: 60px;
-    margin-right: 5px;
-  }
-
-  &.button-back{
-    color: #FFF;
-    background-color: #0d6efd;
-    border: none;
-    min-width: 60px;
-    margin-right: 5px;
-  }
-
   &.button-edit{
-    background-color: #e8d153;
+    background-color: #FFCA2C;
     border: none;
     color: #FFF;
-    font-size: 16px;
+    font-size: 20px;
+    border-radius: 50px;
+    padding: 10px;
 
   }
 }
@@ -103,9 +84,11 @@ button {
 }
 
 .status-pending{
-  background-color: orange;
+  background-color: #FFCA2C;
   color: #FFF;
   border: none;
+  border-radius: 15px;
+  padding: 5px;
 
   &:hover{
     background-color: orange;
@@ -113,12 +96,14 @@ button {
   }
 }
 .status-process{
-  background-color: skyblue;
+  background-color: rgb(246, 49, 49);
   color: #FFF;
   border: none;
+  padding: 5px;
+  border-radius: 15px;
 
-  &:hover{
-    background-color: skyblue;
-    filter: brightness(80%);
-  }
+  // &:hover{
+  //   background-color: skyblue;
+  //   filter: brightness(80%);
+  // }
 }

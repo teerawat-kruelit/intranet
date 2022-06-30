@@ -6,17 +6,10 @@ import { NavLink } from "react-router-dom";
 
 export default function TableBuilding(props) {
 
-    const [data, setData] = useState([]);
     const [columns, setColumns] = useState([]);
 
     useEffect(() => {
         const init = async () => {
-            let resp = await axios.get('http://localhost:4000/api/repair_list/building', { withCredentials: true })
-
-            if (resp?.data?.status) {
-                setData(resp.data.data)
-            }
-
             let column = [
                 {
                     title: 'เลขที่แจ้งซ่อม',
@@ -74,7 +67,7 @@ export default function TableBuilding(props) {
                     dataIndex: '',
                     width: 20,
                     render: (_, record) => (
-                        <NavLink to={'/form-building/'+record.id}>
+                        <NavLink to={'/form-building/' + record.id}>
                             <button className={"button-edit"} >
                                 <AiTwotoneEdit />
                             </button>
@@ -91,6 +84,6 @@ export default function TableBuilding(props) {
 
 
     return (
-        <Table dataSource={data} columns={columns} />
+        <Table dataSource={props.data} columns={columns} />
     )
 }

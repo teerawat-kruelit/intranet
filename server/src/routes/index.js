@@ -7,6 +7,7 @@ const masterRoutes = require('./master.routes')
 const ticketRoutes = require('./ticket.routes')
 
 router.post('/api/login', authController.login)
+router.post('/api/logout', authController.logout)
 router.post('/api/register', authController.register)
 router.use('/api/user', userRoutes)
 router.use('/api/m', masterRoutes)

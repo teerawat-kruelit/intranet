@@ -6,16 +6,10 @@ import { AiTwotoneEdit } from 'react-icons/ai'
 
 export default function TableIt(props) {
 
-    const [data, setData] = useState([]);
     const [columns, setColumns] = useState([]);
 
     useEffect(() => {
         const init = async () => {
-            let resp = await axios.get('http://localhost:4000/api/repair_list/it', { withCredentials: true })
-
-            if (resp?.data?.status) {
-                setData(resp.data.data)
-            }
 
             let column = [
                 {
@@ -95,6 +89,6 @@ export default function TableIt(props) {
 
 
     return (
-        <Table dataSource={data} columns={columns} />
+        <Table dataSource={props.data} columns={columns} />
     )
 }

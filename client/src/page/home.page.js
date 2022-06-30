@@ -1,8 +1,10 @@
 import styled from "styled-components"
 import Navbar from "../components/navbar.compoenets";
-import { GiCardboardBoxClosed } from 'react-icons/gi'
-import { GoTools } from 'react-icons/go'
-import { TbBuildingBank } from 'react-icons/tb'
+import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import { Card } from 'antd';
+import { MdEmail } from 'react-icons/md'
+
+
 import SideBarComponent from "../components/sidebar.components";
 import { NavLink } from 'react-router-dom'
 
@@ -12,13 +14,16 @@ const HomepageComponent = styled.div`
     .content{
         width: 100%;
     }
+    .sidebar-trigger-button{
+        
+        color: #FFF;
+    }
 `
+
 
 const Contentportal = styled.div`
     height: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    
 
     .content-group-button{
         display: flex;
@@ -47,40 +52,88 @@ const Contentportal = styled.div`
             }
         }
     }
+    .img-company{
+        height: 25%;
+
+        .backgroud{
+            width: 100%;
+            height: 150px;
+        }
+    }
+    .head{
+        text-align: center;
+        font-size: 30px;
+        font-weight: bold;
+        color: blueviolet;
+        padding-top: 70px;
+
+    }
+    hr{
+        width: 40px;
+        border: 1px solid red;
+        color: red;
+        background-color: red;
+       
+        
+    }
+    .card-person{
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-evenly;
+        padding: 10px;
+    }
 `
+const { Meta } = Card;
+
 export default function HomePage() {
 
     return (
         <HomepageComponent className="home-page">
             <SideBarComponent />
             <div className="content">
-                <Navbar />
                 <Contentportal className="content-portal">
-                    <div className="content-group-button">
-                        <div className="item-button">
-                            <NavLink to={'/repair'}>
-                                <div className="item-button__container">
-                                    <div><GoTools className="item-button-icon" /></div>
-                                    <span className="item-button-name">HELP-DESK</span>
-                                </div>
-                            </NavLink>
-                        </div>
-                        <div className="item-button">
-                            <NavLink to={'/repair'}>
-                                <div className="item-button__container">
-                                    <div><TbBuildingBank className="item-button-icon" /></div>
-                                    <span className="item-button-name">Booking-Room</span>
-                                </div>
-                            </NavLink>
-                        </div>
-                        <div className="item-button">
-                            <NavLink to={'/repair'}>
-                                <div className="item-button__container">
-                                    <div><GiCardboardBoxClosed className="item-button-icon" /></div>
-                                    <span className="item-button-name">Stork-IT</span>
-                                </div>
-                            </NavLink>
-                        </div>
+                    <div className="img-company">
+                    <img src="/back02.jpg" className="backgroud" alt="" />
+                    </div>
+                   
+                    <div className="head">
+                    Member
+                    </div>
+                    <hr />
+                    <div className="card-person">
+                    <Card
+                        hoverable
+                        style={{ width: 220 }}
+                        cover={<img alt="example" width={200} height={250} src="/giuu.jpg" />}
+                    >
+                    <p>K. Waruen Wanwanich</p>
+                    <div>Programer</div>
+                    <div className="email">
+                    <div>waruen.css@gmail.com</div>
+                    </div>
+                    <div>
+                    <div>PHONE: 1310</div>
+                    </div>
+                    </Card>
+                    <Card
+                        hoverable
+                        style={{ width: 220 }}
+                        cover={<img alt="example" width={200} height={250} src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                    >
+                    <p>Card content</p>
+                    <p>Card content</p>
+                    <p>Card content</p>
+                    </Card>
+                    <Card
+                        hoverable
+                        style={{ width: 220 }}
+                        cover={<img alt="example" width={200} height={250} src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                    >
+                    <p>Card content</p>
+                    <p>Card content</p>
+                    <p>Card content</p>
+                    </Card>
+                    
                     </div>
                 </Contentportal>
             </div>

@@ -18,6 +18,23 @@ module.exports.getRepairItList = async (req, res) => {
     return res.json({ status: true, data: details })
 }
 
+module.exports.getRepairItListLogs = async (req, res) => {
+    // let userid = 9
+    let { id } = req.params
+    let userid = req.session.userid
+    if (!req.session.isLogin) {
+        return res.status(401).json({ status: false, message: 'unauthorize' })
+    }
+    let userRoleId = req.session.role_id
+
+    let details = await repair_listModel.getRepairItListLogs(userid, userRoleId, id)
+    if (details.length < 1) {
+        return res.json({ status: false, message: 'Not found information' })
+    }
+
+    return res.json({ status: true, data: details })
+}
+
 module.exports.getRepairBuiList = async (req, res) => {
     // let userid = 9
     let { id } = req.params
@@ -50,6 +67,10 @@ module.exports.updateRepairItList = async (req, res) => {
     if (update == false) {
         return res.json({ status: false, message: 'UPDATE FAILED' })
     } else {
+        updateData = update[0]
+        updateData.close_date = body.close_date
+        console.log(updateData)
+        await repair_listModel.createRepairITLogs(updateData)
         return res.json({ status: true, message: 'UPDATE SUCCESS' })
     }
 }
@@ -65,10 +86,11 @@ module.exports.createRepairIt = async (req, res) => {
     }
 
     let insert = await repair_listModel.createRepairIT(body.ticket_no, userid, body.ip, body.branch, body.description)
-
     if (insert == false) {
         return res.json({ status: false, message: 'INSERT Not found' })
     } else {
+        insertData = insert[0]
+        await repair_listModel.createRepairITLogs(insertData)
         return res.json({ status: true, message: 'INSERT SUCCESS' })
     }
 }

@@ -2,7 +2,7 @@ const authModel = require('../model/auth.model')
 const Validator = require('validatorjs');
 const bcrypt = require('bcrypt')
 
-module.exports.login = async(req, res) => {
+module.exports.login = async (req, res) => {
     let body = req.body
 
     let users = await authModel.getUserByUsername(body.EUsername)
@@ -21,7 +21,12 @@ module.exports.login = async(req, res) => {
     return res.json({ status: true, message: 'login successfully' })
 }
 
-module.exports.register = async(req, res) => {
+module.exports.logout = async (req, res) => {
+    req.session.destroy();
+    return res.json({ status: true, message: 'logout successfully' })
+}
+
+module.exports.register = async (req, res) => {
     let body = req.body
 
     let rules = {

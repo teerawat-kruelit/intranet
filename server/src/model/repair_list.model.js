@@ -45,6 +45,42 @@ module.exports.getRepairItList = async (userid, roleId, id) => {
     return user;
 }
 
+module.exports.getRepairItListLogs = async (userid, roleId, id) => {
+    let parameters = [
+        { name: "userid", sqltype: mssql.Int, value: userid },
+        { name: "id", sqltype: mssql.Int, value: id },
+    ]
+
+    let sql = `
+    SELECT rt.id, rt.ticket_no, FORMAT (rt.create_date, 'yyyy-MM-dd HH:mm:ss') as create_date, u.TUserName, u.ExtNo, rt.ip
+    , d.name as depart_name,rt.description,ua.TUserName as admin_name,rt.remark,s.name as status, rt.expence_id, rt.status_id, rt.comment
+    , rt.topic_id,  FORMAT (rt.close_date, 'yyyy-MM-dd HH:mm:ss') as close_date
+    , b.name as branch
+    FROM repair_list_logs rt
+    Left join tb_users u On u.id = rt.user_id
+    Left join tb_users ua On ua.id = rt.admin_id
+    Left join tb_department d On d.id = rt.dep_id
+    Left join tb_status s ON s.id =rt.status_id
+    Left join tb_type t ON t.id=rt.type_id
+    Left join tb_branch b ON b.id = rt.branch_id
+    WHERE rt.type_id = 1
+    `
+
+    if (roleId === 1) {
+        sql += `    
+        AND rt.user_id = @userid
+    `
+    }
+
+    if (id) {
+        sql += ` AND rt.id = @id`
+    }
+
+    sql += ` ORDER BY ticket_no DESC, create_date DESC `
+    let user = await query(sql, parameters)
+    return user;
+}
+
 module.exports.getRepairBuiList = async (userid, roleId, id) => {
     let parameters = [
         { name: "userid", sqltype: mssql.Int, value: userid },
@@ -87,8 +123,6 @@ module.exports.updateRepairBuiList = async (userid, id, body) => {
         { name: "id", sqltype: mssql.Int, value: id },
     ]
 
-    console.log(body.close_date)
-
     let sql = `
         UPDATE repair_list
         SET topic_id = @topic_id,
@@ -98,7 +132,7 @@ module.exports.updateRepairBuiList = async (userid, id, body) => {
             expence_id = @expence_id,
             close_date = @close_date,
             admin_id = @admin_id
-        OUTPUT INSERTED.id
+        OUTPUT INSERTED.*
         WHERE Id = @Id
     `
 
@@ -118,8 +152,36 @@ module.exports.createRepairIT = async (ticket_no, user_id, ip, branch_id, descri
     let insert = await query(`
     INSERT INTO repair_list 
     (ticket_no,user_id,ip,branch_id,description,type_id,create_date) 
-    OUTPUT Inserted.id
+    OUTPUT Inserted.*
     VALUES (@ticket_no,@user_id,@ip,@branch_id,@description,1,GETDATE())
+    `, parameters)
+
+    return insert;
+}
+
+module.exports.createRepairLogs = async (body) => {
+    let parameters = [
+        { name: "ticket_no", sqltype: mssql.VarChar, value: body.ticket_no },
+        { name: "user_id", sqltype: mssql.Int, value: body.user_id },
+        { name: "ip", sqltype: mssql.VarChar, value: body.ip },
+        { name: "branch_id", sqltype: mssql.Int, value: body.branch_id },
+        { name: "description", sqltype: mssql.VarChar, value: body.description },
+        { name: "type_id", sqltype: mssql.Int, value: body.type_id },
+
+        { name: "topic_id", sqltype: mssql.Int, value: body.topic_id },
+        { name: "status_id", sqltype: mssql.Int, value: body.status_id },
+        { name: "comment", sqltype: mssql.VarChar, value: body.comment },
+        { name: "remark", sqltype: mssql.VarChar, value: body.remark },
+        { name: "expence_id", sqltype: mssql.Int, value: body.expence_id },
+        { name: "close_date", sqltype: mssql.VarChar, value: body.close_date },
+        { name: "admin_id", sqltype: mssql.Int, value: body.admin_id },
+    ]
+
+    let insert = await query(`
+    INSERT INTO repair_list_logs 
+    (ticket_no,user_id,ip,branch_id,description,type_id,create_date, topic_id, status_id, comment, remark, expence_id, close_date, admin_id) 
+    OUTPUT Inserted.id
+    VALUES (@ticket_no,@user_id,@ip,@branch_id,@description, @type_id, GETDATE(), @topic_id, @status_id, @comment, @remark, @expence_id, @close_date, @admin_id)
     `, parameters)
 
     return insert;
