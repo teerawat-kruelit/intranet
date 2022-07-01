@@ -8,6 +8,7 @@ import LoginPage from "./page/login.page";
 import FormIt from "./page/form-it";
 import FromBuilding from "./page/form-building";
 import FormItAdmin from "./page/form-it-admin";
+import ReportProcess from "./page/report-process";
 
 const App = () => {
   let routes = useRoutes([
@@ -17,6 +18,8 @@ const App = () => {
     { path: "/form-it", element: <FormIt /> },
     { path: "/form-it/:id", element: <FormItAdmin /> },
     { path: "/form-building", element: <FromBuilding /> },
+
+    { path: "/report/process", element: <ReportProcess /> },
   ]);
   return routes;
 };

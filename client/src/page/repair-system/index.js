@@ -43,6 +43,7 @@ const RepairSystemComponent = styled.div`
             border: none;
             border-radius:10px;
             font-weight: bold;
+            padding: 10px;
             margin-right: 15px;
 
             .icon-add{
@@ -120,6 +121,7 @@ export default function RepairSystem() {
                     {user?.role === 2 ?
                         <div className="button-group">
                             <button className="button-export-excel"><IoMdAddCircle className="icon-add" />Export Excel</button>
+                            <NavLink to={'/report/process'}><button className="button-report-process"><IoMdAddCircle className="icon-add" />Report</button></NavLink>
                         </div> : ''
                     }
                     <br />
