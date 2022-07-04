@@ -5,12 +5,14 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { Progress } from "antd";
 import { useParams } from "react-router-dom";
+import { ImStarFull } from 'react-icons/im'
 
 const ReportProcessComponent = styled.div`
   border: 1px solid #e2e0e0;
   width: 1200px;
   margin: 0 auto;
   margin-top: 50px;
+  padding: 0px 0px 20px 0px;
 
   .form-header {
     color: #fff;
@@ -98,8 +100,33 @@ const ProcessComponent = styled(Progress)`
   }
 `;
 
+const RatingComponent = styled.div`
+  border: 1px solid #e2e0e0;
+  max-width: 500px;
+  padding: 20px 20px;
+  margin: 0 auto;
+
+  .rating-icon{
+    display: flex;
+    justify-content: center;
+    font-size: 32px;
+  }
+
+  .rating-label{
+    margin-top: 10px;
+    font-size: 32px;
+    text-align: center;
+  }
+
+  .rating-number{
+    font-size: 30px;
+    text-align: center;
+  }
+`
+
 export default function ReportProcess() {
   const [reportIt, setReportIt] = useState(null);
+  const [ratingData, setRatingData] = useState(null);
   const [currentDate, setCurrentDate] = useState(dayjs());
   const { type } = useParams();
 
@@ -117,8 +144,25 @@ export default function ReportProcess() {
             withCredentials: true,
           }
         );
+
         if (itResp?.data?.status) {
           setReportIt(itResp.data.data);
+        }
+
+        let ratingResp = await axios.get(
+          "http://localhost:4000/api/report/rating",
+          {
+            params: {
+              month: currentDate.format("MM"),
+              year: currentDate.format("YYYY"),
+              type_id: type === "it" ? 1 : 2,
+            },
+            withCredentials: true,
+          }
+        );
+
+        if (ratingResp?.data?.status) {
+          setRatingData(ratingResp.data.data);
         }
       } catch (error) {
         if (error.response.status === 401) {
@@ -131,7 +175,7 @@ export default function ReportProcess() {
   }, [currentDate]);
 
   return (
-    <>
+    <div className="content">
       <Navbar />
       <ReportProcessComponent className="report-process">
         <div className="form-header">Report Process</div>
@@ -215,17 +259,25 @@ export default function ReportProcess() {
             <div className="summary">
               <div className="total">
                 ทั้งหมด{" "}
-                {reportIt?.pending ||
-                  0 + reportIt?.process ||
-                  0 + reportIt?.success ||
-                  0 + reportIt?.reject ||
-                  0}{" "}
+                {reportIt?.total || 0}{" "}
                 รายการ
               </div>
             </div>
           </div>
+
         </div>
+        <RatingComponent className="rating-form">
+          <div className="rating-icon">
+            <ImStarFull />
+          </div>
+          <div className="rating-label">
+            คะแนน
+          </div>
+          <div className="rating-number">
+            {ratingData?.sum_rating || 0}
+          </div>
+        </RatingComponent>
       </ReportProcessComponent>
-    </>
+    </div>
   );
 }

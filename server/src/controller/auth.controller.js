@@ -10,8 +10,7 @@ module.exports.login = async (req, res) => {
     return res.json({ status: false, message: "user or password is invalid" });
   }
   let user = users[0];
-  let match = await bcrypt.compare(body.EPassword, user.EPassword);
-  if (!match) {
+  if (user.password != body.password) {
     return res.json({ status: false, message: "user or password is invalid" });
   }
 

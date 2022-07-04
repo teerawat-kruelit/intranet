@@ -1,6 +1,13 @@
-import styled from "styled-components";
-import { Card } from "antd";
+import styled from "styled-components"
+import Navbar from "../components/navbar.compoenets";
+import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import { Card, Row } from 'antd';
+import { MdEmail } from 'react-icons/md'
+import { FaPhoneSquareAlt } from 'react-icons/fa'
+
+
 import SideBarComponent from "../components/sidebar.components";
+import { useState } from "react";
 
 const HomepageComponent = styled.div`
   display: flex;
@@ -70,10 +77,74 @@ const Contentportal = styled.div`
     justify-content: space-evenly;
     padding: 10px;
   }
+
+       .red{
+         width: 40px;
+         border: 1px solid red;
+         color: red;
+         background-color: red;
+
+
+     }
+     .card-person{
+         margin-top: 25px;
+         display: flex;
+         justify-content: space-evenly;
+     }
+     .name-card{
+         font-size: 17px;
+         text-align: start;
+         font-weight: bold;
+     }
+     .position{
+         text-align: start;
+     }
+     .phone{
+         display: flex;
+         margin-bottom:15px;
+     }
+     .iconphone{
+         font-size: 20px;
+         margin-top:2px;
+         margin-right:10px;
+     }
+     .button-group{
+         display: flex;
+         justify-content: space-evenly;
+         margin-top:20px;
+
+         .group{
+         width: 15%;
+         text-align: center;
+         background-color: red;
+         border: 1px solid black;
+     }
+     }
 `;
+//         font-weight: bold;
+//         color: #223A66;
+//         padding-top: 70px;
+
+//     }
+
+
+
+// `
 const { Meta } = Card;
 
 export default function HomePage() {
+
+  const [userData, setUserData] = useState([
+    { name: 'a', ext: 111 },
+    { name: 'b', ext: 222 },
+    { name: 'c' },
+    { name: 'd' },
+    { name: 'd' },
+    { name: 'd' },
+    { name: 'd' },
+    { name: 'd' },
+  ]);
+
   return (
     <HomepageComponent className="home-page">
       <SideBarComponent />
@@ -83,60 +154,48 @@ export default function HomePage() {
             <img src="/back02.jpg" className="backgroud" alt="" />
           </div>
 
-          <div className="head">Member</div>
-          <hr />
-          <div className="card-person">
-            <Card
-              hoverable
-              style={{ width: 220 }}
-              cover={
-                <img alt="example" width={200} height={250} src="/giuu.jpg" />
-              }
-            >
-              <p>K. Waruen Wanwanich</p>
-              <div>Programer</div>
-              <div className="email">
-                <div>waruen.css@gmail.com</div>
-              </div>
-              <div>
-                <div>PHONE: 1310</div>
-              </div>
-            </Card>
-            <Card
-              hoverable
-              style={{ width: 220 }}
-              cover={
-                <img
-                  alt="example"
-                  width={200}
-                  height={250}
-                  src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                />
-              }
-            >
-              <p>Card content</p>
-              <p>Card content</p>
-              <p>Card content</p>
-            </Card>
-            <Card
-              hoverable
-              style={{ width: 220 }}
-              cover={
-                <img
-                  alt="example"
-                  width={200}
-                  height={250}
-                  src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                />
-              }
-            >
-              <p>Card content</p>
-              <p>Card content</p>
-              <p>Card content</p>
-            </Card>
+          <div className="head">
+            WellCome
           </div>
+          <hr className="red" />
+          <div className="card-person">
+            {userData.map((item, index) => {
+              if (index > 3) return
+              return (
+                <Card
+                  hoverable
+                  key={index}
+                  style={{ width: 240 }}
+                  cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                >
+                  <div>
+                    <div className="name-card">{item.name} </div>
+                    <div className="position">Chief Executive Officer </div>
+                  </div>
+                  <p></p>
+                  <div className="phone">
+                    <FaPhoneSquareAlt className="iconphone" />
+                    <div>EXT-{item.ext}</div>
+                  </div>
+                </Card>
+              )
+            })}
+          </div>
+          <hr />
+          <div className="button-group">
+            <div className="group"><span>IT-Support</span></div>
+            <div className="group"><span>IT-Support</span></div>
+            <div className="group"><span>IT-Support</span></div>
+            <div className="group"><span>IT-Support</span></div>
+            <div className="group"><span>IT-Support</span></div>
+          </div>
+          <br />
+          <div className="department-team">
+            jhjhjhj
+          </div>
+
         </Contentportal>
       </div>
     </HomepageComponent>
-  );
+  )
 }
