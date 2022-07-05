@@ -6,8 +6,8 @@ module.exports.getReportRepair = async (req, res) => {
   if (!req.session.isLogin) {
     return res.status(401).json({ status: false, message: "unauthorize" });
   }
-  if (req.session.role_id !== 2) {
-    return res.status(403({ status: false, message: "permission denied" }));
+  if (req.session.role_id !== 3) {
+    return res.status(403).json({ status: false, message: "permission denied" });
   }
 
   let data = await reportModel.getReportRepair(year, month, type_id, admin_id);
@@ -21,10 +21,10 @@ module.exports.GetReportAdminRating = async (req, res) => {
   if (!req.session.isLogin) {
     return res.status(401).json({ status: false, message: "unauthorize" });
   }
-  if (req.session.role_id !== 2) {
-    return res.status(403({ status: false, message: "permission denied" }));
+  if (req.session.role_id !== 3) {
+    return res.status(403).json({ status: false, message: "permission denied" });
   }
 
   let data = await reportModel.GetReportAdminRating(year, month, type_id, userid);
-  return res.json({ status: true, data: data.length > 0 ? data[0] : {} });
+  return res.json({ status: true, data: data || [] });
 };

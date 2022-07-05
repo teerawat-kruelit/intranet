@@ -12,7 +12,6 @@ const ReportProcessComponent = styled.div`
   width: 1200px;
   margin: 0 auto;
   margin-top: 50px;
-  padding: 0px 0px 20px 0px;
 
   .form-header {
     color: #fff;
@@ -23,9 +22,19 @@ const ReportProcessComponent = styled.div`
     padding: 5px;
   }
 
+  .report-display{
+    display: flex;
+    justify-content: center;
+    padding: 40px 0px;
+
+    & > div:not(:first-child){
+      margin-left: 20px;
+    }
+  }
+
   .procress-group {
     width: 500px;
-    margin: 20px auto;
+    /* margin: 20px 0; */
     padding: 20px;
     border: 1px solid lightgray;
 
@@ -104,29 +113,21 @@ const RatingComponent = styled.div`
   border: 1px solid #e2e0e0;
   max-width: 500px;
   padding: 20px 20px;
-  margin: 0 auto;
+  width: 500px;
 
-  .rating-icon{
+  .rating-item{
     display: flex;
-    justify-content: center;
-    font-size: 32px;
-  }
+    justify-content: space-between;
 
-  .rating-label{
-    margin-top: 10px;
-    font-size: 32px;
-    text-align: center;
-  }
-
-  .rating-number{
-    font-size: 30px;
-    text-align: center;
+    span{
+      margin-right: 5px;
+    }
   }
 `
 
 export default function ReportProcess() {
   const [reportIt, setReportIt] = useState(null);
-  const [ratingData, setRatingData] = useState(null);
+  const [ratingData, setRatingData] = useState([]);
   const [currentDate, setCurrentDate] = useState(dayjs());
   const { type } = useParams();
 
@@ -179,104 +180,98 @@ export default function ReportProcess() {
       <Navbar />
       <ReportProcessComponent className="report-process">
         <div className="form-header">Report Process</div>
-        <div className="procress-group">
-          <div className="process-date">
-            <button
-              className="prev"
-              onClick={() => {
-                setCurrentDate(currentDate.subtract(1, "month"));
-              }}
-            >
-              {"<"}
-            </button>
-            <span>
-              {currentDate.format("MMMM")} {currentDate.format("YYYY")}
-            </span>
-            <button
-              className="next"
-              onClick={() => {
-                setCurrentDate(currentDate.add(1, "month"));
-              }}
-            >
-              {">"}
-            </button>
-          </div>
-          <div className="process-item">
-            <div className="label">
-              <span className="label-icon success">██</span>
-              <span>Success</span>
+        <div className="report-display">
+          <div className="procress-group">
+            <div className="process-date">
+              <button
+                className="prev"
+                onClick={() => {
+                  setCurrentDate(currentDate.subtract(1, "month"));
+                }}
+              >
+                {"<"}
+              </button>
+              <span>
+                {currentDate.format("MMMM")} {currentDate.format("YYYY")}
+              </span>
+              <button
+                className="next"
+                onClick={() => {
+                  setCurrentDate(currentDate.add(1, "month"));
+                }}
+              >
+                {">"}
+              </button>
             </div>
-            <div className="process-bar">
-              <ProcessComponent
-                className="success"
-                percent={reportIt?.success}
-                showInfo={false}
-              />
-              <div className="amount">{reportIt?.success}</div>
-            </div>
-          </div>
-          <div className="process-item pending">
-            <div className="label">
-              <span className="label-icon pending">██</span>{" "}
-              <span>Pending</span>
-            </div>
-            <div className="process-bar">
-              <ProcessComponent
-                className="pending"
-                percent={reportIt?.pending}
-                showInfo={false}
-              />
-              <div className="amount">{reportIt?.pending}</div>
-            </div>
-          </div>
-          <div className="process-item process">
-            <div className="label">
-              <span className="label-icon process">██</span>{" "}
-              <span>Process</span>
-            </div>
-            <div className="process-bar">
-              <ProcessComponent
-                className="process"
-                percent={reportIt?.process}
-                showInfo={false}
-              />
-              <div className="amount">{reportIt?.process}</div>
-            </div>
-          </div>
-          <div className="process-item reject">
-            <div className="label">
-              <span className="label-icon reject">██</span> <span>Reject</span>
-            </div>
-            <div className="process-bar">
-              <ProcessComponent
-                className="reject"
-                percent={reportIt?.reject}
-                showInfo={false}
-              />
-              <div className="amount">{reportIt?.reject}</div>
-            </div>
-
-            <div className="summary">
-              <div className="total">
-                ทั้งหมด{" "}
-                {reportIt?.total || 0}{" "}
-                รายการ
+            <div className="process-item">
+              <div className="label">
+                <span className="label-icon success">██</span>
+                <span>Success</span>
+              </div>
+              <div className="process-bar">
+                <ProcessComponent
+                  className="success"
+                  percent={reportIt?.success}
+                  showInfo={false}
+                />
+                <div className="amount">{reportIt?.success}</div>
               </div>
             </div>
-          </div>
+            <div className="process-item pending">
+              <div className="label">
+                <span className="label-icon pending">██</span>{" "}
+                <span>Pending</span>
+              </div>
+              <div className="process-bar">
+                <ProcessComponent
+                  className="pending"
+                  percent={reportIt?.pending}
+                  showInfo={false}
+                />
+                <div className="amount">{reportIt?.pending}</div>
+              </div>
+            </div>
+            <div className="process-item process">
+              <div className="label">
+                <span className="label-icon process">██</span>{" "}
+                <span>Process</span>
+              </div>
+              <div className="process-bar">
+                <ProcessComponent
+                  className="process"
+                  percent={reportIt?.process}
+                  showInfo={false}
+                />
+                <div className="amount">{reportIt?.process}</div>
+              </div>
+            </div>
+            <div className="process-item reject">
+              <div className="label">
+                <span className="label-icon reject">██</span> <span>Reject</span>
+              </div>
+              <div className="process-bar">
+                <ProcessComponent
+                  className="reject"
+                  percent={reportIt?.reject}
+                  showInfo={false}
+                />
+                <div className="amount">{reportIt?.reject}</div>
+              </div>
 
+              <div className="summary">
+                <div className="total">
+                  ทั้งหมด{" "}
+                  {reportIt?.total || 0}{" "}
+                  รายการ
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <RatingComponent>
+            {ratingData.map((item, index) => (<div className="rating-item" key={item.id}><div className="admin-name"><span>{index + 1}</span><span>{item.admin_name}</span></div><div className="rating">{item.sum_rating || 0}</div></div>))}
+          </RatingComponent>
         </div>
-        <RatingComponent className="rating-form">
-          <div className="rating-icon">
-            <ImStarFull />
-          </div>
-          <div className="rating-label">
-            คะแนน
-          </div>
-          <div className="rating-number">
-            {ratingData?.sum_rating || 0}
-          </div>
-        </RatingComponent>
       </ReportProcessComponent>
     </div>
   );

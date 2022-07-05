@@ -74,11 +74,23 @@ export default function TableBuilding(props) {
         });
       }
 
-      setColumns(column);
-    };
+      if (props?.user?.role === 1) {
+        column.push({
+          title: "point",
+          dataIndex: "",
+          width: 20,
+          render: (_, record) =>
+            record.status == 'success' && !record.rating ?
+              (<button className={"button-edit"} onClick={() => { alert(1) }}>
+                point
+              </button>) : ''
+        })};
 
-    init();
-  }, [props.user]);
+        setColumns(column);
+      };
+
+      init();
+    }, [props.user]);
 
   return <Table dataSource={props.data} columns={columns} />;
 }

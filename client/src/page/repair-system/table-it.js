@@ -55,12 +55,12 @@ export default function TableIt(props) {
           dataIndex: "status",
           render: (_, record) => (
             <div className="table-button-group">
-              <button className={"button-detail status-" + record.status}>
+              <button className={"button-detail status-" + record.status} onClick={() => { }}>
                 <b>{record.status || "-"}</b>
               </button>
             </div>
           ),
-        },
+        }
       ];
 
       if (props?.user?.role === 2) {
@@ -78,6 +78,18 @@ export default function TableIt(props) {
         });
       }
 
+      if (props?.user?.role === 1) {
+        column.push({
+          title: "point",
+          dataIndex: "",
+          width: 20,
+          render: (_, record) =>
+            record.status == 'success' && !record.rating ?
+              (<button className={"button-edit"} onClick={()=>{alert(1)}}>
+                point
+              </button>) : ''
+        });
+      }
       setColumns(column);
     };
 

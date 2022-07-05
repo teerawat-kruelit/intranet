@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import swal from "sweetalert2";
 import { Carousel } from "antd";
@@ -63,13 +63,15 @@ const contentStyle = {
 export default function LoginPage() {
   const [form] = Form.useForm();
 
-  useEffect(() => {}, []);
 
   const onFinish = async (values) => {
     // console.log(values)
     let resp = await axios.post("http://localhost:4000/api/login", values, {
       withCredentials: true,
     });
+    
+    
+
     if (!resp.data.status) {
       swal.fire({
         title: "",
@@ -78,6 +80,8 @@ export default function LoginPage() {
         confirmButtonText: "X",
       });
     } else {
+
+      // localStorage.setItem('currentUser', JSON.stringify(resp.data.user))
       window.location.href = "/";
     }
   };

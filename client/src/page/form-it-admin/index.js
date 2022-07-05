@@ -88,14 +88,6 @@ export default function FormItAdmin() {
   useEffect(() => {
     const init = async () => {
       try {
-        let userData = await axios.get(
-          "http://localhost:4000/api/user/profile",
-          { withCredentials: true }
-        );
-        if (userData.data.status) {
-          form.setFieldsValue(userData.data.data);
-        }
-
         let repaireData = await axios.get(
           "http://localhost:4000/api/repair_list/it/" + id,
           { withCredentials: true }
@@ -109,9 +101,18 @@ export default function FormItAdmin() {
           : moment();
         if (repaireData.data.status) {
           let data = repaireData.data.data[0];
-          console.log(data);
           form.setFieldsValue(data);
           setFileName(data?.img_repair);
+          if (data.admin_name == null) {
+            let userData = await axios.get(
+              "http://localhost:4000/api/user/profile",
+              { withCredentials: true }
+            );
+            if (userData.data.status) {
+              let admin_name = userData.data.data.TUserName
+              form.setFieldsValue({ admin_name: admin_name });
+            }
+          }
         }
 
         let expencesData = await axios.get(
@@ -230,7 +231,7 @@ export default function FormItAdmin() {
             </Form.Item>
             <Form.Item
               className="form-item-TUserName"
-              name={"TUserName"}
+              name={"admin_name"}
               label={"It-Support"}
             >
               <Input readOnly />

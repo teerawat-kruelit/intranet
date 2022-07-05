@@ -17,6 +17,7 @@ module.exports.login = async (req, res) => {
   req.session.isLogin = true;
   req.session.userid = user.id;
   req.session.role_id = user.role;
+  // return res.json({ status: true, message: "login successfully", user });
   return res.json({ status: true, message: "login successfully" });
 };
 

@@ -154,28 +154,28 @@ export default function RepairSystem() {
           ) : (
             ""
           )}
-          {user?.role === 2  ? (
-            <div className="button-group">
+          <div className="button-group">
+            {user?.role === 2 || user?.role === 3 ? (
               <button className="button-export-excel">
                 <IoMdAddCircle className="icon-add" />
                 Export Excel
-              </button>
-              <NavLink to={"/report-process/it"}>
-                <button className="button-report-process">
-                  <IoMdAddCircle className="icon-add" />
-                  Report It
-                </button>
-              </NavLink>
-              <NavLink to={"/report-process/building"}>
-                <button className="button-report-process">
-                  <IoMdAddCircle className="icon-add" />
-                  Report Building
-                </button>
-              </NavLink>
-            </div>
-          ) : (
-            ""
-          )}
+              </button>) : ''}
+            {user?.role === 3 ? (
+              <>
+                <NavLink to={"/report-process/it"}>
+                  <button className="button-report-process">
+                    <IoMdAddCircle className="icon-add" />
+                    Report It
+                  </button>
+                </NavLink>
+                <NavLink to={"/report-process/building"}>
+                  <button className="button-report-process">
+                    <IoMdAddCircle className="icon-add" />
+                    Report Building
+                  </button>
+                </NavLink>
+              </>) : ''}
+          </div>
           <br />
           <Tabs
             defaultActiveKey={currentTab}

@@ -22,7 +22,7 @@ module.exports.getRepairItList = async (userid, roleId, id) => {
     SELECT rt.id, rt.ticket_no, FORMAT (rt.create_date, 'yyyy-MM-dd HH:mm:ss') as create_date, u.TUserName, u.ExtNo, rt.ip
     , d.name as depart_name,rt.description,ua.TUserName as admin_name,rt.remark,s.name as status, rt.expence_id, rt.status_id, rt.comment
     , rt.topic_id,  FORMAT (rt.close_date, 'yyyy-MM-dd HH:mm:ss') as close_date, img_repair
-    , b.name as branch
+    , b.name as branch, rt.rating
     FROM repair_list rt
     Left join tb_users u On u.id = rt.user_id
     Left join tb_users ua On ua.id = rt.admin_id
@@ -43,6 +43,7 @@ module.exports.getRepairItList = async (userid, roleId, id) => {
     sql += ` AND rt.id = @id`;
   }
 
+  sql += ` ORDER BY rt.id DESC `;
   let user = await query(sql, parameters);
   return user;
 };
@@ -91,6 +92,7 @@ module.exports.getRepairBuiList = async (userid, roleId, id) => {
   let sql = `
         SELECT rt.id, rt.ticket_no, FORMAT (rt.create_date, 'yyyy-MM-dd HH:mm:ss') as create_date, u.TUserName, d.name as department, b.name as branch, u.ExtNo,
         rt.description, ua.TUserName as admin_name, rt.remark, s.name as status, img_repair
+        , rt.rating
         FROM repair_list rt
         Left join tb_users u ON u.id = rt.user_id
         Left join tb_department d ON d.id =rt.dep_id
@@ -109,6 +111,7 @@ module.exports.getRepairBuiList = async (userid, roleId, id) => {
     sql += ` AND rt.id = @id`;
   }
 
+  sql += ` ORDER BY rt.id DESC `;
   let user = await query(sql, parameters);
   return user;
 };

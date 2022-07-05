@@ -31,6 +31,7 @@ module.exports.getRepairItListLogs = async (req, res) => {
     userRoleId,
     id
   );
+  console.log(details)
   if (details.length < 1) {
     return res.json({ status: false, message: "Not found information" });
   }
