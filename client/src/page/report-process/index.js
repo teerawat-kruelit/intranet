@@ -5,7 +5,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { Progress } from "antd";
 import { useParams } from "react-router-dom";
-import { ImStarFull } from 'react-icons/im'
+import { useNavigate } from 'react-router'
 
 const ReportProcessComponent = styled.div`
   border: 1px solid #e2e0e0;
@@ -34,9 +34,13 @@ const ReportProcessComponent = styled.div`
 
   .procress-group {
     width: 500px;
+    background-color: #FFF;
+    position: relative;
     /* margin: 20px 0; */
     padding: 20px;
+    padding-bottom: 40px;
     border: 1px solid lightgray;
+    box-shadow: 0px 0px 13px 0px rgb(82 63 105 / 5%);
 
     .process-date {
       display: flex;
@@ -46,10 +50,11 @@ const ReportProcessComponent = styled.div`
     }
 
     .summary {
-      text-align: center;
-      margin-top: 10px;
+      position: absolute; 
+      width: 100%;
+      bottom: 0;
       font-size: 18px;
-      font-weight: 400;
+      text-align: center;
     }
 
     .process-item {
@@ -87,6 +92,8 @@ const ProcessComponent = styled(Progress)`
     }
   }
 
+  &.rating.ant-progress-status-normal,
+  &.rating.ant-progress-status-success,
   &.pending.ant-progress-status-normal,
   &.pending.ant-progress-status-success {
     .ant-progress-bg {
@@ -111,17 +118,41 @@ const ProcessComponent = styled(Progress)`
 
 const RatingComponent = styled.div`
   border: 1px solid #e2e0e0;
+  background-color: #FFF;
+  box-shadow: 0px 0px 13px 0px rgb(82 63 105 / 5%);
   max-width: 500px;
   padding: 20px 20px;
   width: 500px;
+  position: relative;
 
   .rating-item{
+    margin-top: 10px;
     display: flex;
-    justify-content: space-between;
+    .admin-img{
+      background-color: #7A798A;
+      border-radius: 50%;
+      width: 60px;
+      height: 45px;
+      margin-right: 10px;
+      overflow: hidden;
 
-    span{
-      margin-right: 5px;
+      img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+      }
     }
+    .admin-rating{
+      width: 100%;
+    }
+  }
+
+  .total-rating{
+    width: 100%;
+    position: absolute; 
+    bottom: 0;
+    font-size: 18px;
+    text-align: center;
   }
 `
 
@@ -130,6 +161,7 @@ export default function ReportProcess() {
   const [ratingData, setRatingData] = useState([]);
   const [currentDate, setCurrentDate] = useState(dayjs());
   const { type } = useParams();
+  const history = useNavigate();
 
   useEffect(() => {
     const init = async () => {
@@ -171,12 +203,11 @@ export default function ReportProcess() {
         }
       }
     };
-
     init();
   }, [currentDate]);
 
   return (
-    <div className="content">
+    <div className="content" style={{backgroundColor: 'rgba(88, 115, 254, 0.04)', minHeight: '100vh'}}>
       <Navbar />
       <ReportProcessComponent className="report-process">
         <div className="form-header">Report Process</div>
@@ -269,9 +300,31 @@ export default function ReportProcess() {
 
           </div>
           <RatingComponent>
-            {ratingData.map((item, index) => (<div className="rating-item" key={item.id}><div className="admin-name"><span>{index + 1}</span><span>{item.admin_name}</span></div><div className="rating">{item.sum_rating || 0}</div></div>))}
+            <div className="admin-group">
+              {ratingData.map((item) => (
+                <div className="rating-item" key={item.id}>
+                  <div className="admin-img"><img src={'http://localhost:4000/public/image/repair/' + item.image}></img></div>
+                  <div className="admin-rating">
+                    <div className="admin-name">{item.admin_name} {item.sum_rating || 0}</div>
+                    <div className="admin-process"> <ProcessComponent
+                      className="rating"
+                      percent={item.sum_rating || 0}
+                      showInfo={false}
+                    /></div>
+                  </div>
+                </div>))}
+            </div>
+            <div className="total-rating">ทั้งหมด {ratingData.reduce((rating, object) => {
+              return rating + object.sum_rating;
+            }, 0)} คะแนน</div>
           </RatingComponent>
+
         </div>
+        <button className="button-back" onClick={() => {
+          history('/repair')
+        }}>
+          HOME
+        </button>
       </ReportProcessComponent>
     </div>
   );

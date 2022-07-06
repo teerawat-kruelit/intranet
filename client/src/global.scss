@@ -79,23 +79,28 @@ button {
   background-color: #FFCA2C;
   color: #FFF;
   border: none;
-  border-radius: 15px;
-  padding: 5px;
-
-  &:hover{
-    background-color: orange;
-    filter: brightness(80%);
-  }
+  padding: 8px;
+  border-radius: 10px;
 }
+
 .status-process{
   background-color: rgb(246, 49, 49);
   color: #FFF;
   border: none;
-  padding: 5px;
-  border-radius: 15px;
+  padding: 8px;
+  border-radius: 10px;
 
   // &:hover{
   //   background-color: skyblue;
   //   filter: brightness(80%);
   // }
 }
+
+.status-success{
+  background-color: #157347;
+  color: #FFF;
+  border: none;
+  padding: 8px;
+  border-radius: 10px;
+}
+

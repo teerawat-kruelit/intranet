@@ -230,12 +230,12 @@ export default function FromBuilding() {
                         </Form.Item>
                         <Form.Item className='form-button'>
                             <button className="button-submit" type="submit">
-                                บันทึก
+                                SAVE
                             </button>
                             <button className="button-back" onClick={() => {
                                 history('/repair')
                             }}>
-                                ย้อนกลับ
+                                HOME
                             </button>
                         </Form.Item>
                     </Form>

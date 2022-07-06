@@ -98,6 +98,7 @@ const FormItComponent = styled.div`
         background-color: #015352;
         color: #FFF;
         border: none;
+        padding: 7px;
         margin-right: 10px;
         border-radius: 5px;
     }
@@ -105,6 +106,7 @@ const FormItComponent = styled.div`
         background-color: #015352;
         color: #FFF;
         border: none;
+        padding: 7px;
         border-radius: 5px;
     }
 
@@ -244,7 +246,7 @@ export default function FormIt() {
                         </Form.Item>
                         <Form.Item className='form-button'>
                             <button className="button-submit" type="submit">
-                                SAVE
+                            ➤ SAVE
                             </button>
                             <button className="button-back" onClick={() => {
                                 history('/repair')

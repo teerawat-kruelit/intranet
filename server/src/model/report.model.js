@@ -41,7 +41,7 @@ module.exports.GetReportAdminRating = async (year, month, type_id, admin_id) => 
       AND rt.type_id = @type_id
 			GROUP BY rt.admin_id, u.TUserName
 		)
-		select u.id, u.TUserName as admin_name, t1.sum_rating
+		select u.id, u.TUserName as admin_name, t1.sum_rating, u.image
 		from tb_users u
 		left join t1 ON t1.admin_id = u.id
 		where u.role =2 

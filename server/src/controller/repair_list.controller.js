@@ -133,3 +133,21 @@ module.exports.createRepairBuilding = async (req, res) => {
     return res.json({ status: true, message: "INSERT SUCCESS" });
   }
 };
+
+module.exports.updateRating = async (req, res) => {
+  let { reapir_id } = req.params
+  let body = req.body
+
+  if (!req.session.isLogin) {
+    return res.status(401).json({ status: false, message: "unauthorize" });
+  }
+  if (req.session.role_id !== 1) {
+    return res
+      .status(403)
+      .json({ status: false, message: "permission denied" });
+  }
+
+  let updatedResult = await repair_listModel.updateRating(reapir_id, body.rating)
+  if (updatedResult.length < 1) return res.json({ status: false, message: 'Update Failed' })
+  return res.json({ status: true, message: 'Update Success' })
+}

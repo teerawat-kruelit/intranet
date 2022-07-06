@@ -24,8 +24,7 @@ app.use(
       httpOnly: false, // dont let browser javascript access cookie ever
       secure: false, // only use cookie over https
       SameSite: false, // only use cookie over https
-      maxAge: 15 * 60 * 1000,
-      expires: new Date(Date.now() + 15 * 60 * 1000),
+      maxAge: 30 * 24 * 60 * 60 * 1000 //1 month before expireผ
     },
   })
 );

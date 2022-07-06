@@ -20,6 +20,10 @@ const TableConponent = styled(Table)`
         text-align: center;
     }
 
+    .ant-table-thead th.ant-table-column-has-sorters:hover{
+      background-color: #000;
+    }
+
 `
 
 export default function table(props) {

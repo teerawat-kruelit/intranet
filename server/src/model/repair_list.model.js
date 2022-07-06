@@ -240,3 +240,24 @@ module.exports.createRepairBuilding = async (
 
   return insert;
 };
+
+
+module.exports.updateRating = async (repair_id, rating) => {
+  let parameters = [
+    { name: "Id", sqltype: mssql.Int, value: repair_id },
+    { name: "rating", sqltype: mssql.Int, value: rating },
+  ];
+
+  let result = await query(
+    `
+    UPDATE repair_list
+    SET rating = @rating
+    OUTPUT INSERTED.*
+    WHERE Id = @Id
+    AND rating IS NULL
+    `,
+    parameters
+  );
+
+  return result;
+};

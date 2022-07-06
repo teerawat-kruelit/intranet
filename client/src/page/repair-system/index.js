@@ -184,7 +184,7 @@ export default function RepairSystem() {
             }}
           >
             <TabPane tab="ฝ่าย IT-Support" key="1">
-              <TableIt user={user} data={itData} />
+              <TableIt user={user} data={itData} setData={setItData} />
             </TabPane>
             <TabPane tab="ฝ่าย อาคาร" key="2">
               <TableBuilding user={user} data={buildData} />
