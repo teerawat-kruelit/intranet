@@ -116,6 +116,42 @@ module.exports.getRepairBuiList = async (userid, roleId, id) => {
   return user;
 };
 
+module.exports.getRepairBuildingListLogs = async (userid, roleId, id) => {
+  let parameters = [
+    { name: "userid", sqltype: mssql.Int, value: userid },
+    { name: "id", sqltype: mssql.Int, value: id },
+  ];
+
+  let sql = `
+    SELECT rt.id, rt.ticket_no, FORMAT (rt.create_date, 'yyyy-MM-dd HH:mm:ss') as create_date, u.TUserName, u.ExtNo
+    , d.name as depart_name,rt.description,ua.TUserName as admin_name,rt.remark,s.name as status, rt.expence_id, rt.status_id, rt.comment
+    , rt.topic_id,  FORMAT (rt.close_date, 'yyyy-MM-dd HH:mm:ss') as close_date, img_repair
+    , b.name as branch
+    FROM repair_list_logs rt
+    Left join tb_users u On u.id = rt.user_id
+    Left join tb_users ua On ua.id = rt.admin_id
+    Left join tb_department d On d.id = rt.dep_id
+    Left join tb_status s ON s.id =rt.status_id
+    Left join tb_type t ON t.id=rt.type_id
+    Left join tb_branch b ON b.id = rt.branch_id
+    WHERE rt.type_id = 2
+    `;
+
+  if (roleId === 1) {
+    sql += `    
+        AND rt.user_id = @userid
+    `;
+  }
+
+  if (id) {
+    sql += ` AND rt.id = @id`;
+  }
+
+  sql += ` ORDER BY ticket_no DESC, create_date DESC `;
+  let user = await query(sql, parameters);
+  return user;
+};
+
 module.exports.updateRepairBuiList = async (userid, id, body) => {
   let parameters = [
     { name: "topic_id", sqltype: mssql.Int, value: body.topic_id },
@@ -240,7 +276,6 @@ module.exports.createRepairBuilding = async (
 
   return insert;
 };
-
 
 module.exports.updateRating = async (repair_id, rating) => {
   let parameters = [

@@ -31,7 +31,6 @@ module.exports.getRepairItListLogs = async (req, res) => {
     userRoleId,
     id
   );
-  console.log(details)
   if (details.length < 1) {
     return res.json({ status: false, message: "Not found information" });
   }
@@ -52,6 +51,27 @@ module.exports.getRepairBuiList = async (req, res) => {
   if (details.length < 1) {
     return res.json({ status: false, message: "Not found information" });
   }
+  return res.json({ status: true, data: details });
+};
+
+module.exports.getRepairBuildingListLogs = async (req, res) => {
+  // let userid = 9
+  let { id } = req.params;
+  let userid = req.session.userid;
+  if (!req.session.isLogin) {
+    return res.status(401).json({ status: false, message: "unauthorize" });
+  }
+  let userRoleId = req.session.role_id;
+
+  let details = await repair_listModel.getRepairBuildingListLogs(
+    userid,
+    userRoleId,
+    id
+  );
+  if (details.length < 1) {
+    return res.json({ status: false, message: "Not found information" });
+  }
+
   return res.json({ status: true, data: details });
 };
 
@@ -135,8 +155,8 @@ module.exports.createRepairBuilding = async (req, res) => {
 };
 
 module.exports.updateRating = async (req, res) => {
-  let { reapir_id } = req.params
-  let body = req.body
+  let { reapir_id } = req.params;
+  let body = req.body;
 
   if (!req.session.isLogin) {
     return res.status(401).json({ status: false, message: "unauthorize" });
@@ -147,7 +167,11 @@ module.exports.updateRating = async (req, res) => {
       .json({ status: false, message: "permission denied" });
   }
 
-  let updatedResult = await repair_listModel.updateRating(reapir_id, body.rating)
-  if (updatedResult.length < 1) return res.json({ status: false, message: 'Update Failed' })
-  return res.json({ status: true, message: 'Update Success' })
-}
+  let updatedResult = await repair_listModel.updateRating(
+    reapir_id,
+    body.rating
+  );
+  if (updatedResult.length < 1)
+    return res.json({ status: false, message: "Update Failed" });
+  return res.json({ status: true, message: "Update Success" });
+};
