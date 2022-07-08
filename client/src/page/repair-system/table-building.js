@@ -7,6 +7,10 @@ import axios from "axios";
 import styled from "styled-components";
 import swal from "sweetalert2";
 import { Modal, Rate } from "antd";
+import { RiFileExcel2Fill } from "react-icons/ri";
+import { TbReportSearch } from "react-icons/tb";
+
+
 
 const RatingModel = styled(Modal)`
   .ant-modal-body {
@@ -21,6 +25,29 @@ const RatingPoint = styled.div`
   width: 20px;
   height: 20px;
 `;
+
+const ButtonGroup_it = styled.div`
+  display: flex;
+  
+    .button-export-excel,
+    .button-report-process {
+      background-color: #015352;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      padding: 7px;
+      margin-bottom: 10px;
+      margin-right: 15px;
+
+      .icon-add {
+        font-size: 20px;
+        margin-right: 5px;
+      }
+    }  
+`
+
+
 
 export default function TableBuilding(props) {
   const [columns, setColumns] = useState([]);
@@ -68,7 +95,7 @@ export default function TableBuilding(props) {
           dataIndex: "remark",
         },
         {
-          title: "status",
+          title: "สถานะ",
           dataIndex: "status",
           render: (_, record) => (
             <div className="table-button-group">
@@ -143,6 +170,14 @@ export default function TableBuilding(props) {
             title: "เลขที่แจ้งซ่อม",
             dataIndex: "ticket_no",
           },
+          {
+            title: "ผู้ติดต่อ",
+            dataIndex: "TUserName",
+          },
+          {
+            title: "ผู้ตรวจรับงาน",
+            dataIndex: "admin_name",
+          }
         ];
 
         const excel = new Excel();
@@ -161,7 +196,26 @@ export default function TableBuilding(props) {
 
   return (
     <>
-      <button onClick={handleClick}>export</button>
+      <>
+        <ButtonGroup_it>
+          {props?.user?.role === 2 || props?.user?.role === 3 ? (
+            <div className="button-export-excel" onClick={handleClick}>
+              <RiFileExcel2Fill className="icon-add" />
+              Export Excel
+            </div>
+          ) : ""}
+
+          {props?.user?.role === 3 ? (
+            <NavLink to={"/report-process/building"}>
+              <button className="button-report-process">
+                <TbReportSearch className="icon-add" />
+                Report Building
+              </button>
+            </NavLink>
+          ) : ""}
+        </ButtonGroup_it>
+      </>
+
       <Table dataSource={props.data} columns={columns} />
       <RatingModel
         title={"ให้คะแนนเลขแจ้งซ่อม " + selectedRecord?.ticket_no}
@@ -178,8 +232,8 @@ export default function TableBuilding(props) {
             try {
               let updateResult = await axios.put(
                 "http://localhost:4000/api/repair_list/" +
-                  selectedRecord.id +
-                  "/update-rating",
+                selectedRecord.id +
+                "/update-rating",
                 {
                   rating: number,
                 },

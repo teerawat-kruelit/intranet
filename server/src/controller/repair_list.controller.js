@@ -75,7 +75,7 @@ module.exports.getRepairBuildingListLogs = async (req, res) => {
   return res.json({ status: true, data: details });
 };
 
-module.exports.updateRepairItList = async (req, res) => {
+module.exports.updateRepairList = async (req, res) => {
   let { id } = req.params;
   let userid = req.session.userid;
   if (!req.session.isLogin) {
@@ -88,7 +88,7 @@ module.exports.updateRepairItList = async (req, res) => {
   }
   let body = req.body;
 
-  let update = await repair_listModel.updateRepairBuiList(userid, id, body);
+  let update = await repair_listModel.updateRepairList(userid, id, body);
   if (update == false) {
     return res.json({ status: false, message: "UPDATE FAILED" });
   } else {
@@ -169,7 +169,8 @@ module.exports.updateRating = async (req, res) => {
 
   let updatedResult = await repair_listModel.updateRating(
     reapir_id,
-    body.rating
+    body.rating,
+    body.comment_rating
   );
   if (updatedResult.length < 1)
     return res.json({ status: false, message: "Update Failed" });

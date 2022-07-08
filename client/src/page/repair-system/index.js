@@ -11,6 +11,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { IoMdAddCircle } from "react-icons/io";
 
+
+
+
 const { TabPane } = Tabs;
 
 const RepairSystemComponent = styled.div`
@@ -34,16 +37,16 @@ const RepairSystemComponent = styled.div`
 
   .button-group {
     display: flex;
-
+   
     .button-create-it,
-    .button-create-building,
-    .button-export-excel {
+    .button-create-building
+    {
       background-color: #015352;
       color: #fff;
       border: none;
       border-radius: 10px;
       font-weight: bold;
-      padding: 10px;
+      padding: 12px;
       margin-right: 15px;
 
       .icon-add {
@@ -53,11 +56,12 @@ const RepairSystemComponent = styled.div`
     }
     .button-create-building {
       background-color: #015352;
-    }
-
-    .button-export-excel {
-      background-color: green;
-    }
+    }    
+  }
+  .report-group{
+    display: flex;
+    position: relative;
+    left: 780px;
   }
 `;
 
@@ -154,29 +158,7 @@ export default function RepairSystem() {
           ) : (
             ""
           )}
-          <div className="button-group">
-            {user?.role === 2 || user?.role === 3 ? (
-              <button className="button-export-excel">
-                <IoMdAddCircle className="icon-add" />
-                Export Excel
-              </button>) : ''}
-            {user?.role === 3 ? (
-              <>
-                <NavLink to={"/report-process/it"}>
-                  <button className="button-report-process">
-                    <IoMdAddCircle className="icon-add" />
-                    Report It
-                  </button>
-                </NavLink>
-                <NavLink to={"/report-process/building"}>
-                  <button className="button-report-process">
-                    <IoMdAddCircle className="icon-add" />
-                    Report Building
-                  </button>
-                </NavLink>
-              </>) : ''}
-          </div>
-          <br />
+         
           <Tabs
             defaultActiveKey={currentTab}
             onChange={(e) => {

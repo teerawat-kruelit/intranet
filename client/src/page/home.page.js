@@ -95,16 +95,18 @@ const Contentportal = styled.div`
      }
      .position{
          text-align: start;
+         color: #FD7D00;
+         font-weight: bold;
      }
      .phone{
          display: flex;
-         margin-bottom:15px;
+         margin-bottom:10px;
 
      }
      .iconphone{
          font-size: 20px;
          margin-top:2px;
-         margin-right:10px;
+         margin-right:7px;
      }
      .button-group{
          display: flex;
@@ -165,42 +167,66 @@ export default function HomePage() {
           </div>
           <hr className="red" />
           <div className="card-person">
-            <Card
-              hoverable
-              style={{ width: 230, height: 420 }}
-              cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-            >
-              <div>
-                <div className="name-card">111</div>
-                <div className="position">Chief Executive Officer </div>
-              </div>
-              <p></p>
-              <div className="phone">
-                <FaPhoneSquareAlt className="iconphone" />
-                <div>EXT-111</div>
-              </div>
-            </Card>
-            {userData.map((item, index) => {
-              if (index > 3) return
-              return (
-                <Card
-                  hoverable
-                  key={index}
-                  style={{ width: 230, height: 420 }}
-                  cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-                >
-                  <div>
-                    <div className="name-card">{item.name} </div>
-                    <div className="position">Chief Executive Officer </div>
-                  </div>
-                  <p></p>
-                  <div className="phone">
-                    <FaPhoneSquareAlt className="iconphone" />
-                    <div>EXT-{item.ext}</div>
-                  </div>
-                </Card>
-              )
-            })}
+          <Card
+          style={{ width: 250, height: 430 }}
+          hoverable
+          cover={<img alt="example" src="/4.jpg" className="pee" height={315} />}
+        >
+          <div>
+            <div className="name-card">K. Pracha Chaisuwan</div>
+            <div className="position">Chief Executive Officer </div>
+          </div>
+          <p></p>
+          <div className="phone">
+            <FaPhoneSquareAlt className="iconphone" />
+            <div>02-558-9009</div>
+          </div>
+        </Card>
+        <Card
+          style={{ width: 250, height: 430 }}
+          hoverable
+          cover={<img alt="example" src="/3.jpg" className="pee" height={315} />}
+        >
+          <div>
+            <div className="name-card">K. Hathairat Kaewsaenmuang</div>
+            <div className="position">Chief Operating Officer</div>
+          </div>
+          <p></p>
+          <div className="phone">
+            <FaPhoneSquareAlt className="iconphone" />
+            <div>02-558-9488</div>
+          </div>
+        </Card>
+        <Card
+          style={{ width: 250, height: 430 }}
+          hoverable
+          cover={<img alt="example" src="/6.jpg" className="pee" height={315} />}
+        >
+          <div>
+            <div className="name-card">K. Waraluck Chaisuwan</div>
+            <div className="position">Finance Director</div>
+          </div>
+          <p></p>
+          <div className="phone">
+            <FaPhoneSquareAlt className="iconphone" />
+            <div>02-558-9009</div>
+          </div>
+        </Card>
+        <Card
+          style={{ width: 250, height: 430 }}
+          hoverable
+          cover={<img alt="example" src="/7.jpg" className="pee" height={315} />}
+        >
+          <div>
+            <div className="name-card">K. Suthida Chaisuwan</div>
+            <div className="position">General Counsel</div>
+          </div>
+          <p></p>
+          <div className="phone">
+            <FaPhoneSquareAlt className="iconphone" />
+            <div>02-558-9422</div>
+          </div>
+        </Card>
           </div>
           <br />
           <hr />
@@ -214,66 +240,28 @@ export default function HomePage() {
           <br />
 
           <div className="department-team">
-            <Card
-              style={{ width: 230, height: 420 }}
-              hoverable
-              cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-            >
-              <div>
-                <div className="name-card">ดดดดด</div>
-                <div className="position">Chief Executive Officer </div>
-              </div>
-              <p></p>
-              <div className="phone">
-                <FaPhoneSquareAlt className="iconphone" />
-                <div>EXT-12334</div>
-              </div>
-            </Card>
-            <Card
-              style={{ width: 230, height: 420 }}
-              hoverable
-              cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-            >
-              <div>
-                <div className="name-card">ดดดดด</div>
-                <div className="position">Chief Executive Officer </div>
-              </div>
-              <p></p>
-              <div className="phone">
-                <FaPhoneSquareAlt className="iconphone" />
-                <div>EXT-12334</div>
-              </div>
-            </Card>
-            <Card
-              style={{ width: 230, height: 420 }}
-              hoverable
-              cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-            >
-              <div>
-                <div className="name-card">ดดดดด</div>
-                <div className="position">Chief Executive Officer </div>
-              </div>
-              <p></p>
-              <div className="phone">
-                <FaPhoneSquareAlt className="iconphone" />
-                <div>EXT-12334</div>
-              </div>
-            </Card>
-            <Card
-              style={{ width: 230, height: 420 }}
-              hoverable
-              cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-            >
-              <div>
-                <div className="name-card">ดดดดด</div>
-                <div className="position">Chief Executive Officer </div>
-              </div>
-              <p></p>
-              <div className="phone">
-                <FaPhoneSquareAlt className="iconphone" />
-                <div>EXT-12334</div>
-              </div>
-            </Card>
+          {userData.map((item, index) => {
+            if (index > 3) return
+            return (
+              <Card
+                hoverable
+                key={index}
+                style={{ width: 230, height: 420 }}
+                cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+              >
+                <div>
+                  <div className="name-card">{item.name} </div>
+                  <div className="position">Chief Executive Officer </div>
+                </div>
+                <p></p>
+                <div className="phone">
+                  <FaPhoneSquareAlt className="iconphone" />
+                  <div>EXT-{item.ext}</div>
+                </div>
+              </Card>
+            )
+          })}
+            
           </div>
 
         </Contentportal>

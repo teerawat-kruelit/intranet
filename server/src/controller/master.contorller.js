@@ -7,8 +7,11 @@ module.exports.getBranch = async(req, res) => {
 }
 
 module.exports.getTopic = async(req, res) => {
-    let data = await masterModel.getTopic()
+    let { type_id } = req.query;
+    let data = await masterModel.getTopic(type_id)
+    console.log(type_id)
     return res.json({ status: true, data: data || [] })
+    
 }
 
 module.exports.getStatus = async(req, res) => {

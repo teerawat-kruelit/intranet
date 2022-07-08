@@ -90,9 +90,10 @@ module.exports.getRepairBuiList = async (userid, roleId, id) => {
     { name: "id", sqltype: mssql.Int, value: id },
   ];
   let sql = `
-        SELECT rt.id, rt.ticket_no, FORMAT (rt.create_date, 'yyyy-MM-dd HH:mm:ss') as create_date, u.TUserName, d.name as department, b.name as branch, u.ExtNo,
-        rt.description, ua.TUserName as admin_name, rt.remark, s.name as status, img_repair
-        , rt.rating
+        SELECT rt.id, rt.ticket_no, FORMAT (rt.create_date, 'yyyy-MM-dd HH:mm:ss') as create_date, u.TUserName, u.ExtNo
+        , d.name as depart_name,rt.description,ua.TUserName as admin_name,rt.remark,s.name as status, rt.expence_id, rt.status_id, rt.comment
+        , rt.topic_id,  FORMAT (rt.close_date, 'yyyy-MM-dd HH:mm:ss') as close_date, img_repair
+        , b.name as branch, rt.rating
         FROM repair_list rt
         Left join tb_users u ON u.id = rt.user_id
         Left join tb_department d ON d.id =rt.dep_id
@@ -152,11 +153,13 @@ module.exports.getRepairBuildingListLogs = async (userid, roleId, id) => {
   return user;
 };
 
-module.exports.updateRepairBuiList = async (userid, id, body) => {
+module.exports.updateRepairList = async (userid, id, body) => {
+  console.log(body)
   let parameters = [
     { name: "topic_id", sqltype: mssql.Int, value: body.topic_id },
     { name: "status_id", sqltype: mssql.Int, value: body.status_id },
     { name: "comment", sqltype: mssql.VarChar, value: body.comment },
+    { name: "ip", sqltype: mssql.VarChar, value: body.ip },
     { name: "remark", sqltype: mssql.VarChar, value: body.remark },
     { name: "expence_id", sqltype: mssql.Int, value: body.expence_id },
     { name: "close_date", sqltype: mssql.VarChar, value: body.close_date },
@@ -170,6 +173,7 @@ module.exports.updateRepairBuiList = async (userid, id, body) => {
         SET topic_id = @topic_id,
             status_id = @status_id,
             comment = @comment,
+            ip = @ip,
             remark = @remark,
             expence_id = @expence_id,
             close_date = @close_date,
@@ -277,16 +281,18 @@ module.exports.createRepairBuilding = async (
   return insert;
 };
 
-module.exports.updateRating = async (repair_id, rating) => {
+module.exports.updateRating = async (repair_id, rating, comment_rating) => {
   let parameters = [
     { name: "Id", sqltype: mssql.Int, value: repair_id },
     { name: "rating", sqltype: mssql.Int, value: rating },
+    { name: "comment_rating", sqltype: mssql.VarChar, value: comment_rating },
   ];
 
   let result = await query(
     `
     UPDATE repair_list
-    SET rating = @rating
+    SET rating = @rating,
+    comment_rating = @comment_rating
     OUTPUT INSERTED.*
     WHERE Id = @Id
     AND rating IS NULL

@@ -7,9 +7,9 @@ module.exports.getBranch = async() => {
     return result;
 }
 
-module.exports.getTopic = async() => {
-    let parameters = []
-    let result = await query('SELECT * FROM tb_topic', parameters)
+module.exports.getTopic = async(type_id) => {
+    let parameters = [{ name: "type_id", sqltype: mssql.Int, value: type_id }]
+    let result = await query('SELECT * FROM tb_topic WHERE type_id = @type_id OR type_id IS NULL', parameters)
     return result;
 }
 

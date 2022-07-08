@@ -2,15 +2,18 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Table from "../../components/table";
 import { AiTwotoneEdit } from "react-icons/ai";
-import { Modal, Rate } from "antd";
+import { Input, Modal, Rate } from "antd";
 import styled from "styled-components";
 import axios from "axios";
 import swal from "sweetalert2";
 import { Excel } from "antd-table-saveas-excel";
+import { RiFileExcel2Fill } from "react-icons/ri";
+import { TbReportSearch } from "react-icons/tb";
 
 const RatingModel = styled(Modal)`
   .ant-modal-body {
     display: flex;
+    flex-direction: column;
   }
 `;
 
@@ -20,16 +23,48 @@ const RatingPoint = styled.div`
   text-align: center;
   width: 20px;
   height: 20px;
-`;
+  background-color: #FD7D00;
+  border: none;
+  color: #FFF;
+  font-size: 15px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50px;
+`
+
+const ButtonGroup_it = styled.div`
+  display: flex;
+  
+    .button-export-excel,
+    .button-report-process {
+      background-color: #015352;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      padding: 7px;
+      margin-bottom: 10px;
+      margin-right: 15px;
+
+      .icon-add {
+        font-size: 20px;
+        margin-right: 5px;
+      }
+    }  
+`
 
 export default function TableIt(props) {
   const [columns, setColumns] = useState(null);
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(false);
+  const [comment_ratting, setcomment_ratting] = useState(1);
 
   useEffect(() => {
     const init = async () => {
-      if (columns) return;
       let column = [
         {
           title: "เลขที่แจ้งซ่อม",
@@ -73,13 +108,13 @@ export default function TableIt(props) {
           dataIndex: "remark",
         },
         {
-          title: "status",
+          title: "สถานะ",
           dataIndex: "status",
           render: (_, record) => (
             <div className="table-button-group">
               <button
                 className={"button-detail status-" + record.status}
-                onClick={() => {}}
+                onClick={() => { }}
               >
                 <b>{record.status || "-"}</b>
               </button>
@@ -114,6 +149,7 @@ export default function TableIt(props) {
                 <button
                   className={"button-rating"}
                   onClick={() => {
+                    setcomment_ratting(null)
                     setIsModelOpen(true);
                     setSelectedRecord(record);
                   }}
@@ -136,14 +172,16 @@ export default function TableIt(props) {
     };
 
     init();
-  }, [props.user, props.data, columns]);
+  }, [props.user, props.data]);
 
   const handleClick = async () => {
     try {
       let repairLogsData = await axios.get(
-        "http://localhost:4000/api/repair_list/building-logs",
+        "http://localhost:4000/api/repair_list/it-logs",
         { withCredentials: true }
       );
+
+      console.log(repairLogsData)
 
       if (repairLogsData?.data?.status) {
         let excelColumn = [
@@ -151,6 +189,14 @@ export default function TableIt(props) {
             title: "เลขที่แจ้งซ่อม",
             dataIndex: "ticket_no",
           },
+          {
+            title: "ผู้ติดต่อ",
+            dataIndex: "TUserName",
+          },
+          {
+            title: "ผู้ตรวจรับงาน",
+            dataIndex: "admin_name",
+          }
         ];
 
         const excel = new Excel();
@@ -158,8 +204,6 @@ export default function TableIt(props) {
           .addSheet("sheet1")
           .addColumns(excelColumn)
           .addDataSource(repairLogsData.data.data, {})
-          .setTHeadStyle({ background: "#FFF" })
-          .setTBodyStyle({ color: "red" })
           .saveAs("report-it.xlsx");
       }
     } catch (error) {
@@ -169,12 +213,32 @@ export default function TableIt(props) {
 
   return (
     <>
-      <button onClick={handleClick}>export</button>
+      <>
+        <ButtonGroup_it>
+        {props?.user?.role === 2 || props?.user?.role === 3 ? (
+          <div className="button-export-excel" onClick={handleClick}>
+            <RiFileExcel2Fill className="icon-add" />
+            Export Excel
+          </div>
+        ) : ""}
+
+        {props?.user?.role === 3 ? (
+            <NavLink to={"/report-process/it"}>
+              <button className="button-report-process">
+                <TbReportSearch className="icon-add" />
+                Report IT-Support
+              </button>
+            </NavLink>
+        ) : ""}
+        </ButtonGroup_it>
+      </>
+
       <Table dataSource={props.data} columns={columns} />
       <RatingModel
         title={"ให้คะแนนเลขแจ้งซ่อม " + selectedRecord?.ticket_no}
         visible={isModelOpen}
         closeIcon={<>X</>}
+        destroyOnClose={true}
         onCancel={() => {
           setIsModelOpen(false);
         }}
@@ -186,10 +250,11 @@ export default function TableIt(props) {
             try {
               let updateResult = await axios.put(
                 "http://localhost:4000/api/repair_list/" +
-                  selectedRecord.id +
-                  "/update-rating",
+                selectedRecord.id +
+                "/update-rating",
                 {
                   rating: number,
+                  comment_rating: comment_ratting
                 },
                 { withCredentials: true }
               );
@@ -225,6 +290,10 @@ export default function TableIt(props) {
             }
           }}
         />
+        <div className={'comment_ratung'}>
+        <Input.TextArea placeholder={'กรุณาแสดงความคิดเห็นก่อนให้คะแนน'}  onChange={(comment)=>{
+          setcomment_ratting(comment.target.value)
+        }}/></div>
       </RatingModel>
     </>
   );

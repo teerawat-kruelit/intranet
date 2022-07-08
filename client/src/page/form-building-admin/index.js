@@ -7,7 +7,7 @@ import axios from "axios";
 import moment from "moment";
 import swal from "sweetalert2";
 
-const FormItComponent = styled.div`
+const FormBuildingComponent = styled.div`
   border: 1px solid;
   width: 1200px;
   margin: 0 auto;
@@ -77,7 +77,7 @@ const FormItComponent = styled.div`
     font-weight: bold;
   }
 
-  .form-it-container {
+  .form-building-container {
     padding: 20px;
   }
     .form-item-ticket,
@@ -118,7 +118,7 @@ const FormItComponent = styled.div`
   }
 `;
 
-export default function FormItAdmin() {
+export default function FormBuildingAdmin() {
   const [expences, setExpences] = useState([]);
   const [status, setStatus] = useState([]);
   const [topics, setTopics] = useState([]);
@@ -131,7 +131,7 @@ export default function FormItAdmin() {
     const init = async () => {
       try {
         let repaireData = await axios.get(
-          "http://localhost:4000/api/repair_list/it/" + id,
+          "http://localhost:4000/api/repair_list/building/" + id,
           { withCredentials: true }
         );
         let datetime = repaireData.data.data[0].close_date;
@@ -162,7 +162,7 @@ export default function FormItAdmin() {
           { withCredentials: true }
         );
         setExpences(expencesData.data.data);
-        let topicData = await axios.get("http://localhost:4000/api/m/topic?type_id=1", {
+        let topicData = await axios.get("http://localhost:4000/api/m/topic?type_id=2", {
           withCredentials: true,
         });
         setTopics(topicData.data.data);
@@ -180,7 +180,6 @@ export default function FormItAdmin() {
   }, []);
 
   const onFinish = async (values) => {
-    console.log(values);
     values.img_repair = fileName;
     values.close_date =
       moment(values.close_date).format("YYYY-MM-DD") +
@@ -190,7 +189,7 @@ export default function FormItAdmin() {
 
     try {
       let response = await axios.put(
-        "http://localhost:4000/api/repair_list/it/" + id,
+        "http://localhost:4000/api/repair_list/building/" + id,
         values,
         { withCredentials: true }
       );
@@ -216,9 +215,9 @@ export default function FormItAdmin() {
   return (
     <>
       <Navbar />
-      <FormItComponent className="form-it">
-        <div className="h1 form-header">UPDATE RECORD IT</div>
-        <div className="form-it-container">
+      <FormBuildingComponent className="form-building">
+        <div className="h1 form-header">UPDATE RECORD BUILDING</div>
+        <div className="form-building-container">
           <Form
             className="it-form-wrapper"
             form={form}
@@ -248,13 +247,6 @@ export default function FormItAdmin() {
               <Input readOnly />
             </Form.Item>
             <Form.Item className="ExtNo" name={"ExtNo"} label={"เบอร์ติดต่อ"}>
-              <Input readOnly />
-            </Form.Item>
-            <Form.Item
-              className="form-item-ip"
-              name={"ip"}
-              label={"IP เครื่อง"}
-            >
               <Input readOnly />
             </Form.Item>
             <Form.Item
@@ -433,7 +425,7 @@ export default function FormItAdmin() {
             </Form.Item>
           </Form>
         </div>
-      </FormItComponent>
+      </FormBuildingComponent>
     </>
   );
 }
