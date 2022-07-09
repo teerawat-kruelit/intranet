@@ -9,136 +9,157 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router'
 import { BsFillArrowLeftSquareFill } from 'react-icons/bs'
 import { BsFillArrowRightSquareFill } from 'react-icons/bs'
+import { Table } from 'antd';
+
 
 const Content = styled.div`
   display: flex;
   width: 100%;
     .report-container{
       width: 100%;
+      height: 200vh;
     }
+    .Text-head{
+      padding: 15px 0px;
+      padding-left: 95px;
+
+      .head{
+      font-size: 20px;
+    }
+    }
+
+    .group-report{
+       display: flex;
+       padding-left: 85px;
+        
+        .report-process{
+          /* & > div:not(:first-child){
+            margin-left: 20px;
+          } */
+          .prev,.next{
+            border: none;
+            font-size: 30px;
+          }
+        }
+
+        .procress-group {
+          margin-right: 40px;
+          width: 400px;
+          background-color: #FFF;
+          position: relative;
+          /* margin: 20px 0; */
+          padding: 20px;
+          padding-bottom: 30px;
+          box-shadow: 0px 0px 13px 0px rgb(82 63 105 / 5%);
+
+          .process-date {
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: bold;
+            padding-bottom: 10px;
+          }
+
+          .summary {
+            position: relative; 
+            width: 100%;
+            font-size: 18px;
+            text-align: center;
+            padding: 10px 5px 0px;
+          }
+
+          .process-item {
+            margin-top: 15px;
+          }
+
+          .label-icon.success {
+            color: #157347;
+            margin-right: 10px;
+          }
+          .label-icon.pending {
+            color: #FFCA2C;
+            margin-right: 10px;
+          }
+          .label-icon.process {
+            color: red;
+            margin-right: 10px;
+          }
+          .label-icon.reject {
+            color: #1890ff;
+            margin-right: 10px;
+          }
+
+          .process-bar {
+            display: flex;
+            & > div {
+              margin-left: 10px;
+            }
+          }
+          
+        }
+
+        .topic-group{
+          width: 500px;
+          background-color: #FFF;
+          position: relative;
+          padding: 10px;
+          padding-bottom: 10px;
+          box-shadow: 0px 0px 13px 0px rgb(82 63 105 / 5%);
+
+          .process-date {
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: bold;
+            padding-bottom: 15px;
+          }
+
+          .summary {
+            position: absolute; 
+            width: 100%;
+            bottom: 0;
+            font-size: 18px;
+            text-align: center;
+          }
+
+          .process-item {
+            margin-top: 15px;
+          }
+
+          .label-icon.success {
+            color: #157347;
+            margin-right: 5px;
+          }
+          .label-icon.pending {
+            color: #FFCA2C;
+          }
+          .label-icon.process {
+            color: red;
+          }
+          .label-icon.reject {
+            color: #1890ff;
+          }
+
+          .process-bar {
+            display: flex;
+            & > div {
+              margin-left: 10px;
+            }
+          }
+
+          .head{
+            display: flex;
+            justify-content: center;
+            font-weight:bold;
+          }
+        }
+        .rating-group{
+          margin-left: 20px;
+        }
+  }
+    
   
 `
-
-const ReportProcessComponent = styled.div`
-  width: 100%;
-
-  .report-display{
-    display: flex;
-    justify-content: center;  
-    padding: 40px 0px;
-    flex-wrap: wrap;
-
-    & > div:not(:first-child){
-      margin-left: 20px;
-    }
-    .prev,.next{
-      border: none;
-      font-size: 30px;
-    }
-  }
-
-  .procress-group {
-    width: 500px;
-    background-color: #FFF;
-    position: relative;
-    /* margin: 20px 0; */
-    padding: 20px;
-    padding-bottom: 40px;
-    box-shadow: 0px 0px 13px 0px rgb(82 63 105 / 5%);
-
-    .process-date {
-      display: flex;
-      justify-content: space-between;
-      font-size: 20px;
-      font-weight: bold;
-      padding-bottom: 15px;
-    }
-
-    .summary {
-      position: absolute; 
-      width: 100%;
-      bottom: 0;
-      font-size: 18px;
-      text-align: center;
-    }
-
-    .process-item {
-      margin-top: 15px;
-    }
-
-    .label-icon.success {
-      color: #157347;
-      margin-right: 5px;
-    }
-    .label-icon.pending {
-      color: #FFCA2C;
-    }
-    .label-icon.process {
-      color: red;
-    }
-    .label-icon.reject {
-      color: #1890ff;
-    }
-
-    .process-bar {
-      display: flex;
-      & > div {
-        margin-left: 10px;
-      }
-    }
-  }
-
-  .topic-group{
-    width: 500px;
-    background-color: #FFF;
-    position: relative;
-    /* margin: 20px 0; */
-    padding: 20px;
-    padding-bottom: 40px;
-    box-shadow: 0px 0px 13px 0px rgb(82 63 105 / 5%);
-
-    .process-date {
-      display: flex;
-      justify-content: space-between;
-      font-size: 20px;
-      font-weight: bold;
-      padding-bottom: 15px;
-    }
-
-    .summary {
-      position: absolute; 
-      width: 100%;
-      bottom: 0;
-      font-size: 18px;
-      text-align: center;
-    }
-
-    .process-item {
-      margin-top: 15px;
-    }
-
-    .label-icon.success {
-      color: #157347;
-      margin-right: 5px;
-    }
-    .label-icon.pending {
-      color: #FFCA2C;
-    }
-    .label-icon.process {
-      color: red;
-    }
-    .label-icon.reject {
-      color: #1890ff;
-    }
-
-    .process-bar {
-      display: flex;
-      & > div {
-        margin-left: 10px;
-      }
-    }
-  }
-`;
 
 const ProcessComponent = styled(Progress)`
   &.success.ant-progress-status-normal,
@@ -170,15 +191,22 @@ const ProcessComponent = styled(Progress)`
       background-color: #1890ff;
     }
   }
-`;
+`
 
 const RatingComponent = styled.div`
+
   background-color: #FFF;
   box-shadow: 0px 0px 13px 0px rgb(82 63 105 / 5%);
   max-width: 400px;
-  padding: 20px 20px;
+  padding: 10px 20px;
   width: 400px;
   position: relative;
+  padding-right: 20px;
+
+                
+  .admin-group{
+    box-sizing:border-box
+  }
 
   .rating-item{
     margin-top: 20px;
@@ -204,10 +232,25 @@ const RatingComponent = styled.div`
 
   .total-rating{
     width: 100%;
-    position: absolute; 
-    bottom: 0;
+    position: relative; 
     font-size: 18px;
     text-align: center;
+    padding-bottom: 10px;
+  }
+ 
+`
+
+const Comment_User = styled.div`
+  padding-left: 85px;
+  .head-text{
+    margin-top: 20px;
+    background-color:red;
+    width: 90%;
+    height: 50px;
+  }
+  .body-comment{
+    background-color: yellow;
+    display: flex;
   }
 `
 
@@ -217,7 +260,49 @@ export default function ReportProcess() {
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [topicData, setTopicData] = useState([]);
   const { type } = useParams();
-  const history = useNavigate();
+
+  const columns = [
+    {
+      title: 'Ticket-Number',
+      dataIndex: 'chinese',
+      sorter: {
+        compare: (a, b) => a.chinese - b.chinese,
+        multiple: 3,
+      },
+    },
+    {
+      title: 'Comment-Detail',
+      dataIndex: 'math',
+      sorter: {
+        compare: (a, b) => a.math - b.math,
+        multiple: 2,
+      },
+    }
+  ];
+  const data = [
+    {
+      key: '1',
+      chinese: 98,
+      math: 66666666666666666655555555556,
+    },
+    {
+      key: '2',
+      chinese: 98,
+      math: 66,
+      
+    },
+    {
+      key: '3',
+      chinese: 98,
+      math: 90,
+      
+    }
+  ];
+
+  const onChange = (pagination, filters, sorter, extra) => {
+    console.log('params', pagination, filters, sorter, extra);
+  };
+
 
   useEffect(() => {
     const init = async () => {
@@ -279,104 +364,106 @@ export default function ReportProcess() {
   }, [currentDate]);
 
   return (
+    
     <Content style={{ backgroundColor: 'rgba(88, 115, 254, 0.04)', minHeight: '100vh' }}>
       <SideBar />
       <div className="report-container">
         <Navbar />
-        <ReportProcessComponent className="report-process">
-          <div className="report-display">
-            <div className="process-group-wrapper">
-              <div className="procress-group">
-                <div className="process-date">
-                  <button
-                    className="prev"
-                    onClick={() => {
-                      setCurrentDate(currentDate.subtract(1, "month"));
-                    }}
-                  >
-                    {<BsFillArrowLeftSquareFill />}
-                  </button>
-                  <span>
-                    {currentDate.format("MMMM")} {currentDate.format("YYYY")}
-                  </span>
-                  <button
-                    className="next"
-                    onClick={() => {
-                      setCurrentDate(currentDate.add(1, "month"));
-                    }}
-                  >
-                    {<BsFillArrowRightSquareFill />}
-                  </button>
-                </div>
-                <div className="process-item">
-                  <div className="label">
-                    <span className="label-icon success">██</span>
-                    <span>Success</span>
-                  </div>
-                  <div className="process-bar">
-                    <ProcessComponent
-                      className="success"
-                      percent={reportIt?.success}
-                      showInfo={false}
-                    />
-                    <div className="amount">{reportIt?.success}</div>
-                  </div>
-                </div>
-                <div className="process-item pending">
-                  <div className="label">
-                    <span className="label-icon pending">██</span>{" "}
-                    <span>Pending</span>
-                  </div>
-                  <div className="process-bar">
-                    <ProcessComponent
-                      className="pending"
-                      percent={reportIt?.pending}
-                      showInfo={false}
-                    />
-                    <div className="amount">{reportIt?.pending}</div>
-                  </div>
-                </div>
-                <div className="process-item process">
-                  <div className="label">
-                    <span className="label-icon process">██</span>{" "}
-                    <span>Process</span>
-                  </div>
-                  <div className="process-bar">
-                    <ProcessComponent
-                      className="process"
-                      percent={reportIt?.process}
-                      showInfo={false}
-                    />
-                    <div className="amount">{reportIt?.process}</div>
-                  </div>
-                </div>
-                <div className="process-item reject">
-                  <div className="label">
-                    <span className="label-icon reject">██</span> <span>Reject</span>
-                  </div>
-                  <div className="process-bar">
-                    <ProcessComponent
-                      className="reject"
-                      percent={reportIt?.reject}
-                      showInfo={false}
-                    />
-                    <div className="amount">{reportIt?.reject}</div>
-                  </div>
+        <div className="Text-head">
+          <div className="head">Admin-Dashbaord</div>
+        </div>
 
-                  <div className="summary">
-                    <div className="total">
-                      ทั้งหมด{" "}
-                      {reportIt?.total || 0}{" "}
-                      รายการ
-                    </div>
+        <div className="group-report">
+          <div className="report-process">
+            <div className="procress-group">
+              <div className="process-date">
+                <button
+                  className="prev"
+                  onClick={() => {
+                    setCurrentDate(currentDate.subtract(1, "month"));
+                  }}
+                >
+                  {<BsFillArrowLeftSquareFill />}
+                </button>
+                <span>
+                  {currentDate.format("MMMM")} {currentDate.format("YYYY")}
+                </span>
+                <button
+                  className="next"
+                  onClick={() => {
+                    setCurrentDate(currentDate.add(1, "month"));
+                  }}
+                >
+                  {<BsFillArrowRightSquareFill />}
+                </button>
+              </div>
+              <div className="process-item">
+                <div className="label">
+                  <span className="label-icon success">██</span>
+                  <span>Success</span>
+                </div>
+                <div className="process-bar">
+                  <ProcessComponent
+                    className="success"
+                    percent={reportIt?.success}
+                    showInfo={false}
+                  />
+                  <div className="amount">{reportIt?.success}</div>
+                </div>
+              </div>
+              <div className="process-item pending">
+                <div className="label">
+                  <span className="label-icon pending">██</span>{" "}
+                  <span>Pending</span>
+                </div>
+                <div className="process-bar">
+                  <ProcessComponent
+                    className="pending"
+                    percent={reportIt?.pending}
+                    showInfo={false}
+                  />
+                  <div className="amount">{reportIt?.pending}</div>
+                </div>
+              </div>
+              <div className="process-item process">
+                <div className="label">
+                  <span className="label-icon process">██</span>{" "}
+                  <span>Process</span>
+                </div>
+                <div className="process-bar">
+                  <ProcessComponent
+                    className="process"
+                    percent={reportIt?.process}
+                    showInfo={false}
+                  />
+                  <div className="amount">{reportIt?.process}</div>
+                </div>
+              </div>
+              <div className="process-item reject">
+                <div className="label">
+                  <span className="label-icon reject">██</span> <span>Reject</span>
+                </div>
+                <div className="process-bar">
+                  <ProcessComponent
+                    className="reject"
+                    percent={reportIt?.reject}
+                    showInfo={false}
+                  />
+                  <div className="amount">{reportIt?.reject}</div>
+                </div>
+
+                <div className="summary">
+                  <div className="total">
+                    ทั้งหมด{" "}
+                    {reportIt?.total || 0}{" "}
+                    รายการ
                   </div>
                 </div>
               </div>
             </div>
 
-
-            <div className="rating-group">
-              <RatingComponent>
+            <br/>
+            <RatingComponent>
                 <div className="admin-group">
                   {ratingData.map((item) => (
                     <div className="rating-item" key={item.id}>
@@ -397,39 +484,45 @@ export default function ReportProcess() {
                 <div className="total-rating">ทั้งหมด {ratingData.reduce((rating, object) => {
                   return rating + object.sum_rating;
                 }, 0)} คะแนน</div>
-              </RatingComponent>
-            </div>
+            </RatingComponent>
+            
+          </div>
 
-            <div className="process-group">
-              <div className="head-topic">
-                <div className="head-flex">
-                  <h3>Report-Topic</h3>
-                </div>
-              </div>
-              <div className="topic-group">
-                {topicData.map((item) => (
-                  <div className="process-item" key={item.id}>
-                    <div className="label">
-                      <span className="label-icon success">██</span>
-                      <span>{item?.name}</span>
-                    </div>
-                    <div className="process-bar">
-                      <ProcessComponent
-                        className="success"
-                        percent={item?.sum_topic || 0}
-                        showInfo={false}
-                      />
-                      <div className="amount">{item?.sum_topic || 0}</div>
-                    </div>
+          <div className="process-group">
+            <div className="topic-group">
+              <h4 className="head">REPORT-TOPIC</h4>
+              {topicData.map((item) => (
+                <div className="process-item" key={item.id}>
+                  <div className="label">
+                    <span>{item?.name}</span>
                   </div>
-                ))}
-              </div>
+                  <div className="process-bar">
+                    <ProcessComponent
+                      percent={item?.sum_topic || 0}
+                      showInfo={false}
+                    />
+                    <div className="amount">{item?.sum_topic || 0}</div>
+                  </div>
+                </div>
+              ))}
             </div>
+          </div>
 
+         
+        </div>
+        <Comment_User className="comment-group">
+          <div className="head-text">
+          Comment-User
+          </div>
+          <div className="body-comment">
+          <Table columns={columns} dataSource={data} onChange={onChange} />;
 
           </div>
-        </ReportProcessComponent>
+          
+        </Comment_User>
       </div>
+   
     </Content>
+    
   );
 }
