@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Table from "../../components/table";
 import { AiTwotoneEdit } from "react-icons/ai";
-import { Input, Modal, Rate } from "antd";
+import { Input, Modal, Rate, message } from "antd";
 import styled from "styled-components";
 import axios from "axios";
 import swal from "sweetalert2";
@@ -14,6 +14,13 @@ const RatingModel = styled(Modal)`
   .ant-modal-body {
     display: flex;
     flex-direction: column;
+  }
+
+  .button-group{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 20px;
   }
 `;
 
@@ -61,6 +68,7 @@ export default function TableIt(props) {
   const [columns, setColumns] = useState(null);
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(false);
+  const [rating, setRating] = useState(null);
   const [comment_ratting, setcomment_ratting] = useState(1);
 
   useEffect(() => {
@@ -213,27 +221,26 @@ export default function TableIt(props) {
 
   return (
     <>
-      <>
-        <ButtonGroup_it>
-        {props?.user?.role === 2 || props?.user?.role === 3 ? (
-          <div className="button-export-excel" onClick={handleClick}>
-            <RiFileExcel2Fill className="icon-add" />
-            Export Excel
-          </div>
-        ) : ""}
 
-        {props?.user?.role === 3 ? (
+      <Table dataSource={props.data} columns={columns} topLeftButton={
+        <ButtonGroup_it>
+          {props?.user?.role === 2 || props?.user?.role === 3 ? (
+            <div className="button-export-excel" onClick={handleClick}>
+              <RiFileExcel2Fill className="icon-add" />
+              Export Excel
+            </div>
+          ) : ""}
+
+          {props?.user?.role === 3 ? (
             <NavLink to={"/report-process/it"}>
               <button className="button-report-process">
                 <TbReportSearch className="icon-add" />
                 Report IT-Support
               </button>
             </NavLink>
-        ) : ""}
+          ) : ""}
         </ButtonGroup_it>
-      </>
-
-      <Table dataSource={props.data} columns={columns} />
+      } />
       <RatingModel
         title={"ให้คะแนนเลขแจ้งซ่อม " + selectedRecord?.ticket_no}
         visible={isModelOpen}
@@ -247,13 +254,26 @@ export default function TableIt(props) {
         <Rate
           style={{ margin: "0 auto" }}
           onChange={async (number) => {
+            setRating(number)
+          }}
+        />
+        <div className={'comment_ratung'}>
+          <Input.TextArea placeholder={'กรุณาแสดงความคิดเห็นก่อนให้คะแนน'} onChange={(comment) => {
+            setcomment_ratting(comment.target.value)
+          }} />
+        </div>
+        <div className={'button-group'}>
+          <button onClick={async() => {
+
+            if(!rating) return message.warning('กรุณาให้คะแนน')
+            
             try {
               let updateResult = await axios.put(
                 "http://localhost:4000/api/repair_list/" +
                 selectedRecord.id +
                 "/update-rating",
                 {
-                  rating: number,
+                  rating: rating,
                   comment_rating: comment_ratting
                 },
                 { withCredentials: true }
@@ -270,7 +290,7 @@ export default function TableIt(props) {
                 props.setData(
                   props.data.map((item) =>
                     item.id === selectedRecord.id
-                      ? { ...selectedRecord, rating: number }
+                      ? { ...selectedRecord, rating: rating }
                       : item
                   )
                 );
@@ -288,12 +308,8 @@ export default function TableIt(props) {
                 window.location.href = "/login";
               }
             }
-          }}
-        />
-        <div className={'comment_ratung'}>
-        <Input.TextArea placeholder={'กรุณาแสดงความคิดเห็นก่อนให้คะแนน'}  onChange={(comment)=>{
-          setcomment_ratting(comment.target.value)
-        }}/></div>
+          }}>ให้คะแนน</button>
+        </div >
       </RatingModel>
     </>
   );

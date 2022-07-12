@@ -9,8 +9,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router'
 import { BsFillArrowLeftSquareFill } from 'react-icons/bs'
 import { BsFillArrowRightSquareFill } from 'react-icons/bs'
-import { Table } from 'antd';
-
+import Table from '../../components/table'
 
 const Content = styled.div`
   display: flex;
@@ -30,8 +29,10 @@ const Content = styled.div`
 
     .group-report{
        display: flex;
-       padding-left: 85px;
-        
+       flex-wrap: wrap;
+       padding-left: 55px;
+       padding-right :  25px;
+
         .report-process{
           /* & > div:not(:first-child){
             margin-left: 20px;
@@ -158,7 +159,9 @@ const Content = styled.div`
         }
   }
     
-  
+  @media only screen and (min-width: 1600px) {
+    
+  }
 `
 
 const ProcessComponent = styled(Progress)`
@@ -241,7 +244,7 @@ const RatingComponent = styled.div`
 `
 
 const Comment_User = styled.div`
-  padding-left: 85px;
+  width: 90%;
   .head-text{
     margin-top: 20px;
     background-color:red;
@@ -250,7 +253,14 @@ const Comment_User = styled.div`
   }
   .body-comment{
     background-color: yellow;
-    display: flex;
+  }
+
+  .Search{
+    display: none !important;
+  }
+
+  .table-total-rows{
+    text-align: right;
   }
 `
 
@@ -259,43 +269,20 @@ export default function ReportProcess() {
   const [ratingData, setRatingData] = useState([]);
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [topicData, setTopicData] = useState([]);
+  const [sumTopicData, setSumTopicData] = useState(0);
+  const [comment, setComment] = useState([]);
   const { type } = useParams();
 
   const columns = [
     {
       title: 'Ticket-Number',
-      dataIndex: 'chinese',
-      sorter: {
-        compare: (a, b) => a.chinese - b.chinese,
-        multiple: 3,
-      },
+      dataIndex: 'ticket_no',
+      width: 140,
+      aling: 'center',
     },
     {
       title: 'Comment-Detail',
-      dataIndex: 'math',
-      sorter: {
-        compare: (a, b) => a.math - b.math,
-        multiple: 2,
-      },
-    }
-  ];
-  const data = [
-    {
-      key: '1',
-      chinese: 98,
-      math: 66666666666666666655555555556,
-    },
-    {
-      key: '2',
-      chinese: 98,
-      math: 66,
-      
-    },
-    {
-      key: '3',
-      chinese: 98,
-      math: 90,
-      
+      dataIndex: 'comment_rating',
     }
   ];
 
@@ -306,15 +293,17 @@ export default function ReportProcess() {
 
   useEffect(() => {
     const init = async () => {
+
+      let params = {
+        month: currentDate.format("MM"),
+        year: currentDate.format("YYYY"),
+        type_id: type === "it" ? 1 : 2,
+      }
       try {
         let itResp = await axios.get(
           "http://localhost:4000/api/report/repair",
           {
-            params: {
-              month: currentDate.format("MM"),
-              year: currentDate.format("YYYY"),
-              type_id: type === "it" ? 1 : 2,
-            },
+            params: params,
             withCredentials: true,
           }
         );
@@ -326,11 +315,7 @@ export default function ReportProcess() {
         let ratingResp = await axios.get(
           "http://localhost:4000/api/report/rating",
           {
-            params: {
-              month: currentDate.format("MM"),
-              year: currentDate.format("YYYY"),
-              type_id: type === "it" ? 1 : 2,
-            },
+            params: params,
             withCredentials: true,
           }
         );
@@ -342,16 +327,23 @@ export default function ReportProcess() {
         let topicResp = await axios.get(
           "http://localhost:4000/api/report/topic",
           {
-            params: {
-              month: currentDate.format("MM"),
-              year: currentDate.format("YYYY"),
-              type_id: type === "it" ? 1 : 2,
-            },
+            params: params,
             withCredentials: true,
           }
         );
         if (topicResp?.data?.status) {
           setTopicData(topicResp.data.data);
+        }
+
+        let commentResp = await axios.get(
+          "http://localhost:4000/api/report/comment-rating",
+          {
+            params: params,
+            withCredentials: true,
+          }
+        );
+        if (commentResp?.data?.status) {
+          setComment(commentResp.data.data);
         }
 
       } catch (error) {
@@ -364,106 +356,106 @@ export default function ReportProcess() {
   }, [currentDate]);
 
   return (
-    
-    <Content style={{ backgroundColor: 'rgba(88, 115, 254, 0.04)', minHeight: '100vh' }}>
+    <Content >
       <SideBar />
-      <div className="report-container">
+      <div className="report-wrapper content">
         <Navbar />
-        <div className="Text-head">
-          <div className="head">Admin-Dashbaord</div>
-        </div>
+        <div className="report-container ">
+          <div className="Text-head">
+            <div className="head">Admin-Dashbaord</div>
+          </div>
 
-        <div className="group-report">
-          <div className="report-process">
-            <div className="procress-group">
-              <div className="process-date">
-                <button
-                  className="prev"
-                  onClick={() => {
-                    setCurrentDate(currentDate.subtract(1, "month"));
-                  }}
-                >
-                  {<BsFillArrowLeftSquareFill />}
-                </button>
-                <span>
-                  {currentDate.format("MMMM")} {currentDate.format("YYYY")}
-                </span>
-                <button
-                  className="next"
-                  onClick={() => {
-                    setCurrentDate(currentDate.add(1, "month"));
-                  }}
-                >
-                  {<BsFillArrowRightSquareFill />}
-                </button>
-              </div>
-              <div className="process-item">
-                <div className="label">
-                  <span className="label-icon success">██</span>
-                  <span>Success</span>
+          <div className="group-report">
+            <div className="report-process">
+              <div className="procress-group">
+                <div className="process-date">
+                  <button
+                    className="prev"
+                    onClick={() => {
+                      setCurrentDate(currentDate.subtract(1, "month"));
+                    }}
+                  >
+                    {<BsFillArrowLeftSquareFill />}
+                  </button>
+                  <span>
+                    {currentDate.format("MMMM")} {currentDate.format("YYYY")}
+                  </span>
+                  <button
+                    className="next"
+                    onClick={() => {
+                      setCurrentDate(currentDate.add(1, "month"));
+                    }}
+                  >
+                    {<BsFillArrowRightSquareFill />}
+                  </button>
                 </div>
-                <div className="process-bar">
-                  <ProcessComponent
-                    className="success"
-                    percent={reportIt?.success}
-                    showInfo={false}
-                  />
-                  <div className="amount">{reportIt?.success}</div>
+                <div className="process-item">
+                  <div className="label">
+                    <span className="label-icon success">██</span>
+                    <span>Success</span>
+                  </div>
+                  <div className="process-bar">
+                    <ProcessComponent
+                      className="success"
+                      percent={reportIt?.success}
+                      showInfo={false}
+                    />
+                    <div className="amount">{reportIt?.success}</div>
+                  </div>
                 </div>
-              </div>
-              <div className="process-item pending">
-                <div className="label">
-                  <span className="label-icon pending">██</span>{" "}
-                  <span>Pending</span>
+                <div className="process-item pending">
+                  <div className="label">
+                    <span className="label-icon pending">██</span>{" "}
+                    <span>Pending</span>
+                  </div>
+                  <div className="process-bar">
+                    <ProcessComponent
+                      className="pending"
+                      percent={reportIt?.pending}
+                      showInfo={false}
+                    />
+                    <div className="amount">{reportIt?.pending}</div>
+                  </div>
                 </div>
-                <div className="process-bar">
-                  <ProcessComponent
-                    className="pending"
-                    percent={reportIt?.pending}
-                    showInfo={false}
-                  />
-                  <div className="amount">{reportIt?.pending}</div>
+                <div className="process-item process">
+                  <div className="label">
+                    <span className="label-icon process">██</span>{" "}
+                    <span>Process</span>
+                  </div>
+                  <div className="process-bar">
+                    <ProcessComponent
+                      className="process"
+                      percent={reportIt?.process}
+                      showInfo={false}
+                    />
+                    <div className="amount">{reportIt?.process}</div>
+                  </div>
                 </div>
-              </div>
-              <div className="process-item process">
-                <div className="label">
-                  <span className="label-icon process">██</span>{" "}
-                  <span>Process</span>
-                </div>
-                <div className="process-bar">
-                  <ProcessComponent
-                    className="process"
-                    percent={reportIt?.process}
-                    showInfo={false}
-                  />
-                  <div className="amount">{reportIt?.process}</div>
-                </div>
-              </div>
-              <div className="process-item reject">
-                <div className="label">
-                  <span className="label-icon reject">██</span> <span>Reject</span>
-                </div>
-                <div className="process-bar">
-                  <ProcessComponent
-                    className="reject"
-                    percent={reportIt?.reject}
-                    showInfo={false}
-                  />
-                  <div className="amount">{reportIt?.reject}</div>
-                </div>
+                <div className="process-item reject">
+                  <div className="label">
+                    <span className="label-icon reject">██</span> <span>Reject</span>
+                  </div>
+                  <div className="process-bar">
+                    <ProcessComponent
+                      className="reject"
+                      percent={reportIt?.reject}
+                      showInfo={false}
+                    />
+                    <div className="amount">{reportIt?.reject}</div>
+                  </div>
 
-                <div className="summary">
-                  <div className="total">
-                    ทั้งหมด{" "}
-                    {reportIt?.total || 0}{" "}
-                    รายการ
+                  <div className="summary">
+                    <div className="total">
+                      ทั้งหมด{" "}
+                      {reportIt?.total || 0}{" "}
+                      รายการ
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <br/>
-            <RatingComponent>
+              <br />
+              <RatingComponent>
                 <div className="admin-group">
                   {ratingData.map((item) => (
                     <div className="rating-item" key={item.id}>
@@ -476,7 +468,7 @@ export default function ReportProcess() {
                             percent={item.sum_rating || 0}
                             showInfo={false}
                           />
-                          <div class="rating-total">{item.sum_rating || 0}</div>
+                          <div className="rating-total">{item.sum_rating || 0}</div>
                         </div>
                       </div>
                     </div>))}
@@ -484,45 +476,46 @@ export default function ReportProcess() {
                 <div className="total-rating">ทั้งหมด {ratingData.reduce((rating, object) => {
                   return rating + object.sum_rating;
                 }, 0)} คะแนน</div>
-            </RatingComponent>
-            
-          </div>
+              </RatingComponent>
 
-          <div className="process-group">
-            <div className="topic-group">
-              <h4 className="head">REPORT-TOPIC</h4>
-              {topicData.map((item) => (
-                <div className="process-item" key={item.id}>
-                  <div className="label">
-                    <span>{item?.name}</span>
-                  </div>
-                  <div className="process-bar">
-                    <ProcessComponent
-                      percent={item?.sum_topic || 0}
-                      showInfo={false}
-                    />
-                    <div className="amount">{item?.sum_topic || 0}</div>
-                  </div>
-                </div>
-              ))}
             </div>
-          </div>
 
-         
+            <div className="process-group">
+              <div className="topic-group">
+                <h4 className="head">REPORT-TOPIC</h4>
+                {topicData.map((item) => {
+                  return (
+                    <div className="process-item" key={item.id}>
+                      <div className="label">
+                        <span>{item?.name}</span>
+                      </div>
+                      <div className="process-bar">
+                        <ProcessComponent
+                          percent={item?.sum_topic || 0}
+                          showInfo={false}
+                        />
+                        <div className="amount">{item?.sum_topic || 0}</div>
+                      </div>
+                    </div>
+                  )
+                })}
+                <div className="total">ทั้งหมด {topicData.reduce((topic, object) => {
+                  return topic + object.sum_topic;
+                }, 0)} คะแนน</div>
+              </div>
+            </div>
+            <Comment_User className="comment-group">
+              <div className="head-text">
+                Comment-User
+              </div>
+              <div className="body-comment">
+                <Table columns={columns} dataSource={comment} onChange={onChange} />;
+              </div>
+            </Comment_User>
+          </div>
         </div>
-        <Comment_User className="comment-group">
-          <div className="head-text">
-          Comment-User
-          </div>
-          <div className="body-comment">
-          <Table columns={columns} dataSource={data} onChange={onChange} />;
-
-          </div>
-          
-        </Comment_User>
       </div>
-   
     </Content>
-    
+
   );
 }

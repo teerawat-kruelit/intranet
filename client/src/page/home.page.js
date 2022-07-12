@@ -11,6 +11,7 @@ import { useState } from "react";
 
 const HomepageComponent = styled.div`
   display: flex;
+  background-color: transparent;
 
   .content {
     width: 100%;
@@ -21,12 +22,17 @@ const HomepageComponent = styled.div`
 `;
 
 const Contentportal = styled.div`
-  height: 400px;
+  background-color: transparent;
 
+  .img-top{
+    width: 100%;
+    height: 400px;
+  }
   .content-group-button {
     display: flex;
     width: 100%;
-    justify-content: space-around;
+    background-color: #F2F6F6;
+    
 
     .item-button {
       cursor: pointer;
@@ -55,7 +61,7 @@ const Contentportal = styled.div`
 
     .backgroud {
       width: 100%;
-      height: 150px;
+      height: 420px;
     }
   }
   .head {
@@ -81,13 +87,11 @@ const Contentportal = styled.div`
          border: 2px solid red;
          color: red;
          background-color: red;
-
-
      }
      .card-person{
          margin-top: 25px;
          display: flex;
-         justify-content: space-evenly;
+         justify-content: space-evenly;      
      }
      .name-card{
          text-align: start;
@@ -129,15 +133,51 @@ const Contentportal = styled.div`
         
      }
 `;
-//         font-weight: bold;
-//         color: #223A66;
-//         padding-top: 70px;
 
-//     }
+const FlexCard = styled.div`
+  display: flex;
 
+  .flip-card {
+    background-color: transparent;
+    width: 300px;
+    height: 300px;
+    perspective: 1000px;
 
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    }
 
-// `
+    &:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    .flip-card-front {
+      background-color: #bbb;
+      color: black;
+    }
+
+    .flip-card-back {
+      background-color: #bbb;
+      color: white;
+      transform: rotateY(180deg);
+    }
+  }
+`
+
 const { Meta } = Card;
 
 export default function HomePage() {
@@ -158,77 +198,58 @@ export default function HomePage() {
       <SideBarComponent />
       <div className="content">
         <Contentportal className="content-portal">
-          <div className="img-company">
-            <img src="/back02.jpg" className="backgroud" alt="" />
-          </div>
-
-          <div className="head">
-            WellCome
-          </div>
-          <hr className="red" />
-          <div className="card-person">
-          <Card
-          style={{ width: 250, height: 430 }}
-          hoverable
-          cover={<img alt="example" src="/4.jpg" className="pee" height={315} />}
-        >
-          <div>
-            <div className="name-card">K. Pracha Chaisuwan</div>
-            <div className="position">Chief Executive Officer </div>
-          </div>
-          <p></p>
-          <div className="phone">
-            <FaPhoneSquareAlt className="iconphone" />
-            <div>02-558-9009</div>
-          </div>
-        </Card>
-        <Card
-          style={{ width: 250, height: 430 }}
-          hoverable
-          cover={<img alt="example" src="/3.jpg" className="pee" height={315} />}
-        >
-          <div>
-            <div className="name-card">K. Hathairat Kaewsaenmuang</div>
-            <div className="position">Chief Operating Officer</div>
-          </div>
-          <p></p>
-          <div className="phone">
-            <FaPhoneSquareAlt className="iconphone" />
-            <div>02-558-9488</div>
-          </div>
-        </Card>
-        <Card
-          style={{ width: 250, height: 430 }}
-          hoverable
-          cover={<img alt="example" src="/6.jpg" className="pee" height={315} />}
-        >
-          <div>
-            <div className="name-card">K. Waraluck Chaisuwan</div>
-            <div className="position">Finance Director</div>
-          </div>
-          <p></p>
-          <div className="phone">
-            <FaPhoneSquareAlt className="iconphone" />
-            <div>02-558-9009</div>
-          </div>
-        </Card>
-        <Card
-          style={{ width: 250, height: 430 }}
-          hoverable
-          cover={<img alt="example" src="/7.jpg" className="pee" height={315} />}
-        >
-          <div>
-            <div className="name-card">K. Suthida Chaisuwan</div>
-            <div className="position">General Counsel</div>
-          </div>
-          <p></p>
-          <div className="phone">
-            <FaPhoneSquareAlt className="iconphone" />
-            <div>02-558-9422</div>
-          </div>
-        </Card>
+          <div className="img-top">
+            <img src="https://www.chase.co.th/storage/banner/MRiPHna98lyBPVSE91xVINa4JLdlJFDPf0yAMeS2.png" alt="" className="img-top" />
           </div>
           <br />
+          <FlexCard className="flex-card">
+            <div className="flip-card">
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <img alt="example" src="/4.jpg" height={290} />
+                  <div>
+                    <div className="name-card">K. Pracha Chaisuwan</div>
+                    <div className="position">Chief Executive Officer </div>
+                    <div className="phone">02-558-9009</div>
+                  </div>
+                </div>
+                <div className="flip-card-back">
+                  <img alt="example" src="/4.jpg" height={290} />
+                  <div>
+                    <div className="name-card">K. Pracha Chaisuwan</div>
+                    <div className="position">Chief Executive Officer </div>
+                    <div className="phone">02-558-9009</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flip-card">
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <img alt="example" src="/4.jpg" height={290} />
+                  <div>
+                    <div className="name-card">K. Pracha Chaisuwan</div>
+                    <div className="position">Chief Executive Officer </div>
+                    <div className="phone">02-558-9009</div>
+                  </div>
+                </div>
+                <div className="flip-card-back">
+                  <img alt="example" src="/4.jpg" height={290} />
+                  <div>
+                    <div className="name-card">K. Pracha Chaisuwan</div>
+                    <div className="position">Chief Executive Officer </div>
+                    <div className="phone">02-558-9009</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FlexCard>
+
+
+
+
+
           <hr />
           <div className="button-group">
             <div className="group"><span>IT-Support</span></div>
@@ -240,28 +261,28 @@ export default function HomePage() {
           <br />
 
           <div className="department-team">
-          {userData.map((item, index) => {
-            if (index > 3) return
-            return (
-              <Card
-                hoverable
-                key={index}
-                style={{ width: 230, height: 420 }}
-                cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-              >
-                <div>
-                  <div className="name-card">{item.name} </div>
-                  <div className="position">Chief Executive Officer </div>
-                </div>
-                <p></p>
-                <div className="phone">
-                  <FaPhoneSquareAlt className="iconphone" />
-                  <div>EXT-{item.ext}</div>
-                </div>
-              </Card>
-            )
-          })}
-            
+            {userData.map((item, index) => {
+              if (index > 3) return
+              return (
+                <Card
+                  hoverable
+                  key={index}
+                  style={{ width: 230, height: 420 }}
+                  cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                >
+                  <div>
+                    <div className="name-card">{item.name} </div>
+                    <div className="position">Chief Executive Officer </div>
+                  </div>
+                  <p></p>
+                  <div className="phone">
+                    <FaPhoneSquareAlt className="iconphone" />
+                    <div>EXT-{item.ext}</div>
+                  </div>
+                </Card>
+              )
+            })}
+
           </div>
 
         </Contentportal>

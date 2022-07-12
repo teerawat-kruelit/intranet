@@ -4,53 +4,79 @@ import { Form, Input } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import swal from "sweetalert2";
-import { Carousel } from "antd";
+import { BsFillPersonCheckFill } from 'react-icons/bs'
+import { FaUnlockAlt } from 'react-icons/fa'
+
 
 const LoginPageCompnent = styled.div`
-  .container-login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 95vh;
-  }
+  width: 100%;
+  
+  background-color: #113D3D;
+  color: #F3F3F3;
+  margin: 0;
+  padding: 0;
+  
+    .skel-bg{
+      background-color: #ff8b19;
+      padding: 50px 0;
+      transform: skew(0deg, -10deg);
+      margin-top: -140px;
+        .content{
+          transform: skew(0deg, 10deg);
+          margin: 0 auto;
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .sing-in {
+          position: relative;
+          top: 250px;
+          background-color: #FFFF;
+          padding: 20px;
+          width: 35%;
+          box-shadow: 0px 0px 13px 0px rgb(82 63 105 / 40%);
+          height: 400px;
 
-  .sing-in {
-    padding: 20px;
-    width: 30%;
-    border: 1px solid red;
-    height: 300px;
+          .img-chase{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
 
-    .title {
-      text-align: center;
-      font-weight: bold;
+          .title {
+            font-weight: bold;
+          }
+          .input-login{
+            border-radius: 10px;
+          }
+          .ant-form-item-control-input-content{
+            display: flex;
+            justify-content: end;
+          }
+          .icon-login{
+            font-size: 20px;
+            margin-right: 10px;
+          }
+        }
+        
+        .button-login {
+          border-radius: 10px;
+          padding: 8px;
+          background-color: #015352;
+          color: #ffff;
+          width: 120px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: none;
+        }
     }
-    /* background-color: green; */
-  }
-  .sing-up {
-    width: 30%;
-    border: 1px solid red;
 
-    height: 300px;
-  }
-  .button-slider {
-    padding: 20px;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-  }
-  .ant-form-item-control-input-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .button-login {
-    border-radius: 20px;
-    background-color: green;
-    color: #ffff;
-  }
-  .img-sli {
-    padding-top: 50px;
-  }
+    .footer{
+      padding-top: 350px
+    }
+
 `;
 const contentStyle = {
   height: "300px",
@@ -88,76 +114,64 @@ export default function LoginPage() {
 
   return (
     <LoginPageCompnent className="login-page">
-      <div className="container-login">
+      <div className="skel-bg">
+        <div className="content">
         <div className="sing-in">
-          <h1 className="title">Sign in</h1>
-          <Form
-            className="login-form-wrapper"
-            form={form}
-            onFinish={onFinish}
-            layout="vertical"
-            size="large"
-          >
-            <Form.Item
-              name={"EUsername"}
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your username!",
-                },
-              ]}
-            >
-              <Input
-                prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
-              />
-            </Form.Item>
-            <Form.Item
-              name={"EPassword"}
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your password!",
-                },
-              ]}
-            >
-              <Input
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
-                placeholder="Password"
-              />
-            </Form.Item>
-            <Form.Item>
-              <button className="button-login" type="submit">
-                Submit
-              </button>
-            </Form.Item>
-          </Form>
+        <div className="img-chase">
+        <img src="/chase.png" width={180} alt="" />
         </div>
-        <div className="sing-up">
-          <Carousel autoplay>
-            <div>
-              <h3 style={contentStyle}>
-                <div className="img-sli">
-                  <img src="/capture.jpg" width={460} height={200}></img>
-                </div>
-              </h3>
-            </div>
-            <div>
-              <h3 style={contentStyle}>
-                <div className="img-sli">
-                  <img src="/capture.jpg" width={460} height={200}></img>
-                </div>
-              </h3>
-            </div>
-            <div>
-              <h3 style={contentStyle}>
-                <div className="img-sli">
-                  <img src="/capture.jpg" width={460} height={200}></img>
-                </div>
-              </h3>
-            </div>
-          </Carousel>
+        
+        <h1 className="title">Sign in</h1>
+        <Form
+          className="login-form-wrapper"
+          form={form}
+          onFinish={onFinish}
+          layout="vertical"
+          size="large"
+        >
+          <Form.Item
+            name={"EUsername"}
+            rules={[
+              {
+                required: true,
+                message: "Please input your username !",
+              },
+            ]}
+          >
+            <Input
+              className="input-login"
+              prefix={<BsFillPersonCheckFill className="icon-login" />}
+              placeholder="Username"
+            />
+          </Form.Item>
+          <Form.Item
+            name={"EPassword"}
+            rules={[
+              {
+                required: true,
+                message: "Please input your password !",
+              },
+            ]}
+          >
+            <Input
+              className="input-login"
+              prefix={<FaUnlockAlt className="icon-login" />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+          <Form.Item>
+            <button className="button-login" type="submit">
+              Login
+            </button>
+          </Form.Item>
+        </Form>
+      </div>
+        </div>
+      </div>
+      <div className="footer">
+        <div className="credit">
+          
         </div>
       </div>
     </LoginPageCompnent>

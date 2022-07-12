@@ -9,21 +9,16 @@ import { GoTools } from 'react-icons/go'
 import { FaHome } from 'react-icons/fa'
 import { GoInbox } from 'react-icons/go'
 import { MdLogout } from 'react-icons/md'
-
-
-
-
 import { useNavigate, useLocation } from 'react-router-dom';
-
-
-
 
 const { Sider } = Layout;
 
 const SideBarComponent = styled(Sider)`
     height: 100vh;
+    position: fixed;
 
     .sidebar-trigger{
+        display: none;
         font-size: 30px;
         color: #000;
         position: absolute;

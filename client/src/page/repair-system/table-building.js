@@ -6,15 +6,21 @@ import { Excel } from "antd-table-saveas-excel";
 import axios from "axios";
 import styled from "styled-components";
 import swal from "sweetalert2";
-import { Modal, Rate } from "antd";
+import { Input, message, Modal, Rate } from "antd";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import { TbReportSearch } from "react-icons/tb";
-
-
 
 const RatingModel = styled(Modal)`
   .ant-modal-body {
     display: flex;
+    flex-direction: column;
+  }
+
+  .button-group{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 20px;
   }
 `;
 
@@ -24,7 +30,18 @@ const RatingPoint = styled.div`
   text-align: center;
   width: 20px;
   height: 20px;
-`;
+  background-color: #FD7D00;
+  border: none;
+  color: #FFF;
+  font-size: 15px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50px;
+`
 
 const ButtonGroup_it = styled.div`
   display: flex;
@@ -46,13 +63,12 @@ const ButtonGroup_it = styled.div`
       }
     }  
 `
-
-
-
 export default function TableBuilding(props) {
-  const [columns, setColumns] = useState([]);
+  const [columns, setColumns] = useState(null);
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(false);
+  const [rating, setRating] = useState(null);
+  const [comment_ratting, setcomment_ratting] = useState(1);
 
   useEffect(() => {
     const init = async () => {
@@ -155,7 +171,7 @@ export default function TableBuilding(props) {
     };
 
     init();
-  }, [props.user]);
+  }, [props.user, props.data]);
 
   const handleClick = async () => {
     try {
@@ -196,7 +212,7 @@ export default function TableBuilding(props) {
 
   return (
     <>
-      <>
+      <Table dataSource={props.data} columns={columns} topLeftButton={
         <ButtonGroup_it>
           {props?.user?.role === 2 || props?.user?.role === 3 ? (
             <div className="button-export-excel" onClick={handleClick}>
@@ -214,13 +230,12 @@ export default function TableBuilding(props) {
             </NavLink>
           ) : ""}
         </ButtonGroup_it>
-      </>
-
-      <Table dataSource={props.data} columns={columns} />
+      } />
       <RatingModel
         title={"ให้คะแนนเลขแจ้งซ่อม " + selectedRecord?.ticket_no}
         visible={isModelOpen}
         closeIcon={<>X</>}
+        destroyOnClose={true}
         onCancel={() => {
           setIsModelOpen(false);
         }}
@@ -229,18 +244,33 @@ export default function TableBuilding(props) {
         <Rate
           style={{ margin: "0 auto" }}
           onChange={async (number) => {
+            setRating(number)
+          }}
+        />
+        <div className={'comment_ratung'}>
+          <Input.TextArea placeholder={'กรุณาแสดงความคิดเห็นก่อนให้คะแนน'} onChange={(comment) => {
+            setcomment_ratting(comment.target.value)
+          }} />
+        </div>
+        <div className={'button-group'}>
+          <button onClick={async() => {
+
+            if(!rating) return message.warning('กรุณาให้คะแนน')
+            
             try {
               let updateResult = await axios.put(
                 "http://localhost:4000/api/repair_list/" +
                 selectedRecord.id +
                 "/update-rating",
                 {
-                  rating: number,
+                  rating: rating,
+                  comment_rating: comment_ratting
                 },
                 { withCredentials: true }
               );
 
               if (updateResult?.data?.status) {
+                console.log(updateResult)
                 swal.fire({
                   title: "",
                   text: updateResult?.data?.message,
@@ -251,7 +281,7 @@ export default function TableBuilding(props) {
                 props.setData(
                   props.data.map((item) =>
                     item.id === selectedRecord.id
-                      ? { ...selectedRecord, rating: number }
+                      ? { ...selectedRecord, rating: rating }
                       : item
                   )
                 );
@@ -265,12 +295,14 @@ export default function TableBuilding(props) {
               }
               setIsModelOpen(false);
             } catch (error) {
-              if (error.response.status == 401) {
+              if (error?.response?.status == 401) {
                 window.location.href = "/login";
+              }else{
+                console.log(error)
               }
             }
-          }}
-        />
+          }}>ให้คะแนน</button>
+        </div >
       </RatingModel>
     </>
   );

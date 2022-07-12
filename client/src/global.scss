@@ -12,7 +12,7 @@ body {
   font-size: 16px;
   height: 100vh;
   color: #000;
-  background-color: #d4d4d5;
+  background-color: #F2F2F2 !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -34,6 +34,7 @@ body {
 
 .content {
   padding-bottom: 50px;
+  margin-left: 190px;
 }
 
 button {

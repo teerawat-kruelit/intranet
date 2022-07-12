@@ -156,14 +156,14 @@ module.exports.getRepairBuildingListLogs = async (userid, roleId, id) => {
 module.exports.updateRepairList = async (userid, id, body) => {
   console.log(body)
   let parameters = [
-    { name: "topic_id", sqltype: mssql.Int, value: body.topic_id },
-    { name: "status_id", sqltype: mssql.Int, value: body.status_id },
-    { name: "comment", sqltype: mssql.VarChar, value: body.comment },
-    { name: "ip", sqltype: mssql.VarChar, value: body.ip },
-    { name: "remark", sqltype: mssql.VarChar, value: body.remark },
-    { name: "expence_id", sqltype: mssql.Int, value: body.expence_id },
-    { name: "close_date", sqltype: mssql.VarChar, value: body.close_date },
-    { name: "img_repair", sqltype: mssql.VarChar, value: body.img_repair },
+    { name: "topic_id", sqltype: mssql.Int, value: body?.topic_id },
+    { name: "status_id", sqltype: mssql.Int, value: body?.status_id },
+    { name: "comment", sqltype: mssql.VarChar, value: body?.comment },
+    { name: "ip", sqltype: mssql.VarChar, value: body?.ip },
+    { name: "remark", sqltype: mssql.VarChar, value: body?.remark },
+    { name: "expence_id", sqltype: mssql.Int, value: body?.expence_id },
+    { name: "close_date", sqltype: mssql.VarChar, value: body?.close_date },
+    { name: "img_repair", sqltype: mssql.VarChar, value: body?.img_repair },
     { name: "admin_id", sqltype: mssql.Int, value: userid },
     { name: "id", sqltype: mssql.Int, value: id },
   ];

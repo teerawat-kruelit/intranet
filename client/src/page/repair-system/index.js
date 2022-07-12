@@ -11,9 +11,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { IoMdAddCircle } from "react-icons/io";
 
-
-
-
 const { TabPane } = Tabs;
 
 const RepairSystemComponent = styled.div`
@@ -169,7 +166,7 @@ export default function RepairSystem() {
               <TableIt user={user} data={itData} setData={setItData} />
             </TabPane>
             <TabPane tab="ฝ่าย อาคาร" key="2">
-              <TableBuilding user={user} data={buildData} />
+              <TableBuilding user={user} data={buildData} setData={setBuildData} />
             </TabPane>
           </Tabs>
         </div>
