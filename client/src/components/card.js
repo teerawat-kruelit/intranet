@@ -7,7 +7,7 @@ const PanelCard = styled.div`
     width: 20%;
     height: 80px;
     border-left: 8px solid ${props => props.color ? props.color : '#FFF'};;
-    background-color: #F3F3F3;
+    background-color: #FFFF;
     color: #295A45;
     /* background-color: ${props => props.color ? props.color : '#FFF'}; */
     font-weight:bold;

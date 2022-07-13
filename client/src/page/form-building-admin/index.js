@@ -412,7 +412,7 @@ export default function FormBuildingAdmin() {
             )}
             <Form.Item className="form-button">
               <button className="button-submit" type="submit">
-                SAVE
+              ➤ SAVE
               </button>
               <button
                 className="button-back"

@@ -26,7 +26,7 @@ const Contentportal = styled.div`
 
   .img-top{
     width: 100%;
-    height: 400px;
+    height: 380px;
   }
   .content-group-button {
     display: flex;
@@ -56,14 +56,6 @@ const Contentportal = styled.div`
       }
     }
   }
-  .img-company {
-    height: 25%;
-
-    .backgroud {
-      width: 100%;
-      height: 420px;
-    }
-  }
   .head {
     text-align: center;
     font-size: 30px;
@@ -71,10 +63,7 @@ const Contentportal = styled.div`
     color: blueviolet;
     padding-top: 70px;
   }
-  hr {
-    width: 1100px;
-    border: 1px solid #F3F3F3;
-  }
+ 
   .card-person {
     margin-top: 20px;
     display: flex;
@@ -132,25 +121,45 @@ const Contentportal = styled.div`
         justify-content: space-evenly;
         
      }
+     hr{
+      border: 1px solid red;
+      background-color: red;
+      height: 5px;
+      width: 100px;
+      margin-bottom: 20px;
+     }
+
+     .head-member{
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      color:#015352;
+     }
 `;
 
 const FlexCard = styled.div`
+  padding-left: 30px;
   display: flex;
+  justify-content: space-evenly;
+  
 
   .flip-card {
     background-color: transparent;
-    width: 300px;
+    width: 250px;
     height: 300px;
     perspective: 1000px;
+    
 
     .flip-card-inner {
+      top: -100px;
       position: relative;
       width: 100%;
       height: 100%;
       text-align: center;
       transition: transform 0.6s;
       transform-style: preserve-3d;
-      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+      /* border: 1px solid green; */
+      /* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); */
     }
 
     &:hover .flip-card-inner {
@@ -166,14 +175,38 @@ const FlexCard = styled.div`
     }
 
     .flip-card-front {
-      background-color: #bbb;
       color: black;
+      background-color: #FFF;
+      height:380px;
+      width: 203px;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+
+        .text-detail{
+          padding: 7px;
+          margin-top: 5px;
+        }
+        .img-card{
+          border-radius: 8px;
+        }
     }
 
     .flip-card-back {
-      background-color: #bbb;
-      color: white;
+      color: black;
+      background-color: #FFF;
+      height:380px;
+      width: 203px;
+      border-radius: 5px;
       transform: rotateY(180deg);
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+
+        .text-detail{
+          padding: 7px;
+          margin-top: 5px;
+        }
+        .img-card{
+          border-radius: 8px;
+        }
     }
   }
 `
@@ -203,19 +236,22 @@ export default function HomePage() {
           </div>
           <br />
           <FlexCard className="flex-card">
+            {/*card 1 พี่ประชา*/}
             <div className="flip-card">
               <div className="flip-card-inner">
                 <div className="flip-card-front">
-                  <img alt="example" src="/4.jpg" height={290} />
                   <div>
+                  <img alt="example" src="/4.jpg" height={290} width={205} className="img-card" />
+                  </div>
+                  <div className="text-detail">
                     <div className="name-card">K. Pracha Chaisuwan</div>
                     <div className="position">Chief Executive Officer </div>
                     <div className="phone">02-558-9009</div>
                   </div>
                 </div>
                 <div className="flip-card-back">
-                  <img alt="example" src="/4.jpg" height={290} />
-                  <div>
+                  <img alt="example" src="/4.jpg" height={290} width={205} className="img-card" />
+                  <div className="text-detail">
                     <div className="name-card">K. Pracha Chaisuwan</div>
                     <div className="position">Chief Executive Officer </div>
                     <div className="phone">02-558-9009</div>
@@ -223,34 +259,90 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
+            {/*card 1 พี่ประชา*/}
 
+            {/*card 2 พี่จิบ*/}
             <div className="flip-card">
               <div className="flip-card-inner">
                 <div className="flip-card-front">
-                  <img alt="example" src="/4.jpg" height={290} />
                   <div>
-                    <div className="name-card">K. Pracha Chaisuwan</div>
-                    <div className="position">Chief Executive Officer </div>
+                  <img alt="example" src="/3.jpg" height={290} width={205} className="img-card" />
+                  </div>
+                  <div className="text-detail">
+                    <div className="name-card">K. Hathairat Kaewsaenmuang</div>
+                    <div className="position">Chief Operating Officer</div>
+                    <div className="phone">02-558-9488</div>
+                  </div>
+                </div>
+                <div className="flip-card-back">
+                  <img alt="example" src="/3.jpg" height={290} width={205} className="img-card" />
+                  <div className="text-detail">
+                    <div className="name-card">K. Hathairat Kaewsaenmuang</div>
+                    <div className="position">Chief Operating Officer</div>
+                    <div className="phone">02-558-9488</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/*card 2 พี่จิบ*/}
+
+
+            {/*card 3 พี่อุ*/}
+            <div className="flip-card">
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <div>
+                  <img alt="example" src="/6.jpg" height={290} width={205} className="img-card" />
+                  </div>
+                  <div className="text-detail">
+                    <div className="name-card">K. Waraluck Chaisuwan</div>
+                    <div className="position">Finance Director</div>
                     <div className="phone">02-558-9009</div>
                   </div>
                 </div>
                 <div className="flip-card-back">
-                  <img alt="example" src="/4.jpg" height={290} />
-                  <div>
-                    <div className="name-card">K. Pracha Chaisuwan</div>
-                    <div className="position">Chief Executive Officer </div>
+                  <img alt="example" src="/6.jpg" height={290} width={205} className="img-card" />
+                  <div className="text-detail">
+                    <div className="name-card">K. Waraluck Chaisuwan</div>
+                    <div className="position">Finance Director</div>
                     <div className="phone">02-558-9009</div>
                   </div>
                 </div>
               </div>
             </div>
+            {/*card 3 พี่อุ*/}
+
+            {/*card 3 พี่อุ้ย*/}
+            <div className="flip-card">
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <div>
+                  <img alt="example" src="/7.jpg" height={290} width={205} className="img-card" />
+                  </div>
+                  <div className="text-detail">
+                    <div className="name-card">K. Suthida Chaisuwan</div>
+                    <div className="position">General Counsel</div>
+                    <div className="phone">02-558-9009</div>
+                  </div>
+                </div>
+                <div className="flip-card-back">
+                  <img alt="example" src="/7.jpg" height={290} width={205} className="img-card" />
+                  <div className="text-detail">
+                    <div className="name-card">K. Suthida Chaisuwan</div>
+                    <div className="position">General Counsel</div>
+                    <div className="phone">02-558-9009</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/*card 3 พี่อุ้ย*/}
+
           </FlexCard>
-
-
-
-
-
+          <br />
           <hr />
+          <div className="head-member">
+            <div>WELL COME TO CHASE</div>
+          </div>
           <div className="button-group">
             <div className="group"><span>IT-Support</span></div>
             <div className=""><span>Account</span></div>

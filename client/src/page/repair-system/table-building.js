@@ -30,7 +30,7 @@ const RatingPoint = styled.div`
   text-align: center;
   width: 20px;
   height: 20px;
-  background-color: #FD7D00;
+  background-color: #FFCA2C;
   border: none;
   color: #FFF;
   font-size: 15px;

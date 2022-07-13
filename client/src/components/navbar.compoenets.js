@@ -3,15 +3,19 @@ import styled from "styled-components"
 const NavbarComponent = styled.div`
 
     background-color: #015352;
+    box-shadow: 0px 0px 13px 0px rgb(82 63 105 / 20%);
     
     .navbar__container{
 
         display: flex;
 
         .navbar-left-group{
+            background-color: #FFF;
+            box-shadow: 0px 0px 13px 0px rgb(82 63 105 / 20%);
             .navbar-logo-group{
+               
                 display: flex;
-                background-color: transparent;
+                background-color: #015352;
                 padding: 0px 70px;
                 border-bottom: 65px solid rgb(243, 243, 243);
                 border-left: 0px solid transparent;

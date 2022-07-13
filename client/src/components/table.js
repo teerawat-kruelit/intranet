@@ -35,10 +35,17 @@ const TableComponent = styled(AntdTable)`
   }
 
   .table-search-input{
-    color: red;
+    color: gray;
   }
-`;
+`
 
+const TabletotalRows =styled.div`
+    font-size:18px;
+    position: absolute;
+    bottom: -335px;
+
+
+`;
 
 
 export default function Table(props) {
@@ -70,7 +77,7 @@ export default function Table(props) {
 
   return (
     <>
-      <div className="Search" style={{ width: '100%', display: "flex", justifyContent: 'space-between', minHeight: '50px' }}>
+      <div className="Search" style={{ width: '100%', display: "flex", justifyContent: 'space-between', minHeight: '20px' }}>
         {props.topLeftButton ? props.topLeftButton : <></>}
         <InputSerach
           className={'table-search-input'}
@@ -82,7 +89,7 @@ export default function Table(props) {
           }}
         />
       </div>
-      <div className={'table-total-rows'}>ทั้งหมด {props.dataSource.length} แถว</div>
+      
       <TableComponent
         className="table"
         rowKey={"id"}
@@ -90,6 +97,7 @@ export default function Table(props) {
         columns={props.columns}
         bordered
       />
+      <TabletotalRows className={'table-total-rows'}>รายการทั้งหมด : {props.dataSource.length} Row</TabletotalRows>
     </>
   );
 }
