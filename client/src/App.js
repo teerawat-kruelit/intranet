@@ -7,6 +7,7 @@ import FormItAdmin from "./page/form-it-admin";
 import FromBuilding from "./page/form-building";
 import FromBuildingAdmin from "./page/form-building-admin";
 import ReportProcess from "./page/report-process";
+import StockSystem from "./page/stock";
 
 const App = () => {
   let routes = useRoutes([
@@ -17,8 +18,9 @@ const App = () => {
     { path: "/form-it/:id", element: <FormItAdmin /> },
     { path: "/form-building", element: <FromBuilding /> },
     { path: "/form-building/:id", element: <FromBuildingAdmin /> },
-
     { path: "/report-process/:type", element: <ReportProcess /> },
+
+    { path: "/stock", element: <StockSystem /> },
   ]);
   return routes;
 };

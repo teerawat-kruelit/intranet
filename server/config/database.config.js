@@ -1,7 +1,7 @@
 const config = {
   user: "sa",
   password: "tokota55",
-  database: "member",
+  database: "members",
   server: "IT-NB-03\\SQL2019",
   pool: {
     max: 10,
