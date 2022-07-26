@@ -10,10 +10,11 @@ import swal from 'sweetalert2'
 
 const FromBuildingComponent = styled.div`
     .Card-Building{
-        border: 1px solid black;
+        border: 1px solid #e2e0e0;
         width: 1200px;
        margin: 0 auto;
        margin-top: 50px;
+       background-color: #FFFF;
 
        .header{
         color: #FFF;
@@ -144,30 +145,34 @@ export default function FromBuilding() {
     }, []);
 
     const onFinish = async (values) => {
-       values.ticket_no = newTicketNo
-       
-       let result = await axios.post('http://localhost:4000/api/repair_list/building', values, { withCredentials: true })
-       if (result.data.status) {
-           history('/repair')
-       } else {
-           swal.fire({
-               title: '',
-               text: result.data.message,
-               icon: 'error',
-               confirmButtonText: 'X'
-           })
+        values.ticket_no = newTicketNo
 
-           let lastTicketNoData = await axios.get('http://localhost:4000/api/ticket/last?type_id=2', { withCredentials: true })
-           if (lastTicketNoData.data.data.length < 1) {
-               let newTicketNo = dayjs().format('YYYY-MM-') + '0001'
-               setnewTicketNo(newTicketNo)
-           } else {
-               let lastRicketNo = lastTicketNoData.data.data[0].ticket_no
-               let newTicketNo = padDigits(parseInt(lastRicketNo.split('-')[2]) + 1, 4)
-               newTicketNo = dayjs().format('YYYY-MM-') + newTicketNo
-               setnewTicketNo(newTicketNo)
-           }
-       }
+        let result = await axios.post('http://localhost:4000/api/repair_list/building', values, { withCredentials: true })
+        if (result.data.status) {
+            swal
+                .fire({
+                    title: "",
+                    text: result.data.message,
+                    icon: "success",
+                    confirmButtonText: "X",
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        history("/repair");
+                    }
+                });
+
+            let lastTicketNoData = await axios.get('http://localhost:4000/api/ticket/last?type_id=2', { withCredentials: true })
+            if (lastTicketNoData.data.data.length < 1) {
+                let newTicketNo = dayjs().format('YYYY-MM-') + '0001'
+                setnewTicketNo(newTicketNo)
+            } else {
+                let lastRicketNo = lastTicketNoData.data.data[0].ticket_no
+                let newTicketNo = padDigits(parseInt(lastRicketNo.split('-')[2]) + 1, 4)
+                newTicketNo = dayjs().format('YYYY-MM-') + newTicketNo
+                setnewTicketNo(newTicketNo)
+            }
+        }
     }
 
     return (
@@ -197,7 +202,7 @@ export default function FromBuilding() {
                             name={'ExtNo'}
                             label={'Phone'}
                         >
-                            <Input  />
+                            <Input />
                         </Form.Item>
                         <Form.Item
                             name={'branch'}
@@ -227,16 +232,16 @@ export default function FromBuilding() {
                                 },
                             ]}
                         >
-                            <Input.TextArea placeholder="กรุณาแจ้งปัญหาการใช้งาน"/>
+                            <Input.TextArea placeholder="กรุณาแจ้งปัญหาการใช้งาน" />
                         </Form.Item>
                         <Form.Item className='form-button'>
                             <button className="button-submit" type="submit">
-                            ➤ SAVE
+                                ➤ SAVE
                             </button>
                             <button className="button-back" onClick={() => {
                                 history('/repair')
                             }}>
-                                HOME
+                                ◀ HOME
                             </button>
                         </Form.Item>
                     </Form>

@@ -8,6 +8,8 @@ import FromBuilding from "./page/form-building";
 import FromBuildingAdmin from "./page/form-building-admin";
 import ReportProcess from "./page/report-process";
 import StockSystem from "./page/stock";
+import RepairSystemPO from "./page/repair-system-po";
+import FormPO from "./page/form-po";
 
 const App = () => {
   let routes = useRoutes([
@@ -21,6 +23,9 @@ const App = () => {
     { path: "/report-process/:type", element: <ReportProcess /> },
 
     { path: "/stock", element: <StockSystem /> },
+
+    { path: "/repair-po", element: <RepairSystemPO /> },
+    { path: "/form-po/:id", element: <FormPO /> },
   ]);
   return routes;
 };

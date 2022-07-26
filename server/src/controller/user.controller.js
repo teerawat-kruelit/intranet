@@ -1,7 +1,7 @@
 const userModel = require('../model/user.model')
 const Validator = require('validatorjs');
 
-module.exports.getProfile = async(req, res) => {
+module.exports.getProfile = async (req, res) => {
 
     let userid = req.session.userid
     if (!req.session.isLogin) {
@@ -17,7 +17,7 @@ module.exports.getProfile = async(req, res) => {
     return res.json({ status: true, data: profile })
 }
 
-module.exports.updateProfile = async(req, res) => {
+module.exports.updateProfile = async (req, res) => {
     let userid = req.session.userid
     if (!req.session.isLogin) {
         return res.status(401).json({ status: false, message: 'unauthorize' })
@@ -40,4 +40,22 @@ module.exports.updateProfile = async(req, res) => {
     }
 
     return res.json({ status: true, maessage: 'Update SuccessFully' })
+}
+
+module.exports.getEmployee = async (req, res) => {
+
+    let { type_dep } = req.query;
+
+    // let userid = req.session.userid
+    // if (!req.session.isLogin) {
+    //     return res.status(401).json({ status: false, message: 'unauthorize' })
+    // }
+
+    let employees = await userModel.getEmployeeByID(type_dep)
+    if (employees.length < 1) {
+        return res.json({ status: true, data: [] })
+    }
+
+    let employee = employees
+    return res.json({ status: true, data: employee })
 }

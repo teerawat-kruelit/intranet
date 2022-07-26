@@ -6,12 +6,13 @@ import Navbar from "../../components/navbar.compoenets";
 import axios from "axios";
 import moment from "moment";
 import swal from "sweetalert2";
+import { BsPersonPlusFill } from "react-icons/bs";
 
 const FormBuildingComponent = styled.div`
-  border: 1px solid;
   width: 1200px;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 20px;
+
 
   .ant-form {
     display: flex;
@@ -21,7 +22,7 @@ const FormBuildingComponent = styled.div`
     margin: 0;
     margin-top: 15px;
     .ant-form-item-label {
-      background-color: #157347;
+      background-color: #015352;
       label {
         &::before {
           display: none;
@@ -40,7 +41,7 @@ const FormBuildingComponent = styled.div`
 
   .form-button {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 10px;
     
     .button-submit{
         background-color: #015352;
@@ -67,9 +68,10 @@ const FormBuildingComponent = styled.div`
 
 
   .form-header {
-    color: #fff;
-    text-align: center;
-    background-color: #015352;
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 17px;
+    color: #015352;
   }
 
   .ticket {
@@ -110,12 +112,42 @@ const FormBuildingComponent = styled.div`
       width: 29%;
     }
     
-   
+    .image-repair {
+      margin-top: 10px;
+      width: 100%;
+    }
 
-  .image-repair {
-    margin-top: 10px;
+    .head-user{
     width: 100%;
+    padding: 5px;
+    background-color: #6169D0;
+    color: #FFF;
+    
+    .icon-head{
+      font-size: 20px;
+      top: 4px;
+      position: relative;
+      margin-left: 5px;
+    }
   }
+
+  .user,
+  .admin{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    border: 1px solid #e2e0e0;
+    background-color: #FFF;
+    box-shadow: 0px 0px 13px 0px rgb(82 63 105 / 20%);
+    .title{
+      width: 100%;
+      border: 1px solid black;
+    }
+  }
+  .user{
+    margin-bottom: 10px;
+  }
+
 `;
 
 export default function FormBuildingAdmin() {
@@ -216,7 +248,8 @@ export default function FormBuildingAdmin() {
     <>
       <Navbar />
       <FormBuildingComponent className="form-building">
-        <div className="h1 form-header">UPDATE RECORD BUILDING</div>
+        {/* <div className="h1 form-header">UPDATE RECORD BUILDING</div> */}
+        <div className="form-header">UPDATE-RECORD BY BUILDING</div>
         <div className="form-building-container">
           <Form
             className="it-form-wrapper"
@@ -225,182 +258,193 @@ export default function FormBuildingAdmin() {
             layout="inline"
             size="large"
           >
-            <Form.Item
-              className="form-item-ticket"
-              name={"ticket_no"}
-              label={"Ticket"}
-            >
-              <Input readOnly />
-            </Form.Item>
-            <Form.Item
-              className="form-item-date"
-              name={"create_date"}
-              label={"วันที่แจ้งซ่อม"}
-            >
-              <Input readOnly />
-            </Form.Item>
-            <Form.Item
-              className="TUserName"
-              name={"TUserName"}
-              label={"ผู้ติดต่อ"}
-            >
-              <Input readOnly />
-            </Form.Item>
-            <Form.Item className="ExtNo" name={"ExtNo"} label={"เบอร์ติดต่อ"}>
-              <Input readOnly />
-            </Form.Item>
-            <Form.Item
-              className="form-item-dep"
-              name={"branch"}
-              label={"หน่วยงาน"}
-            >
-              <Input readOnly />
-            </Form.Item>
-            <Form.Item
-              className="form-item-description"
-              name={"description"}
-              label={"แจ้งปัญหาการใข้งาน"}
-            >
-              <Input.TextArea readOnly />
-            </Form.Item>
-            <Form.Item
-              className="form-item-TUserName"
-              name={"admin_name"}
-              label={"It-Support"}
-            >
-              <Input readOnly />
-            </Form.Item>
-            <Form.Item
-              name={"topic_id"}
-              className={"sel-topics"}
-              label={"หมวดหมู่ปัญหา"}
-              rules={[
-                {
-                  required: true,
-                  message: "กรุณาเลือกหมวดหมู่ปัญหา",
-                },
-              ]}
-            >
-              <Select
-                className="sel-topics1"
-                placeholder="กรุณาเลือกหมวดหมู่ปัญหา"
+            <div className="head-user">
+              <BsPersonPlusFill className="icon-head" />&nbsp;&nbsp;&nbsp;รายการแจ้งซ่อม - USER
+            </div>
+            <div className="user">
+              <Form.Item
+                className="form-item-ticket"
+                name={"ticket_no"}
+                label={"Ticket"}
               >
-                {topics.map((topics) => {
-                  return (
-                    <Select.Option key={topics.id} value={topics.id}>
-                      {topics.name}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              name={"status_id"}
-              className={"sel-status"}
-              label={"Status"}
-              rules={[
-                {
-                  required: true,
-                  message: "กรุณาเลือกสถานะ",
-                },
-              ]}
-            >
-              <Select className="sel-status1" placeholder="กรุณาเลือกสถานะ">
-                {status.map((status) => {
-                  return (
-                    <Select.Option key={status.id} value={status.id}>
-                      {status.name}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              className="form-item-comment"
-              name={"comment"}
-              label={"Comment"}
-            >
-              <Input.TextArea />
-            </Form.Item>
-            <Form.Item
-              className="form-item-remark"
-              name={"remark"}
-              label={"หมายเหตุ"}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name={"expence_id"}
-              className={"sel-expences"}
-              label={"หัวข้อ"}
-              rules={[
-                {
-                  required: true,
-                  message: "กรุณาเลือกหัวข้อ",
-                },
-              ]}
-            >
-              <Select className="sel-expences1" placeholder="กรุณาเลือกหัวข้อ">
-                {expences.map((expences) => {
-                  return (
-                    <Select.Option key={expences.id} value={expences.id}>
-                      {expences.name}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              className="form-item-close-date"
-              name={"close_date"}
-              label={"วันที่จบงาน"}
-            >
-              <DatePicker />
-            </Form.Item>
-            <Form.Item
-              className="form-item-close-time"
-              name={"close_time"}
-              label={"เวลาจบงาน"}
-            >
-              <DatePicker picker="time" />
-            </Form.Item>
-            <Form.Item className="form-item-upload" label={"อัพโหลดรูปภาพ"}>
-              <input
-                type={"file"}
-                onChange={async (e) => {
-                  try {
-                    let formData = new FormData();
-                    formData.append("image", e.target.files[0]);
+                <Input readOnly />
+              </Form.Item>
+              <Form.Item
+                className="form-item-date"
+                name={"create_date"}
+                label={"วันที่แจ้งซ่อม"}
+              >
+                <Input readOnly />
+              </Form.Item>
+              <Form.Item
+                className="TUserName"
+                name={"TUserName"}
+                label={"ผู้ติดต่อ"}
+              >
+                <Input readOnly />
+              </Form.Item>
+              <Form.Item className="ExtNo" name={"ExtNo"} label={"เบอร์ติดต่อ"}>
+                <Input readOnly />
+              </Form.Item>
+              <Form.Item
+                className="form-item-dep"
+                name={"branch"}
+                label={"หน่วยงาน"}
+              >
+                <Input readOnly />
+              </Form.Item>
+              <Form.Item
+                className="form-item-description"
+                name={"description"}
+                label={"แจ้งปัญหาการใข้งาน"}
+              >
+                <Input.TextArea readOnly />
+              </Form.Item>
+            </div>
 
-                    let resUpload = await axios.post(
-                      "http://localhost:4000/api/upload/repair",
-                      formData,
-                      { withCredentials: true }
+            <div className="head-user">
+              <BsPersonPlusFill className="icon-head" />&nbsp;&nbsp;&nbsp;ดำเนินการด้วย Admin
+            </div>
+            <div className="admin">
+              <Form.Item
+                className="form-item-TUserName"
+                name={"admin_name"}
+                label={"It-Support"}
+              >
+                <Input readOnly />
+              </Form.Item>
+              <Form.Item
+                name={"topic_id"}
+                className={"sel-topics"}
+                label={"หมวดหมู่ปัญหา"}
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณาเลือกหมวดหมู่ปัญหา",
+                  },
+                ]}
+              >
+                <Select
+                  className="sel-topics1"
+                  placeholder="กรุณาเลือกหมวดหมู่ปัญหา"
+                >
+                  {topics.map((topics) => {
+                    return (
+                      <Select.Option key={topics.id} value={topics.id}>
+                        {topics.name}
+                      </Select.Option>
                     );
-                    if (resUpload?.data?.status) {
-                      setFileName(resUpload?.data?.data?.filename);
-                      swal.fire({
-                        title: "",
-                        text: resUpload?.data?.message,
-                        icon: "success",
-                        confirmButtonText: "X",
-                      });
-                    } else {
-                      swal.fire({
-                        title: "",
-                        text: resUpload?.data?.message,
-                        icon: "error",
-                        confirmButtonText: "X",
-                      });
+                  })}
+                </Select>
+              </Form.Item>
+              <Form.Item
+                name={"status_id"}
+                className={"sel-status"}
+                label={"Status"}
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณาเลือกสถานะ",
+                  },
+                ]}
+              >
+                <Select className="sel-status1" placeholder="กรุณาเลือกสถานะ">
+                  {status.map((status) => {
+                    return (
+                      <Select.Option key={status.id} value={status.id}>
+                        {status.name}
+                      </Select.Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+              <Form.Item
+                className="form-item-comment"
+                name={"comment"}
+                label={"Comment"}
+              >
+                <Input.TextArea />
+              </Form.Item>
+              <Form.Item
+                className="form-item-remark"
+                name={"remark"}
+                label={"หมายเหตุ"}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name={"expence_id"}
+                className={"sel-expences"}
+                label={"หัวข้อ"}
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณาเลือกหัวข้อ",
+                  },
+                ]}
+              >
+                <Select className="sel-expences1" placeholder="กรุณาเลือกหัวข้อ">
+                  {expences.map((expences) => {
+                    return (
+                      <Select.Option key={expences.id} value={expences.id}>
+                        {expences.name}
+                      </Select.Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+              <Form.Item
+                className="form-item-close-date"
+                name={"close_date"}
+                label={"วันที่จบงาน"}
+              >
+                <DatePicker />
+              </Form.Item>
+              <Form.Item
+                className="form-item-close-time"
+                name={"close_time"}
+                label={"เวลาจบงาน"}
+              >
+                <DatePicker picker="time" />
+              </Form.Item>
+              <Form.Item className="form-item-upload" label={"อัพโหลดรูปภาพ"}>
+                <input
+                  type={"file"}
+                  onChange={async (e) => {
+                    try {
+                      let formData = new FormData();
+                      formData.append("image", e.target.files[0]);
+
+                      let resUpload = await axios.post(
+                        "http://localhost:4000/api/upload/repair",
+                        formData,
+                        { withCredentials: true }
+                      );
+                      if (resUpload?.data?.status) {
+                        setFileName(resUpload?.data?.data?.filename);
+                        swal.fire({
+                          title: "",
+                          text: resUpload?.data?.message,
+                          icon: "success",
+                          confirmButtonText: "X",
+                        });
+                      } else {
+                        swal.fire({
+                          title: "",
+                          text: resUpload?.data?.message,
+                          icon: "error",
+                          confirmButtonText: "X",
+                        });
+                      }
+                    } catch (error) {
+                      if (error.response.status == 401) {
+                        window.location.href = "/login";
+                      }
                     }
-                  } catch (error) {
-                    if (error.response.status == 401) {
-                      window.location.href = "/login";
-                    }
-                  }
-                }}
-              />
-            </Form.Item>
+                  }}
+                />
+              </Form.Item>
+            </div>
             {fileName && (
               <div className="image-repair">
                 <img
@@ -412,7 +456,7 @@ export default function FormBuildingAdmin() {
             )}
             <Form.Item className="form-button">
               <button className="button-submit" type="submit">
-              ➤ SAVE
+                ➤ SAVE
               </button>
               <button
                 className="button-back"
@@ -420,7 +464,7 @@ export default function FormBuildingAdmin() {
                   history("/repair");
                 }}
               >
-                HOME
+                ◀ HOME
               </button>
             </Form.Item>
           </Form>

@@ -18,7 +18,7 @@ module.exports.login = async (req, res) => {
   req.session.userid = user.id;
   req.session.role_id = user.role;
   // return res.json({ status: true, message: "login successfully", user });
-  return res.json({ status: true, message: "login successfully" });
+  return res.json({ status: true, message: "login successfully", data: { role: user.role } });
 };
 
 module.exports.logout = async (req, res) => {
@@ -30,12 +30,12 @@ module.exports.register = async (req, res) => {
   let body = req.body;
 
   let rules = {
-    TUsername: "required",
-    EUsername: "required",
-    Extno: "required|string|size:10",
-    Position: "required",
+    TUserName: "required",
+    EUserName: "required",
+    email: "required",
     EPassword: "required",
-    email: "required|email",
+    ExtNo: "required",
+    Position: "required",
   };
 
   let validation = new Validator(body, rules);
@@ -51,7 +51,6 @@ module.exports.register = async (req, res) => {
     return res.json({ status: false, message: "exists user" });
   }
 
-  body.EPassword = await bcrypt.hash(body.EPassword, 13);
   let result = await authModel.createUser(body);
   if (!result)
     return res.json({ status: false, message: "failed to register" });

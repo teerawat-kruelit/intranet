@@ -9,6 +9,7 @@ import swal from "sweetalert2";
 import { Input, message, Modal, Rate } from "antd";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import { TbReportSearch } from "react-icons/tb";
+import Swal from "sweetalert2";
 
 const RatingModel = styled(Modal)`
   .ant-modal-body {
@@ -21,6 +22,18 @@ const RatingModel = styled(Modal)`
     width: 100%;
     justify-content: center;
     margin-top: 20px;
+
+    .point{
+      background-color: #015352;
+      border-radius: 5px;
+      border: none;
+      padding: 5px;
+      color: #FFFF;
+    }
+  }
+
+  .comment_ratung{
+    margin-top: 20px;
   }
 `;
 
@@ -30,7 +43,7 @@ const RatingPoint = styled.div`
   text-align: center;
   width: 20px;
   height: 20px;
-  background-color: #FFCA2C;
+  background-color: #564cf1;
   border: none;
   color: #FFF;
   font-size: 15px;
@@ -56,10 +69,13 @@ const ButtonGroup_it = styled.div`
       padding: 7px;
       margin-bottom: 10px;
       margin-right: 15px;
+      cursor: pointer;
 
       .icon-add {
         font-size: 20px;
         margin-right: 5px;
+        display: flex;
+        align-items: center;
       }
     }  
 `
@@ -217,7 +233,7 @@ export default function TableBuilding(props) {
           {props?.user?.role === 2 || props?.user?.role === 3 ? (
             <div className="button-export-excel" onClick={handleClick}>
               <RiFileExcel2Fill className="icon-add" />
-              Export Excel
+
             </div>
           ) : ""}
 
@@ -225,14 +241,14 @@ export default function TableBuilding(props) {
             <NavLink to={"/report-process/building"}>
               <button className="button-report-process">
                 <TbReportSearch className="icon-add" />
-                Report Building
+
               </button>
             </NavLink>
           ) : ""}
         </ButtonGroup_it>
       } />
       <RatingModel
-        title={"ให้คะแนนเลขแจ้งซ่อม " + selectedRecord?.ticket_no}
+        title={"ให้คะแนนแจ้งซ่อมเลขที่ " + selectedRecord?.ticket_no}
         visible={isModelOpen}
         closeIcon={<>X</>}
         destroyOnClose={true}
@@ -253,10 +269,10 @@ export default function TableBuilding(props) {
           }} />
         </div>
         <div className={'button-group'}>
-          <button onClick={async() => {
+          <button className="point" onClick={async () => {
 
-            if(!rating) return message.warning('กรุณาให้คะแนน')
-            
+            if (!rating) return message.warning('กรุณาให้คะแนน')
+
             try {
               let updateResult = await axios.put(
                 "http://localhost:4000/api/repair_list/" +
@@ -296,8 +312,17 @@ export default function TableBuilding(props) {
               setIsModelOpen(false);
             } catch (error) {
               if (error?.response?.status == 401) {
-                window.location.href = "/login";
-              }else{
+                if (error.response.status == 401) {
+                  Swal.fire({
+                    title: 'กรุณาเข้าสู่ระบบก่อนเข้าใข้งาน',
+                    confirmButtonText: 'OK',
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      window.location.href = "/login"
+                    }
+                  })
+                }
+              } else {
                 console.log(error)
               }
             }

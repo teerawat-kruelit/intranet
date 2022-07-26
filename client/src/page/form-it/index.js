@@ -12,6 +12,7 @@ const FormItComponent = styled.div`
     width: 1200px;
     margin: 0 auto;
     margin-top: 50px;
+    background-color: #FFFF;
 
     .ant-form{
         display: flex;
@@ -82,6 +83,7 @@ const FormItComponent = styled.div`
 
     .form-it-container{
         padding: 15px;
+        
     }
 
     .form-item-tusername,
@@ -155,14 +157,18 @@ export default function FormIt() {
 
         let result = await axios.post('http://localhost:4000/api/repair_list/it', values, { withCredentials: true })
         if (result.data.status) {
-            history('/repair')
-        } else {
-            swal.fire({
-                title: '',
-                text: result.data.message,
-                icon: 'error',
-                confirmButtonText: 'X'
-            })
+            swal
+                .fire({
+                    title: "",
+                    text: result.data.message,
+                    icon: "success",
+                    confirmButtonText: "X",
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        history("/repair");
+                    }
+                });
 
             let lastTicketNoData = await axios.get('http://localhost:4000/api/ticket/last', { withCredentials: true })
             if (lastTicketNoData.data.data.length < 1) {
@@ -190,29 +196,29 @@ export default function FormIt() {
                             name={'TUserName'}
                             label={'Name-Surname'}
                         >
-                            <Input  />
+                            <Input />
                         </Form.Item>
                         <Form.Item
                             className='form-item-position'
                             name={'Position'}
                             label={'Position'}
                         >
-                            <Input  />
+                            <Input />
                         </Form.Item>
                         <Form.Item
                             className='form-item-extno'
                             name={'ExtNo'}
                             label={'Phone'}
                         >
-                            <Input  />
+                            <Input />
                         </Form.Item>
                         <Form.Item
                             className='form-item-ip'
                             name={'ip'}
                             label={'IP-Adress'}
-                            
+
                         >
-                            <Input placeholder="กรุณากรอก IP-เครื่องคอมพิวเตอร์"/>
+                            <Input placeholder="กรุณากรอก IP-เครื่องคอมพิวเตอร์" />
                         </Form.Item>
                         <Form.Item
                             name={'branch'}
@@ -242,22 +248,22 @@ export default function FormIt() {
                                 },
                             ]}
                         >
-                            <Input.TextArea placeholder="กรุณาแจ้งปัญหาการใช้งาน"/>
+                            <Input.TextArea placeholder="กรุณาแจ้งปัญหาการใช้งาน" />
                         </Form.Item>
                         <Form.Item className='form-button'>
                             <button className="button-submit" type="submit">
-                            ➤ SAVE
+                                ➤ SAVE
                             </button>
                             <button className="button-back" onClick={() => {
                                 history('/repair')
                             }}>
-                                HOME
+                                ◀ HOME
                             </button>
                         </Form.Item>
                     </Form>
                 </div>
             </FormItComponent>
-            
+
         </>
     )
 }

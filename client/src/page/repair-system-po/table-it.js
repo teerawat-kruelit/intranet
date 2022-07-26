@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Table from "../../components/table";
-import { AiTwotoneEdit } from "react-icons/ai";
+import { AiTwotoneCreditCard, AiTwotoneEdit } from "react-icons/ai";
 import { Input, Modal, Rate, message } from "antd";
 import styled from "styled-components";
 import axios from "axios";
@@ -35,25 +35,6 @@ const RatingModel = styled(Modal)`
     margin-top: 10px;
   }
 `;
-
-const RatingPoint = styled.div`
-  border: 1px solid red;
-  border-radius: 50%;
-  text-align: center;
-  width: 20px;
-  height: 20px;
-  background-color: #564cf1;
-  border: none;
-  color: #FFF;
-  font-size: 15px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50px;
-`
 
 const ButtonGroup_it = styled.div`
   display: flex;
@@ -90,6 +71,18 @@ export default function TableIt(props) {
     const init = async () => {
       let column = [
         {
+          title: "",
+          dataIndex: "",
+          width: 20,
+          render: (_, record) => (
+            <NavLink to={"/form-po/" + record.id}>
+              <button className={"button-edit"}>
+                <AiTwotoneEdit />
+              </button>
+            </NavLink>
+          ),
+        },
+        {
           title: "เลขที่แจ้งซ่อม",
           dataIndex: "ticket_no",
           sorter: (a, b) => {
@@ -115,11 +108,7 @@ export default function TableIt(props) {
           dataIndex: "ip",
         },
         {
-          title: "สาขาที่แจ้ง",
-          dataIndex: "branch",
-        },
-        {
-          title: "แจ้งปัญหา",
+          title: "ปัญหาที่เกิดขึ้น",
           dataIndex: "description",
         },
         {
@@ -127,70 +116,58 @@ export default function TableIt(props) {
           dataIndex: "admin_name",
         },
         {
-          title: "ข้อมูลตอบกลับ",
+          title: "Ref/No.1",
+          dataIndex: "img_repair",
+          render: (_, record) => record.img_repair && (
+            <a href={"http://localhost:4000/public/image/repair/" + record.img_repair} target='__blank'>รูป</a>
+          )
+        },
+        {
+          title: "หมายเหตุ",
           dataIndex: "remark",
         },
         {
-          title: "สถานะ",
-          dataIndex: "status",
+          title: "Approve",
+          dataIndex: "po_approve",
           render: (_, record) => (
             <div className="table-button-group">
               <button
-                className={"button-detail status-" + record.status}
+                className={"button-detail status-" + record?.po_approve && record?.po_approve > 0 ? 'approve' : 'not-approve'}
                 onClick={() => { }}
               >
-                <b>{record.status || "-"}</b>
+                <b>{record?.po_approve && record?.po_approve > 0 ? 'approve' : 'not approve'}</b>
               </button>
             </div>
           ),
         },
+        {
+          title: "ผู้ดำนเนินการ",
+          dataIndex: "po_name",
+        },
+        {
+          title: "PO-Number",
+          dataIndex: "po_number",
+        },
+        {
+          title: "PO-Date",
+          dataIndex: "po_date",
+        },
+        {
+          title: "PO-Img",
+          dataIndex: "img_po",
+          render: (_, record) => record.img_po && (
+            <a href={"http://localhost:4000/public/image/repair/" + record.img_po} target='__blank'>รูป</a>
+          )
+        },
+        {
+          title: "INVOICE-Img",
+          dataIndex: "img_inv",
+          render: (_, record) => record.img_inv && (
+            <a href={"http://localhost:4000/public/image/repair/" + record.img_inv} target='__blank'>รูป</a>
+          )
+        },
       ];
 
-      if (props?.user?.role === 2) {
-        column.unshift({
-          title: "",
-          dataIndex: "",
-          width: 20,
-          render: (_, record) => (
-            <NavLink to={"/form-it/" + record.id}>
-              <button className={"button-edit"}>
-                <AiTwotoneEdit />
-              </button>
-            </NavLink>
-          ),
-        });
-      }
-
-      if (props?.user?.role === 1) {
-        column.push({
-          title: "point",
-          dataIndex: "",
-          width: 20,
-          render: (_, record) => (
-            <>
-              {record.status == "success" && !record.rating ? (
-                <button
-                  className={"button-rating"}
-                  onClick={() => {
-                    setcomment_ratting(null)
-                    setIsModelOpen(true);
-                    setSelectedRecord(record);
-                  }}
-                >
-                  ★
-                </button>
-              ) : (
-                ""
-              )}
-              {record.status == "success" && record.rating ? (
-                <RatingPoint>{record.rating}</RatingPoint>
-              ) : (
-                ""
-              )}
-            </>
-          ),
-        });
-      }
       setColumns(column);
     };
 

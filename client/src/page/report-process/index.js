@@ -10,6 +10,10 @@ import { useNavigate } from 'react-router'
 import { BsFillArrowLeftSquareFill } from 'react-icons/bs'
 import { BsFillArrowRightSquareFill } from 'react-icons/bs'
 import Table from '../../components/table'
+import { Excel } from "antd-table-saveas-excel";
+import { RiFileExcel2Fill } from 'react-icons/ri'
+
+
 
 const Content = styled.div`
   display: flex;
@@ -20,11 +24,32 @@ const Content = styled.div`
     }
     .Text-head{
       padding: 15px 0px;
-      padding-left: 95px;
+      display: flex;
+      justify-content: start;
+      margin-left:55px;
 
       .head{
-      font-size: 20px;
-    }
+      font-size: 23px;
+      font-weight:bold;
+      color: #015352;
+      }
+      .button-excel{
+        margin-left:10px;
+        
+        .btn-ext{
+          border: none;
+          background-color: #157347;
+          padding: 5px;
+          border-radius: 10px;
+          width: 50px;
+          font-size: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #FFFF;
+        }
+
+      }
     }
 
     .group-report{
@@ -64,8 +89,7 @@ const Content = styled.div`
           .summary {
             position: relative; 
             width: 100%;
-            font-size: 18px;
-            text-align: center;
+            font-size: 17px;
             padding: 10px 5px 0px;
           }
 
@@ -99,12 +123,22 @@ const Content = styled.div`
           
         }
 
+        .head-topic{
+          background-color:#6169D0;
+          padding: 5px;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          padding-left: 20px;
+          font-size: larger;
+          color: #FFFF;
+          }
+
         .topic-group{
           width: 500px;
           background-color: #FFF;
           position: relative;
-          padding: 10px;
-          padding-bottom: 10px;
+          padding: 5px 15px 17px;
           box-shadow: 0px 0px 13px 0px rgb(82 63 105 / 5%);
 
           .process-date {
@@ -148,14 +182,20 @@ const Content = styled.div`
             }
           }
 
-          .head{
-            display: flex;
-            justify-content: center;
-            font-weight:bold;
-          }
+        
         }
         .rating-group{
           margin-left: 20px;
+        }
+        .rating-admin{
+          background-color:#6169D0;
+          padding: 5px;
+          width: 400px;
+          display: flex;
+          align-items: center;
+          padding-left: 20px;
+          font-size: larger;
+          color: #FFFF;
         }
   }
     
@@ -233,28 +273,29 @@ const RatingComponent = styled.div`
     }
   }
 
-  .total-rating{
+  .total-rating , .total{
     width: 100%;
     position: relative; 
-    font-size: 18px;
-    text-align: center;
-    padding-bottom: 10px;
+    padding: 10px 5px 0px;
   }
+
  
 `
 
 const Comment_User = styled.div`
+  margin-top: 20px;
   width: 90%;
   .head-text{
-    margin-top: 20px;
-    background-color:red;
-    width: 90%;
+    background-color:#6169D0;
+    width: 100%;
     height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    font-size: larger;
+    color: #FFFF;
   }
-  .body-comment{
-    background-color: yellow;
-  }
-
+ 
   .Search{
     display: none !important;
   }
@@ -283,6 +324,7 @@ export default function ReportProcess() {
     {
       title: 'Comment-Detail',
       dataIndex: 'comment_rating',
+      width: 450,
     }
   ];
 
@@ -355,6 +397,78 @@ export default function ReportProcess() {
     init();
   }, [currentDate]);
 
+  const extPort = async () => {
+    try {
+      let excel_status = [
+        { name: 'pending', number: reportIt.pending },
+        { name: 'reject', number: reportIt.reject },
+        { name: 'process', number: reportIt.process },
+        { name: 'success', number: reportIt.success },
+      ]
+      let excel_topic = topicData
+      let excel_rating = ratingData
+      let excel_comment = comment
+
+      console.log(excel_rating)
+
+      let coulmnTopic = [
+        { title: 'หมวดหมู่ปัญหา', dataIndex: 'name' },
+        { title: 'จำนวน', dataIndex: 'sum_topic' },
+      ]
+
+      let columStatus = [
+        { title: 'สถานะ', dataIndex: 'name' },
+        { title: 'จำนวน', dataIndex: 'number' },
+      ]
+
+      let columRating = [
+        { title: 'ชื่อ-นามสกุล', dataIndex: 'admin_name' },
+        { title: 'คะแนน', dataIndex: 'sum_rating' },
+      ]
+
+      let columComment = [
+        { title: 'ticket', dataIndex: 'ticket_no' },
+        { title: 'detail', dataIndex: 'comment_rating' },
+      ]
+
+      let sum = (arr, key) => {
+        return arr.reduce((topic, object) => {
+          return topic + object[key];
+        }, 0)
+      }
+
+
+
+
+      const excel = new Excel();
+      excel
+        .addSheet('report_status')
+        .addColumns(columStatus)
+        .addDataSource(excel_status)
+        .addColumns([{ title: 'จำนวนทั้งหมด ' + sum(excel_status, 'number') }])
+
+        .addSheet('report_topic')
+        .addColumns(coulmnTopic)
+        .addDataSource(excel_topic)
+        .addColumns([{ title: 'จำนวนทั้งหมด ' + sum(excel_topic, 'sum_topic') }])
+
+        .addSheet('report_rating')
+        .addColumns(columRating)
+        .addDataSource(excel_rating)
+        .addColumns([{ title: 'จำนวนทั้งหมด ' + sum(excel_rating, 'sum_rating') }])
+
+        .addSheet('report_comment')
+        .addColumns(columComment)
+        .addDataSource(excel_comment)
+        .addColumns([{ title: 'จำนวนทั้งหมด ' + (excel_comment.length) }])
+
+        .saveAs("report.xlsx");
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Content >
       <SideBar />
@@ -363,7 +477,14 @@ export default function ReportProcess() {
         <div className="report-container ">
           <div className="Text-head">
             <div className="head">Admin-Dashbaord</div>
+
+            <div className="button-excel">
+              <button className="btn-ext" onClick={extPort}><RiFileExcel2Fill /></button>
+            </div>
+
           </div>
+
+
 
           <div className="group-report">
             <div className="report-process">
@@ -446,7 +567,7 @@ export default function ReportProcess() {
 
                   <div className="summary">
                     <div className="total">
-                      ทั้งหมด{" "}
+                      รายการ สถานะทั้งหมด{" "}
                       {reportIt?.total || 0}{" "}
                       รายการ
                     </div>
@@ -455,6 +576,9 @@ export default function ReportProcess() {
               </div>
 
               <br />
+              <div className="rating-admin">
+                Person-Admin
+              </div>
               <RatingComponent>
                 <div className="admin-group">
                   {ratingData.map((item) => (
@@ -473,7 +597,7 @@ export default function ReportProcess() {
                       </div>
                     </div>))}
                 </div>
-                <div className="total-rating">ทั้งหมด {ratingData.reduce((rating, object) => {
+                <div className="total-rating">คะแนนทั้งหมด {ratingData.reduce((rating, object) => {
                   return rating + object.sum_rating;
                 }, 0)} คะแนน</div>
               </RatingComponent>
@@ -481,8 +605,10 @@ export default function ReportProcess() {
             </div>
 
             <div className="process-group">
+              <div className="head-topic">
+                REPORT-TOPIC
+              </div>
               <div className="topic-group">
-                <h4 className="head">REPORT-TOPIC</h4>
                 {topicData.map((item) => {
                   return (
                     <div className="process-item" key={item.id}>
@@ -491,6 +617,7 @@ export default function ReportProcess() {
                       </div>
                       <div className="process-bar">
                         <ProcessComponent
+                          className="success"
                           percent={item?.sum_topic || 0}
                           showInfo={false}
                         />
@@ -499,9 +626,9 @@ export default function ReportProcess() {
                     </div>
                   )
                 })}
-                <div className="total">ทั้งหมด {topicData.reduce((topic, object) => {
+                <div className="total">หมวดหมู่ทั้งหมด {topicData.reduce((topic, object) => {
                   return topic + object.sum_topic;
-                }, 0)} คะแนน</div>
+                }, 0)} รายการ</div>
               </div>
             </div>
             <Comment_User className="comment-group">

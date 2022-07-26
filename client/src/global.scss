@@ -12,7 +12,7 @@ body {
   font-size: 16px;
   height: 100vh;
   color: #000;
-  background-color: #F2F2F2 !important;
+  background-color: #f2f2f2 !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -24,17 +24,19 @@ body {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 5px;
-  background-color: rgba(0, 0, 0, .3);
-  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+  background-color: rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
-.root{
+.root {
   height: 100%;
 }
 
 .content {
+  overflow: hidden;
   padding-bottom: 50px;
-  margin-left: 190px;
+  margin-left: 200px;
+  position: relative;
 }
 
 button {
@@ -43,7 +45,7 @@ button {
   align-items: center;
   font-size: 16px;
   font-weight: bold;
-  color: #FFF;
+  color: #fff;
   background: transparent;
   display: flex;
   cursor: pointer;
@@ -59,19 +61,18 @@ button {
     margin-right: 5px;
   }
 
-  &.button-edit{
-    background-color: #FFCA2C;
+  &.button-edit {
+    background-color: #ffca2c;
     border: none;
-    color: #FFF;
+    color: #fff;
     font-size: 20px;
     border-radius: 50px;
     padding: 10px;
-
   }
-  &.button-rating{
-    background-color: #FFCA2C;
+  &.button-rating {
+    background-color: #ffca2c;
     border: none;
-    color: #FFF;
+    color: #fff;
     font-size: 20px;
     height: 30px;
     border-radius: 50px;
@@ -84,17 +85,18 @@ button {
   color: #ffbd0c;
 }
 
-.status-pending{
-  background-color: #FFCA2C;
-  color: #FFF;
+.status-pending {
+  background-color: #ffca2c;
+  color: #fff;
   border: none;
   padding: 8px;
   border-radius: 10px;
 }
 
-.status-process{
+.status-process,
+.not-approve {
   background-color: rgb(246, 49, 49);
-  color: #FFF;
+  color: #fff;
   border: none;
   padding: 8px;
   border-radius: 10px;
@@ -105,11 +107,11 @@ button {
   // }
 }
 
-.status-success{
+.status-success,
+.approve {
   background-color: #157347;
-  color: #FFF;
+  color: #fff;
   border: none;
   padding: 8px;
   border-radius: 10px;
 }
-

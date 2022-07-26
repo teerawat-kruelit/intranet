@@ -1,7 +1,7 @@
 const query = require('./_database')
 const mssql = require('mssql')
 
-module.exports.getProfileByID = async(id) => {
+module.exports.getProfileByID = async (id) => {
     let parameters = [
         { name: "id", sqltype: mssql.Int, value: id },
     ]
@@ -13,7 +13,7 @@ module.exports.getProfileByID = async(id) => {
     return user;
 }
 
-module.exports.updateProfile = async(id, body) => {
+module.exports.updateProfile = async (id, body) => {
     let sql = `
     UPDATE tb_users 
     SET 
@@ -35,4 +35,16 @@ module.exports.updateProfile = async(id, body) => {
     ]
     let user = await query(sql, parameters)
     return user
+}
+
+module.exports.getEmployeeByID = async (type_dep) => {
+    let parameters = [
+        { name: "type_dep", sqltype: mssql.Int, value: type_dep },
+    ]
+    let user = await query(`
+        SELECT TUserName, Position, ExtNo, image
+        FROM tb_users
+        WHERE type_dep = @type_dep
+    `, parameters)
+    return user;
 }

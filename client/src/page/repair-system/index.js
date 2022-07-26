@@ -5,11 +5,12 @@ import { IoIosDocument } from "react-icons/io";
 import Card from "../../components/card";
 import { NavLink } from "react-router-dom";
 import { Tabs } from "antd";
-import TableIt from "./table-it";
+import TableIt from "../repair-system/table-it";
 import TableBuilding from "./table-building";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { IoMdAddCircle } from "react-icons/io";
+import Swal from "sweetalert2";
 
 const { TabPane } = Tabs;
 
@@ -69,6 +70,7 @@ export default function RepairSystem() {
   const [buildData, setBuildData] = useState([]);
 
   useEffect(() => {
+    console.log(process.env.REACT_APP_API_ENDPOINT)
     const init = async () => {
       try {
         let resp = await axios.get("http://localhost:4000/api/user/profile", {
@@ -94,7 +96,14 @@ export default function RepairSystem() {
         }
       } catch (error) {
         if (error.response.status == 401) {
-          window.location.href = "/login";
+          Swal.fire({
+            title: 'กรุณาเข้าสู่ระบบก่อนเข้าใข้งาน',
+            confirmButtonText: 'OK',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = "/login"
+            }
+          })
         }
       }
     };
@@ -155,7 +164,7 @@ export default function RepairSystem() {
           ) : (
             ""
           )}
-         
+
           <Tabs
             defaultActiveKey={currentTab}
             onChange={(e) => {

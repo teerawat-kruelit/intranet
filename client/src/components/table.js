@@ -39,12 +39,10 @@ const TableComponent = styled(AntdTable)`
   }
 `
 
-const TabletotalRows =styled.div`
+const TabletotalRows = styled.div`
     font-size:18px;
     position: absolute;
     bottom: -335px;
-
-
 `;
 
 
@@ -89,7 +87,7 @@ export default function Table(props) {
           }}
         />
       </div>
-      
+
       <TableComponent
         className="table"
         rowKey={"id"}
@@ -97,7 +95,7 @@ export default function Table(props) {
         columns={props.columns}
         bordered
       />
-      <TabletotalRows className={'table-total-rows'}>รายการทั้งหมด : {props.dataSource.length} Row</TabletotalRows>
+      {/* <TabletotalRows className={'table-total-rows'}>รายการทั้งหมด : {props.dataSource.length} Row</TabletotalRows> */}
     </>
   );
 }
