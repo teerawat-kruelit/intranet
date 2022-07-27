@@ -10,6 +10,7 @@ import ReportProcess from "./page/report-process";
 import StockSystem from "./page/stock";
 import RepairSystemPO from "./page/repair-system-po";
 import FormPO from "./page/form-po";
+import RepairSystemFin from "./page/repair-system-fin";
 
 const App = () => {
   let routes = useRoutes([
@@ -26,6 +27,8 @@ const App = () => {
 
     { path: "/repair-po", element: <RepairSystemPO /> },
     { path: "/form-po/:id", element: <FormPO /> },
+
+    { path: "/repair-fin", element: <RepairSystemFin /> },
   ]);
   return routes;
 };

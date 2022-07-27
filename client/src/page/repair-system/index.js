@@ -3,7 +3,7 @@ import Navbar from "../../components/navbar.compoenets";
 import styled from "styled-components";
 import { IoIosDocument } from "react-icons/io";
 import Card from "../../components/card";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { Tabs } from "antd";
 import TableIt from "../repair-system/table-it";
 import TableBuilding from "./table-building";
@@ -65,12 +65,12 @@ const RepairSystemComponent = styled.div`
 
 export default function RepairSystem() {
   const [user, setUser] = useState(null);
-  const [currentTab, setCurrentTab] = useState("1");
+  const [currentTab, setCurrentTab] = useState(null);
   const [itData, setItData] = useState([]);
   const [buildData, setBuildData] = useState([]);
+  let { search } = useLocation();
 
   useEffect(() => {
-    console.log(process.env.REACT_APP_API_ENDPOINT)
     const init = async () => {
       try {
         let resp = await axios.get("http://localhost:4000/api/user/profile", {
@@ -106,9 +106,15 @@ export default function RepairSystem() {
           })
         }
       }
-    };
 
+    };
     init();
+
+    const query = new URLSearchParams(search);
+    const queryTab = query.get('tab');
+    if (!currentTab) {
+      setCurrentTab(queryTab == '2' ? '2' : '1')
+    }
   }, [currentTab]);
 
   return (
@@ -167,6 +173,7 @@ export default function RepairSystem() {
 
           <Tabs
             defaultActiveKey={currentTab}
+            activeKey={currentTab}
             onChange={(e) => {
               setCurrentTab(e);
             }}

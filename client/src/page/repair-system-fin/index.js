@@ -5,13 +5,11 @@ import { IoIosDocument } from "react-icons/io";
 import Card from "../../components/card";
 import { NavLink, useLocation } from "react-router-dom";
 import { Tabs } from "antd";
-import TableBuilding from "./table-building";
-import TablIt from "./table-it";
+import TableData from "./table-data";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { IoMdAddCircle } from "react-icons/io";
 import Swal from "sweetalert2";
-import TableIt from "./table-building";
 
 const { TabPane } = Tabs;
 
@@ -82,14 +80,14 @@ export default function RepairSystemPO() {
                 }
 
                 let itResp = await axios.get(
-                    "http://localhost:4000/api/repair_list_po/it",
+                    "http://localhost:4000/api/repair_list_fin/it",
                     { withCredentials: true }
                 );
                 if (itResp?.data?.status) {
                     setItData(itResp.data.data);
                 }
                 let buildingtResp = await axios.get(
-                    "http://localhost:4000/api/repair_list_po/building",
+                    "http://localhost:4000/api/repair_list_fin/building",
                     { withCredentials: true }
                 );
                 if (buildingtResp?.data?.status) {
@@ -179,10 +177,10 @@ export default function RepairSystemPO() {
                         }}
                     >
                         <TabPane tab="ฝ่าย IT-Support" key="1">
-                            <TableIt user={user} data={itData} setData={setItData} />
+                            <TableData user={user} data={itData} setData={setItData} />
                         </TabPane>
                         <TabPane tab="ฝ่าย อาคาร" key="2">
-                            <TableBuilding user={user} data={buildData} setData={setBuildData} />
+                            <TableData user={user} data={buildData} setData={setBuildData} />
                         </TabPane>
                     </Tabs>
                 </div>

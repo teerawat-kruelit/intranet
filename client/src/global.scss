@@ -85,7 +85,8 @@ button {
   color: #ffbd0c;
 }
 
-.status-pending {
+.status-pending,
+.status-not-approve {
   background-color: #ffca2c;
   color: #fff;
   border: none;
@@ -94,7 +95,7 @@ button {
 }
 
 .status-process,
-.not-approve {
+.status-reject {
   background-color: rgb(246, 49, 49);
   color: #fff;
   border: none;
@@ -108,7 +109,7 @@ button {
 }
 
 .status-success,
-.approve {
+.status-approve {
   background-color: #157347;
   color: #fff;
   border: none;

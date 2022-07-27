@@ -154,9 +154,6 @@ export default function TableIt(props) {
         { withCredentials: true }
       );
 
-
-      console.log(repairLogsData)
-
       if (repairLogsData?.data?.status) {
         let excelColumn = [
           {

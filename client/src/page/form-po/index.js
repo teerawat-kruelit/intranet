@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Select, DatePicker } from "antd";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useLocation } from "react-router";
 import styled from "styled-components";
 import Navbar from "../../components/navbar.compoenets";
 import axios from "axios";
 import moment from "moment";
 import swal from "sweetalert2";
-import { BsPersonPlusFill } from "react-icons/bs";
 
 const FormItComponent = styled.div`
   width: 1200px;
@@ -138,12 +137,13 @@ export default function FormPO() {
     const { id } = useParams();
     const [form] = Form.useForm();
     const history = useNavigate();
+    let { search } = useLocation();
 
     useEffect(() => {
         const init = async () => {
             try {
                 let repaireData = await axios.get(
-                    "http://localhost:4000/api/repair_list_po/it/" + id,
+                    "http://localhost:4000/api/repair_list_po/" + id,
                     { withCredentials: true }
                 );
                 let po_datetime = repaireData.data.data[0].po_date;
@@ -161,13 +161,25 @@ export default function FormPO() {
                 setFileNamePo(data?.img_po);
                 setFileNameInv(data?.img_inv);
 
+                if (!data?.po_name) {
+                    let userData = await axios.get(
+                        "http://localhost:4000/api/user/profile",
+                        { withCredentials: true }
+                    );
+                    if (userData.data.status) {
+                        let data_po_name = userData.data.data.TUserName
+                        form.setFieldsValue({ po_name: data_po_name })
+                    }
+                }
+
             } catch (error) {
                 if (error.response.status == 401) {
                     window.location.href = "/login";
                 }
             }
         };
-        init();
+
+        init()
     }, []);
 
     const onFinish = async (values) => {
@@ -180,7 +192,7 @@ export default function FormPO() {
 
         try {
             let response = await axios.put(
-                "http://localhost:4000/api/repair_list_po/it/" + id,
+                "http://localhost:4000/api/repair_list_po/" + id,
                 values,
                 { withCredentials: true }
             );
@@ -194,8 +206,11 @@ export default function FormPO() {
                         confirmButtonText: "X",
                     })
                     .then((result) => {
+                        const query = new URLSearchParams(search);
+                        const querTypeId = query.get('type_id');
+
                         if (result.isConfirmed) {
-                            history("/repair-po");
+                            history("/repair-po?tab=" + querTypeId);
                         }
                     });
             }
@@ -221,7 +236,7 @@ export default function FormPO() {
                         <div className="admin">
                             <Form.Item
                                 className="form-item-TUserName"
-                                name={"admin_name"}
+                                name={"po_name"}
                                 label={"ผู้อนุมัติ"}
                             >
                                 <Input readOnly />

@@ -24,6 +24,7 @@ const TableComponent = styled(AntdTable)`
     background-color: black;
     color: #ffff;
     font-size: 12px;
+    white-space: nowrap;
   }
 
   .ant-table-thead .ant-table-cell {
@@ -92,6 +93,7 @@ export default function Table(props) {
         className="table"
         rowKey={"id"}
         dataSource={filterWord ? filterData : props.dataSource}
+        scroll={{ x: 400 }}
         columns={props.columns}
         bordered
       />

@@ -158,7 +158,7 @@ export default function FromBuilding() {
                 })
                 .then((result) => {
                     if (result.isConfirmed) {
-                        history("/repair");
+                        history("/repair?tab=2");
                     }
                 });
 

@@ -166,7 +166,7 @@ export default function FormIt() {
                 })
                 .then((result) => {
                     if (result.isConfirmed) {
-                        history("/repair");
+                        history("/repair?tab=1");
                     }
                 });
 
