@@ -92,7 +92,7 @@ const FormItComponent = styled.div`
   .image-repair {
     margin-top: 10px;
     display: flex;
-    justify-content: center;
+    justify-content: start;
     width: 100%;
   }
 
@@ -128,9 +128,8 @@ const FormItComponent = styled.div`
   }
 `
 
-export default function FormPO() {
-  const [fileNamePo, setFileNamePo] = useState(null)
-  const [fileNameInv, setFileNameInv] = useState(null)
+export default function FormFin() {
+  const [fileNameFin, setFileNameFin] = useState(null)
   const { id } = useParams()
   const [form] = Form.useForm()
   const history = useNavigate()
@@ -139,23 +138,20 @@ export default function FormPO() {
   useEffect(() => {
     const init = async () => {
       try {
-        let repaireData = await axios.get('http://localhost:4000/api/repair_list_po/' + id, { withCredentials: true })
-        let po_datetime = repaireData.data.data[0].po_date
-        let inv_datetime = repaireData.data.data[0].inv_date
+        let repaireData = await axios.get('http://localhost:4000/api/repair_list_fin/' + id, { withCredentials: true })
+        let fin_datetime = repaireData.data.data[0].fin_date
 
-        repaireData.data.data[0].po_date = po_datetime ? moment(po_datetime) : moment()
-        repaireData.data.data[0].inv_date = inv_datetime ? moment(inv_datetime) : moment()
+        repaireData.data.data[0].fin_date = fin_datetime ? moment(fin_datetime) : moment()
 
         let data = repaireData.data.data[0]
         form.setFieldsValue(data)
-        setFileNamePo(data?.img_po)
-        setFileNameInv(data?.img_inv)
+        setFileNameFin(data?.img_fin)
 
-        if (!data?.po_name) {
+        if (!data?.fin_name) {
           let userData = await axios.get('http://localhost:4000/api/user/profile', { withCredentials: true })
           if (userData.data.status) {
-            let data_po_name = userData.data.data.TUserName
-            form.setFieldsValue({ po_name: data_po_name })
+            let data_fin_name = userData.data.data.TUserName
+            form.setFieldsValue({ fin_name: data_fin_name })
           }
         }
       } catch (error) {
@@ -169,13 +165,11 @@ export default function FormPO() {
   }, [])
 
   const onFinish = async (values) => {
-    values.img_po = fileNamePo
-    values.img_inv = fileNameInv
-    values.po_date = moment(values.po_date).format('YYYY-MM-DD HH:mm:ss')
-    values.inv_date = moment(values.inv_date).format('YYYY-MM-DD HH:mm:ss')
+    values.img_fin = fileNameFin
+    values.fin_date = moment(values.fin_date).format('YYYY-MM-DD HH:mm:ss')
 
     try {
-      let response = await axios.put('http://localhost:4000/api/repair_list_po/' + id, values, { withCredentials: true })
+      let response = await axios.put('http://localhost:4000/api/repair_list_fin/' + id, values, { withCredentials: true })
       if (response.data.status) {
         swal
           .fire({
@@ -189,7 +183,7 @@ export default function FormPO() {
             const querTypeId = query.get('type_id')
 
             if (result.isConfirmed) {
-              history('/repair-po?tab=' + querTypeId)
+              history('/repair-fin?tab=' + querTypeId)
             }
           })
       }
@@ -203,15 +197,15 @@ export default function FormPO() {
       <Navbar />
       <FormItComponent className="form-it">
         {/* <div className="h1 form-header">UPDATE RECORD IT</div> */}
-        <div className="form-header">UPDATE-RECORD BY IT</div>
+        <div className="form-header">UPDATE-RECORD</div>
         <div className="form-it-container">
           <Form className="it-form-wrapper" form={form} onFinish={onFinish} layout="inline" size="large">
             <div className="admin">
-              <Form.Item className="form-item-TUserName" name={'po_name'} label={'ผู้อนุมัติ'}>
+              <Form.Item className="form-item-TUserName" name={'fin_name'} label={'ผู้จัดทำ'}>
                 <Input readOnly />
               </Form.Item>
               <Form.Item
-                name={'po_approve'}
+                name={'fin_approve'}
                 className={'form-item-sel-approve'}
                 label={'Status'}
                 rules={[
@@ -225,19 +219,16 @@ export default function FormPO() {
                   <Select.Option value={2}>Reject</Select.Option>
                 </Select>
               </Form.Item>
-              <Form.Item className="form-item-po_number" name={'po_number'} label={'Number-Po'}>
+              <Form.Item className="form-item-fin_number" name={'fin_number'} label={'Number'}>
                 <Input />
               </Form.Item>
-              <Form.Item className="form-item-inv_number" name={'inv_number'} label={'Number-Invioce'}>
+              <Form.Item className="form-item-fin-date" name={'fin_date'} label={'Date'}>
+                <DatePicker />
+              </Form.Item>
+              <Form.Item className="form-item-fin_recipient" name={'fin_recipient'} label={'ผู้รับเงินสด'}>
                 <Input />
               </Form.Item>
-              <Form.Item className="form-item-po-date" name={'po_date'} label={'PO-Date'}>
-                <DatePicker />
-              </Form.Item>
-              <Form.Item className="form-item-invoice-date" name={'inv_date'} label={'Invoice-Date'}>
-                <DatePicker />
-              </Form.Item>
-              <Form.Item className="form-item-upload" label={'อัพโหลดรูปภาพ'}>
+              <Form.Item className="form-item-upload" label={'Upload'}>
                 <input
                   type={'file'}
                   onChange={async (e) => {
@@ -247,7 +238,7 @@ export default function FormPO() {
 
                       let resUpload = await axios.post('http://localhost:4000/api/upload/repair', formData, { withCredentials: true })
                       if (resUpload?.data?.status) {
-                        setFileNamePo(resUpload?.data?.data?.filename)
+                        setFileNameFin(resUpload?.data?.data?.filename)
                         swal.fire({
                           title: '',
                           text: resUpload?.data?.message,
@@ -270,53 +261,11 @@ export default function FormPO() {
                   }}
                 />
               </Form.Item>
-              <Form.Item className="form-item-upload" label={'อัพโหลดรูปภาพ'}>
-                <input
-                  type={'file'}
-                  onChange={async (e) => {
-                    try {
-                      let formData = new FormData()
-                      formData.append('image', e.target.files[0])
-
-                      let resUpload = await axios.post('http://localhost:4000/api/upload/repair', formData, { withCredentials: true })
-                      if (resUpload?.data?.status) {
-                        setFileNameInv(resUpload?.data?.data?.filename)
-                        swal.fire({
-                          title: '',
-                          text: resUpload?.data?.message,
-                          icon: 'success',
-                          confirmButtonText: 'X'
-                        })
-                      } else {
-                        swal.fire({
-                          title: '',
-                          text: resUpload?.data?.message,
-                          icon: 'error',
-                          confirmButtonText: 'X'
-                        })
-                      }
-                    } catch (error) {
-                      if (error.response.status == 401) {
-                        window.location.href = '/login'
-                      }
-                    }
-                  }}
-                />
-              </Form.Item>
-              <Form.Item className="form-item-preview-img">
-                {fileNamePo && (
-                  <div className="image-repair">
-                    <img src={'http://localhost:4000/public/image/repair/' + fileNamePo} width={300} height={300} />
-                  </div>
-                )}
-              </Form.Item>
-              <Form.Item className="form-item-preview-img">
-                {fileNameInv && (
-                  <div className="image-repair">
-                    <img src={'http://localhost:4000/public/image/repair/' + fileNameInv} width={300} height={300} />
-                  </div>
-                )}
-              </Form.Item>
+              {fileNameFin && (
+                <div className="image-repair">
+                  <img src={'http://localhost:4000/public/image/repair/' + fileNameFin} width={300} height={300} />
+                </div>
+              )}
             </div>
             <Form.Item className="form-button">
               <button className="button-submit" type="submit">

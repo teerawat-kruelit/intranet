@@ -44,7 +44,7 @@ export default function TableData(props) {
           dataIndex: '',
           width: 75,
           render: (_, record) => (
-            <NavLink to={'/form-fin/' + record.id + '?type_id=' + record.type_id}>
+            <NavLink to={'/form-acc/' + record.id + '?type_id=' + record.type_id}>
               <button className={'button-edit'}>
                 <AiTwotoneEdit />
               </button>
@@ -96,13 +96,41 @@ export default function TableData(props) {
           dataIndex: 'remark'
         },
         {
+          title: 'ผู้อนุมัติ',
+          dataIndex: 'po_name'
+        },
+        {
+          title: 'Po-Number',
+          dataIndex: 'po_number'
+        },
+        {
+          title: 'Po-Img',
+          dataIndex: 'img_po',
+          render: (_, record) =>
+            record.img_po && (
+              <a href={'http://localhost:4000/public/image/repair/' + record.img_po} target="__blank">
+                รูป
+              </a>
+            )
+        },
+        {
+          title: 'Invoice-Img',
+          dataIndex: 'img_inv',
+          render: (_, record) =>
+            record.img_inv && (
+              <a href={'http://localhost:4000/public/image/repair/' + record.img_inv} target="__blank">
+                รูป
+              </a>
+            )
+        },
+        {
           title: 'Approve',
-          dataIndex: 'fin_approve',
+          dataIndex: 'acc_approve',
           render: (_, record) => {
             let status = null
-            if (!record?.fin_approve || record?.fin_approve === 0) status = 'not-approve'
-            if (record?.fin_approve && record?.fin_approve === 1) status = 'approve'
-            if (record?.fin_approve && record?.fin_approve === 2) status = 'reject'
+            if (!record?.acc_approve || record?.acc_approve === 0) status = 'not-approve'
+            if (record?.acc_approve && record?.acc_approve === 1) status = 'approve'
+            if (record?.acc_approve && record?.acc_approve === 2) status = 'reject'
 
             return (
               <div div className="table-button-group">
@@ -114,27 +142,23 @@ export default function TableData(props) {
           }
         },
         {
-          title: 'ผู้ดำนเนินการ',
-          dataIndex: 'fin_name'
+          title: 'ผู้อนุมัติ',
+          dataIndex: 'acc_name'
         },
         {
-          title: 'Fin-Number',
-          dataIndex: 'fin_number'
+          title: 'Pv-Account',
+          dataIndex: 'acc_acc'
         },
         {
-          title: 'Fin-Date',
-          dataIndex: 'fin_date'
+          title: 'Pv-Date',
+          dataIndex: 'acc_date'
         },
         {
-          title: 'ผู้รับเงิน',
-          dataIndex: 'fin_recipient'
-        },
-        {
-          title: 'Fin-Img',
-          dataIndex: 'img_fin',
+          title: 'Pv-Image',
+          dataIndex: 'img_acc',
           render: (_, record) =>
-            record.img_fin && (
-              <a href={'http://localhost:4000/public/image/repair/' + record.img_fin} target="__blank">
+            record.img_acc && (
+              <a href={'http://localhost:4000/public/image/repair/' + record.img_acc} target="__blank">
                 รูป
               </a>
             )
@@ -168,6 +192,10 @@ export default function TableData(props) {
           {
             title: 'เบอร์ต่อ',
             dataIndex: 'ExtNo'
+          },
+          {
+            title: 'IP-เครื่อง',
+            dataIndex: 'ip'
           },
           {
             title: 'สาขาที่แจ้ง',

@@ -71,7 +71,6 @@ module.exports.getRepairItListLogs = async (userid, roleId, id) => {
     WHERE rt.type_id = 1
     `;
 
-
   if (roleId === 1) {
     sql += `    
         AND rt.user_id = @userid
@@ -157,7 +156,6 @@ module.exports.getRepairBuildingListLogs = async (userid, roleId, id) => {
 };
 
 module.exports.updateRepairList = async (userid, id, body) => {
-  console.log(body)
   let parameters = [
     { name: "topic_id", sqltype: mssql.Int, value: body?.topic_id },
     { name: "status_id", sqltype: mssql.Int, value: body?.status_id },
